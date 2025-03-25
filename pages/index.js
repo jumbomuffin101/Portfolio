@@ -17,11 +17,11 @@ export default function Home() {
         {/* Intro */}
         <h1 className="text-4xl font-bold mb-2">Aryan Rawat</h1>
         <h2 className="text-xl text-gray-600 mb-4">
-          Software Engineer • CS Student @ Stevens
+          Software Engineer • Computer Science Student @ Stevens
         </h2>
 
         <p className="text-lg text-gray-700 leading-relaxed mb-8">
-          I'm a computer science student passionate about front-end development,
+          I&apos;m a computer science student passionate about front-end development,
           building practical tools, and solving real-world problems through
           clean, efficient code.
         </p>
