@@ -1,52 +1,46 @@
 import Image from "next/image";
-import Projects from "../components/Projects";
 import Link from "next/link";
 
-export default function Home() {
+export default function Projects() {
   return (
-    <main className="bg-white text-gray-900 min-h-screen">
-      {/* Hero Section */}
-      <div className="flex flex-col md:flex-row items-center justify-center px-6 py-20 max-w-6xl mx-auto">
-        {/* Image */}
-        <div className="w-40 h-40 md:w-60 md:h-60 relative rounded-full overflow-hidden border-4 border-gray-900 shadow-lg">
-          <Image
-            src="/profile.jpg" // <- Make sure this is in your public/ folder!
-            alt="Aryan Rawat"
-            width={240}
-            height={240}
-            className="object-cover"
-          />
-        </div>
+    <section id="projects" className="py-20 bg-gray-100 text-gray-900 px-4">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-3xl font-bold text-center mb-10">Projects</h2>
 
-        {/* Text */}
-        <div className="mt-6 md:mt-0 md:ml-12 text-center md:text-left">
-          <h1 className="text-4xl md:text-6xl font-bold">Aryan Rawat</h1>
-          <p className="mt-2 text-xl md:text-2xl text-gray-600">
-            Software Engineer • Computer Science Student @ Stevens
-          </p>
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* TruClaim */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-semibold mb-2">TruClaim – Software Engineering Intern</h3>
+            <p className="text-gray-600">
+              Built frontend and backend infrastructure for an insurance claims startup using React and Flask. Developed interactive dashboards, real-time processing, and automated tools that reduced manual work by 15+ hours/week and improved system performance by 30%.
+            </p>
+          </div>
 
-          {/* Social Icons */}
-          <div className="mt-4 flex justify-center md:justify-start space-x-4">
-            <Link
-              href="https://www.linkedin.com/in/aryan-rawat-bbb0a6276/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image src="/linkedin.svg" alt="LinkedIn" width={32} height={32} />
-            </Link>
-            <Link
-              href="https://github.com/jumbomuffin101"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image src="/github.svg" alt="GitHub" width={32} height={32} />
-            </Link>
+          {/* AI Chatbot */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-semibold mb-2">AI Chatbot – Java</h3>
+            <p className="text-gray-600">
+              Developed an interactive Java-based chatbot featuring games like Rock-Paper-Scissors, Number Guessing, and Trivia with real-time score tracking and natural language processing for realistic conversations.
+            </p>
+          </div>
+
+          {/* Music Recommender */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-semibold mb-2">Music Recommender System – Python</h3>
+            <p className="text-gray-600">
+              Created a Python recommendation system that achieved 90%+ accuracy across 50+ user profiles, using efficient data structures and optimized algorithms for fast performance.
+            </p>
+          </div>
+
+          {/* Weather App */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-semibold mb-2">Weather Forecasting App – Python</h3>
+            <p className="text-gray-600">
+              Developed a clean and responsive weather app using the OpenWeatherMap API. Integrated robust error handling and optimized API usage for consistent real-time data under 500ms response time.
+            </p>
           </div>
         </div>
       </div>
-
-      {/* Projects Section */}
-      <Projects />
-    </main>
+    </section>
   );
 }
