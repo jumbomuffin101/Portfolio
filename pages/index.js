@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Projects from "../components/Projects";
 import Link from "next/link";
-import profilePic from "../public/unnamed (1).jpg"; // Make sure this file is moved to public/
 
 export default function Home() {
   return (
@@ -10,7 +9,13 @@ export default function Home() {
       <div className="flex flex-col md:flex-row items-center justify-center px-6 py-20 max-w-6xl mx-auto">
         {/* Image */}
         <div className="w-40 h-40 md:w-60 md:h-60 relative rounded-full overflow-hidden border-4 border-gray-900 shadow-lg">
-          <Image src={profilePic} alt="Aryan Rawat" layout="fill" objectFit="cover" />
+          <Image
+            src="/profile.jpg" // <- Make sure this is in your public/ folder!
+            alt="Aryan Rawat"
+            width={240}
+            height={240}
+            className="object-cover"
+          />
         </div>
 
         {/* Text */}
@@ -20,11 +25,20 @@ export default function Home() {
             Software Engineer • Computer Science Student @ Stevens
           </p>
 
+          {/* Social Icons */}
           <div className="mt-4 flex justify-center md:justify-start space-x-4">
-            <Link href="https://www.linkedin.com/in/aryan-rawat-bbb0a6276/" target="_blank">
+            <Link
+              href="https://www.linkedin.com/in/aryan-rawat-bbb0a6276/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Image src="/linkedin.svg" alt="LinkedIn" width={32} height={32} />
             </Link>
-            <Link href="https://github.com/jumbomuffin101" target="_blank">
+            <Link
+              href="https://github.com/jumbomuffin101"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Image src="/github.svg" alt="GitHub" width={32} height={32} />
             </Link>
           </div>
