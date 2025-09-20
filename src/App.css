@@ -1,0 +1,107 @@
+/* Why: keep all primitives predictable and themeable via CSS vars */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+.skip { position: absolute; left: -999px; top: -999px; }
+.skip:focus { left: 1rem; top: 1rem; background: var(--surface-3); color: var(--text); padding: .5rem .75rem; border-radius: .5rem; }
+
+.nav { position: sticky; top: 0; z-index: 10; backdrop-filter: saturate(180%) blur(10px);
+  background: var(--surface-1-80); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; height: 64px; padding: 0 1rem;
+}
+.brand { font-weight: 700; letter-spacing: -.2px; color: var(--text); text-decoration: none; }
+.nav-links { display: flex; gap: 1rem; align-items: center; }
+.nav-links a { color: var(--text-muted); text-decoration: none; font-size: .95rem; }
+.nav-links a:hover { color: var(--text); }
+.icon-btn { border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
+  padding: .45rem .6rem; border-radius: .6rem; cursor: pointer;
+}
+
+.section { padding: 64px 0; }
+.section-title { font-size: clamp(1.35rem, 1.2rem + 1.2vw, 2rem); margin: 0 0 .5rem; }
+.section-subtitle { color: var(--text-muted); margin: 0 0 1.25rem; }
+.lead { font-size: 1.05rem; color: var(--text-muted); max-width: 65ch; }
+.actions { display: flex; gap: .75rem; margin-top: 1rem; }
+.btn { background: var(--accent); color: #fff; border: none; border-radius: .75rem; padding: .6rem .9rem; text-decoration: none; display: inline-block; }
+.btn.secondary { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+.card { border: 1px solid var(--border); background: var(--surface-2); border-radius: .9rem; padding: 1rem; text-decoration: none; color: inherit; transition: transform .12s ease, box-shadow .12s ease; }
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+.card-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .25rem; }
+.card-title { margin: 0; font-weight: 600; }
+.tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .6rem; }
+.tag { font-size: .75rem; padding: .15rem .45rem; border: 1px solid var(--border); border-radius: 999px; color: var(--text-muted); }
+
+.timeline { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--border); padding-left: 1rem; }
+.timeline-item { position: relative; margin: 0 0 1.25rem; }
+.timeline-item .dot { position: absolute; left: -10px; top: .35rem; width: .6rem; height: .6rem; background: var(--accent); border-radius: 999px; }
+.timeline-title { margin: 0 0 .2rem; font-weight: 600; }
+.timeline .muted { margin-bottom: .3rem; }
+
+.contact { display: flex; gap: .75rem; flex-wrap: wrap; }
+
+.footer { border-top: 1px solid var(--border); padding: 24px 0; background: var(--surface-1); }
+.muted { color: var(--text-muted); }
+
+.profile-hero {
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+.avatar {
+  width: 112px;
+  height: 112px;
+  border-radius: 999px;
+  object-fit: cover;            /* keeps headshot nicely cropped */
+  background: var(--surface-2);
+  border: 2px solid var(--border);
+}
+@media (max-width: 640px) {
+  .profile-hero { grid-template-columns: 80px 1fr; }
+  .avatar { width: 80px; height: 80px; }
+}
+
+/* Resume modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 100;
+}
+.modal {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: .75rem;
+  width: min(100%, 900px);
+  height: min(90vh, 1100px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.modal-close {
+  align-self: flex-end;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: .5rem .75rem;
+  cursor: pointer;
+}
+.modal iframe {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: var(--surface-2);
+}
+.modal-bar {
+  border-top: 1px solid var(--border);
+  padding: .5rem;
+  display: flex;
+  justify-content: flex-end;
+  background: var(--surface-1);
+}
