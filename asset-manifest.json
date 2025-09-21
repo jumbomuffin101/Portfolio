@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/Portfolio/static/css/main.686b7f24.css",
-    "main.js": "/Portfolio/static/js/main.ab3aadec.js",
+    "main.js": "/Portfolio/static/js/main.37dd264f.js",
     "static/js/453.96453769.chunk.js": "/Portfolio/static/js/453.96453769.chunk.js",
     "static/media/Aryan_Rawat_Resume.pdf": "/Portfolio/static/media/Aryan_Rawat_Resume.a20c4c498c294c8c5719.pdf",
     "index.html": "/Portfolio/index.html",
     "main.686b7f24.css.map": "/Portfolio/static/css/main.686b7f24.css.map",
-    "main.ab3aadec.js.map": "/Portfolio/static/js/main.ab3aadec.js.map",
+    "main.37dd264f.js.map": "/Portfolio/static/js/main.37dd264f.js.map",
     "453.96453769.chunk.js.map": "/Portfolio/static/js/453.96453769.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.686b7f24.css",
-    "static/js/main.ab3aadec.js"
+    "static/js/main.37dd264f.js"
   ]
 }
