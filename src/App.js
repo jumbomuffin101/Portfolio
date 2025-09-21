@@ -36,7 +36,7 @@ const PROFILE = {
   phone: "917-306-4440",
   linkedin: "https://www.linkedin.com/in/aryan-rawat-bbb0a6276/",
   github: "https://github.com/jumbomuffin101",
-  photoUrl: "/headshot.jpg", // public/
+  photoUrl: process.env.PUBLIC_URL + "/headshot.jpg", // public/
   resumeUrl: resumePdf,       // imported URL
   blurb:
     "I’m Aryan, a CS student at Stevens. I build web apps, APIs, and the tools that help teams move faster. Lately I’m exploring distributed systems and data.",
