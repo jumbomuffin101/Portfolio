@@ -1,439 +1,406 @@
-// path: src/App.js
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
-import resumePdf from "./assets/Aryan_Rawat_Resume.pdf"; // bundled import
+import {
+  certifications,
+  education,
+  experience,
+  metrics,
+  profile,
+  projects,
+  skills,
+} from "./data/portfolio";
 
-/* Theme */
-function getInitialTheme() {
-  try {
-    const s = localStorage.getItem("theme");
-    if (s === "dark" || s === "light") return s;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  } catch { return "light"; }
-}
-function applyTheme(t) {
-  document.documentElement.setAttribute("data-theme", t);
-  try { localStorage.setItem("theme", t); } catch {}
-}
-
-/* Nav */
-const NAV = [
-  { href: "#home", label: "Home" },
+const navItems = [
+  { href: "#work", label: "Work" },
   { href: "#projects", label: "Projects" },
-  { href: "#experience", label: "Experience" },
-  { href: "#education", label: "Education" },
   { href: "#skills", label: "Skills" },
-  { href: "#certs", label: "Certifications" },
+  { href: "#education", label: "Education" },
   { href: "#contact", label: "Contact" },
 ];
 
-/* Data */
-const PROFILE = {
-  name: "Aryan Rawat",
-  title: "Software Engineer",
-  location: "New York, NY",
-  email: "arawat3@stevens.edu",
-  phone: "917-306-4440",
-  linkedin: "https://www.linkedin.com/in/aryan-rawat-bbb0a6276/",
-  github: "https://github.com/jumbomuffin101",
-  photoUrl: process.env.PUBLIC_URL + "/headshot.jpg", // public/
-  resumeUrl: resumePdf,       // imported URL
-  blurb:
-    "I’m Aryan, a CS student at Stevens. I build web apps, APIs, and the tools that help teams move faster. Lately I’m exploring distributed systems and data.",
-};
-
-const PROJECTS = [
-  { title: "AI-Chatbot", description: "Java chatbot with games, contextual replies, and score tracking.", period: "Oct 2024 – Dec 2024", tech: ["Java", "NLP", "Git"], link: "#" },
-  { title: "Music Recommender System", description: "Preference-based recommender for 50+ users (~90% accuracy).", period: "Aug 2024 – Oct 2024", tech: ["Python"], link: "#" },
-  { title: "Weather Forecasting App", description: "Real-time forecasts via OpenWeatherMap with resilient error handling.", period: "Jul 2024 – Sep 2024", tech: ["Python", "APIs"], link: "#" },
-];
-
-const EXPERIENCE = [
-  {
-    role: "Software Engineering Intern",
-    company: "TruClaim",
-    period: "Jan 2025 – Aug 2025",
-    bullets: [
-      "Scaled React + Flask claims platform; +40% cross-system comms speed.",
-      "Dashboards + automation; −60% manual touchpoints.",
-      "Predictive analytics + scripts; −15h/week manual work.",
-    ],
-    tech: ["React", "Flask", "Automation"],
-  },
-];
-
-const EDUCATION = {
-  school: "Stevens Institute of Technology",
-  location: "Hoboken, NJ",
-  degree: "B.Sc. in Computer Science",
-  minor: "Mathematics",
-  graduation: "May 2028",
-  gpa: "3.81/4.0",
-  honors: ["Presidential Scholarship", "Edwin A. Stevens Scholarship", "Dean’s List (2x)"],
-  coursework: ["Computing in Python","Data Structures (Java)","Algorithms (C++)","Computer Architecture & Organization (C)","Discrete Mathematics"],
-  clubs: ["Computer Science Club","South Asian Student Association","Blueprint","SASE","Software Engineering Club"],
-};
-
-const SKILLS = {
-  Languages: ["Python", "Java", "HTML/CSS", "JavaScript", "C++", "C"],
-  "Frameworks & Libraries": ["React.js", "Flask", "Pandas", "Matplotlib"],
-  "Tools & IDEs": ["VS Code", "IntelliJ IDEA", "Eclipse", "Jupyter Notebooks", "Git"],
-  Interests: ["Competitive soccer","Weight lifting","Strategic gaming","Recreational basketball","Personal investing"],
-};
-
-const CERTS = [
-  { name: "AWS Certified Cloud Practitioner", org: "Amazon Web Services", date: "Aug 2025" },
-  { name: "Software Engineering Virtual Experience Program", org: "Goldman Sachs", date: "Nov 2024" },
-  { name: "Software Engineering Job Simulation", org: "J.P. Morgan Chase", date: "Apr 2024" },
-];
-
-/* UI */
-function Navbar({ theme, onToggleTheme }) {
-  return (
-    <header className="nav">
-      <a className="brand" href="#home" aria-label="Go to home">
-        {"<"}{PROFILE.name}{"/>"}
-      </a>
-      <nav className="nav-links" aria-label="Primary">
-        {NAV.map((n) => <a key={n.href} href={n.href}>{n.label}</a>)}
-        <button className="icon-btn" onClick={onToggleTheme} aria-label="Toggle theme">
-          {theme === "dark" ? "☀️" : "🌙"}
-        </button>
-      </nav>
-    </header>
-  );
+function getInitialTheme() {
+  try {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark" || savedTheme === "light") return savedTheme;
+    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  } catch {
+    return "dark";
+  }
 }
 
-function Section({ id, title, children, subtitle }) {
+function setDocumentTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  try {
+    localStorage.setItem("theme", theme);
+  } catch {}
+}
+
+function Badge({ children, tone = "default" }) {
+  return <span className={`badge badge-${tone}`}>{children}</span>;
+}
+
+function Section({ id, eyebrow, title, subtitle, children }) {
   return (
-    <section id={id} className="section" aria-labelledby={`${id}-title`}>
-      <div className="container">
-        <h2 className="section-title" id={`${id}-title`}>{title}</h2>
-        {subtitle ? <p className="section-subtitle">{subtitle}</p> : null}
+    <section className="section" id={id} aria-labelledby={`${id}-title`}>
+      <div className="section-shell">
+        <div className="section-heading">
+          {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
+          <h2 id={`${id}-title`}>{title}</h2>
+          {subtitle ? <p>{subtitle}</p> : null}
+        </div>
         {children}
       </div>
     </section>
   );
 }
 
-function Projects({ items }) {
+function Card({ className = "", children }) {
+  return <div className={`card ${className}`}>{children}</div>;
+}
+
+function Navbar({ theme, onToggleTheme }) {
   return (
-    <div className="grid">
-      {items.map((p) => (
-        <a key={p.title} href={p.link} className="card" target="_blank" rel="noreferrer">
-          <div className="card-head">
-            <h3 className="card-title">{p.title}</h3>
-            <span className="muted">{p.period}</span>
+    <header className="site-header">
+      <a className="brand" href="#home" aria-label="Aryan Rawat home">
+        <span className="brand-mark">AR</span>
+        <span>Aryan Rawat</span>
+      </a>
+      <nav className="nav-links" aria-label="Primary navigation">
+        {navItems.map((item) => (
+          <a key={item.href} href={item.href}>
+            {item.label}
+          </a>
+        ))}
+      </nav>
+      <button className="theme-toggle" type="button" onClick={onToggleTheme} aria-label="Toggle color theme">
+        <span aria-hidden="true">{theme === "dark" ? "Light" : "Dark"}</span>
+      </button>
+    </header>
+  );
+}
+
+function MetricCard({ value, label }) {
+  return (
+    <Card className="metric-card">
+      <strong>{value}</strong>
+      <span>{label}</span>
+    </Card>
+  );
+}
+
+function ContactButton({ href, children, variant = "primary", disabled = false }) {
+  if (disabled || !href) {
+    return (
+      <span className={`button button-${variant} button-disabled`} aria-disabled="true">
+        {children}
+      </span>
+    );
+  }
+
+  const isExternal = href.startsWith("http");
+  return (
+    <a
+      className={`button button-${variant}`}
+      href={href}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noreferrer" : undefined}
+    >
+      {children}
+    </a>
+  );
+}
+
+function Hero() {
+  return (
+    <section className="hero section" id="home" aria-labelledby="hero-title">
+      <div className="hero-orb hero-orb-one" aria-hidden="true" />
+      <div className="hero-orb hero-orb-two" aria-hidden="true" />
+      <div className="section-shell hero-grid">
+        <div className="hero-copy">
+          <div className="hero-badges">
+            <Badge tone="accent">Software Engineering Intern</Badge>
+            <Badge>CS + Applied Math</Badge>
           </div>
-          <p className="muted">{p.description}</p>
-          <div className="tags">{p.tech.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
-        </a>
-      ))}
-    </div>
-  );
-}
-
-function Experience({ items }) {
-  return (
-    <ol className="timeline">
-      {items.map((e) => (
-        <li key={e.role + e.company} className="timeline-item">
-          <div className="dot" />
-          <div className="timeline-content">
-            <h4 className="timeline-title">{e.role} · {e.company}</h4>
-            <div className="muted">{e.period}</div>
-            <ul className="bullets">{e.bullets.map((b, i) => <li key={i}>{b}</li>)}</ul>
-            <div className="tags">{e.tech.map((t) => <span className="tag" key={t}>{t}</span>)}</div>
+          <h1 id="hero-title">{profile.headline}</h1>
+          <p className="hero-subtitle">{profile.positioning}</p>
+          <div className="hero-actions">
+            <ContactButton href={`mailto:${profile.email}`}>Email Aryan</ContactButton>
+            <ContactButton href={profile.resumeUrl} variant="secondary">
+              View Resume
+            </ContactButton>
+            <ContactButton href={profile.github} variant="ghost">
+              GitHub
+            </ContactButton>
           </div>
-        </li>
-      ))}
-    </ol>
-  );
-}
-
-function Education({ data }) {
-  return (
-    <div className="card">
-      <div className="card-head">
-        <h3 className="card-title">{data.school} · {data.location}</h3>
-        <span className="muted">{data.graduation}</span>
-      </div>
-      <p><strong>{data.degree}</strong>{data.minor ? `, Minor in ${data.minor}` : ""} — GPA {data.gpa}</p>
-      <p className="muted">Honors: {data.honors.join(", ")}</p>
-      <div className="stack-2">
-        <div>
-          <h4>Relevant Coursework</h4>
-          <ul className="bullets">{data.coursework.map((c) => <li key={c}>{c}</li>)}</ul>
         </div>
-        <div>
-          <h4>Clubs</h4>
-          <ul className="bullets">{data.clubs.map((c) => <li key={c}>{c}</li>)}</ul>
-        </div>
-      </div>
-    </div>
-  );
-}
 
-function Skills({ data }) {
-  return (
-    <div className="stack-2">
-      {Object.entries(data).map(([k, vals]) => (
-        <div key={k} className="card">
-          <h4 className="card-title">{k}</h4>
-          <div className="tags">{vals.map((v) => <span className="tag" key={v}>{v}</span>)}</div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function Certifications({ items }) {
-  return (
-    <div className="grid">
-      {items.map((c) => (
-        <div className="card" key={c.name}>
-          <div className="card-head">
-            <h3 className="card-title">{c.name}</h3>
-            <span className="muted">{c.date}</span>
-          </div>
-          <p className="muted">{c.org}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/* Résumé modal */
-function ResumeModal({ open, src, onClose }) {
-  if (!open) return null;
-  return (
-    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label="Resume preview">
-      <div className="modal">
-        <button className="modal-close" onClick={onClose} aria-label="Close preview">×</button>
-        <object data={src} type="application/pdf" width="100%" height="100%">
-          <div style={{ padding: "1rem" }}>
-            <p className="muted">Couldn’t render the PDF inline.</p>
-            <a className="btn" href={src} target="_blank" rel="noreferrer noopener">Open in new tab</a>
-          </div>
-        </object>
-        <div className="modal-bar">
-          <a className="btn secondary" href={src} target="_blank" rel="noreferrer noopener">Open in new tab</a>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* Contact form modal with reset-on-close + fallbacks */
-function ContactModal({ open, to, onClose }) {
-  const [name, setName] = useState("");
-  const [from, setFrom] = useState("");
-  const [msg, setMsg] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [showFallbacks, setShowFallbacks] = useState(false);
-
-  // Reset all fields whenever the modal closes
-  useEffect(() => {
-    if (!open) {
-      setName("");
-      setFrom("");
-      setMsg("");
-      setSubmitting(false);
-      setShowFallbacks(false);
-    }
-  }, [open]);
-
-  if (!open) return null;
-
-  const reset = () => {
-    setName("");
-    setFrom("");
-    setMsg("");
-    setSubmitting(false);
-    setShowFallbacks(false);
-  };
-  const closeAndReset = () => { reset(); onClose(); };
-
-  const enc = (s) => encodeURIComponent(s).replace(/%20/g, "+");
-  const subject = `[Portfolio] Message from ${name || "Someone"}`;
-  const body = `Name: ${name || "(not provided)"}\nEmail: ${from || "(not provided)"}\n\n${msg}`;
-  const mailtoHref  = `mailto:${enc(to)}?subject=${enc(subject)}&body=${enc(body)}`;
-  const gmailHref   = `https://mail.google.com/mail/?view=cm&fs=1&to=${enc(to)}&su=${enc(subject)}&body=${enc(body)}`;
-  const outlookHref = `https://outlook.live.com/mail/0/deeplink/compose?to=${enc(to)}&subject=${enc(subject)}&body=${enc(body)}`;
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!msg.trim()) return;
-    setSubmitting(true);
-    const a = document.createElement("a"); // more reliable than window.location on some browsers
-    a.href = mailtoHref;
-    a.style.display = "none";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    // Show fallbacks after a tiny delay (if nothing handled the mailto)
-    setTimeout(() => {
-      setSubmitting(false);
-      setShowFallbacks(true);
-    }, 600);
-  };
-
-  const copyToClipboard = async (text) => {
-    try { await navigator.clipboard.writeText(text); alert("Copied!"); } catch {}
-  };
-
-  return (
-    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label="Contact form">
-      <div className="modal" style={{ maxWidth: 640 }}>
-        <button className="modal-close" onClick={closeAndReset} aria-label="Close contact form">×</button>
-        <div style={{ padding: "1rem" }}>
-          <h3 className="card-title" style={{ marginTop: 0 }}>Contact Aryan</h3>
-          <form onSubmit={handleSubmit} style={{ display: "grid", gap: ".6rem" }}>
-            <label>
-              <div className="muted" style={{ marginBottom: 4 }}>Your name</div>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Jane Doe"
-                style={{ width: "100%", padding: ".55rem .7rem", borderRadius: ".5rem", border: "1px solid var(--border)", background: "var(--surface-2)", color: "var(--text)" }}
-              />
-            </label>
-            <label>
-              <div className="muted" style={{ marginBottom: 4 }}>Your email</div>
-              <input
-                type="email"
-                value={from}
-                onChange={(e) => setFrom(e.target.value)}
-                placeholder="jane@example.com"
-                style={{ width: "100%", padding: ".55rem .7rem", borderRadius: ".5rem", border: "1px solid var(--border)", background: "var(--surface-2)", color: "var(--text)" }}
-              />
-            </label>
-            <label>
-              <div className="muted" style={{ marginBottom: 4 }}>Message</div>
-              <textarea
-                required
-                value={msg}
-                onChange={(e) => setMsg(e.target.value)}
-                rows={6}
-                placeholder="Hi Aryan, I’d love to chat about..."
-                style={{ width: "100%", padding: ".6rem .7rem", borderRadius: ".5rem", border: "1px solid var(--border)", background: "var(--surface-2)", color: "var(--text)", resize: "vertical" }}
-              />
-            </label>
-
-            <div style={{ display: "flex", gap: ".5rem", marginTop: ".2rem", flexWrap: "wrap" }}>
-              <button type="submit" className="btn" disabled={submitting || !msg.trim()}>
-                {submitting ? "Opening…" : "Send via Email"}
-              </button>
-              <button type="button" className="btn secondary" onClick={closeAndReset}>Cancel</button>
+        <Card className="profile-card">
+          <div className="profile-card-top">
+            <img src={profile.photoUrl} alt="Aryan Rawat" className="profile-photo" />
+            <div>
+              <p className="eyebrow">Available for internship roles</p>
+              <h2>{profile.name}</h2>
+              <p>{profile.location}</p>
             </div>
+          </div>
+          <div className="signal-list" aria-label="Engineering focus areas">
+            <span>Backend systems</span>
+            <span>AI/NLP research tools</span>
+            <span>Full-stack data products</span>
+          </div>
+        </Card>
+      </div>
 
-            {showFallbacks && (
-              <div className="card" style={{ marginTop: ".6rem" }}>
-                <p className="muted" style={{ marginTop: 0 }}>
-                  If your email app didn’t open, use a fallback:
-                </p>
-                <div style={{ display: "flex", gap: ".5rem", flexWrap: "wrap" }}>
-                  <a className="btn" href={gmailHref} target="_blank" rel="noreferrer noopener">Open Gmail Draft</a>
-                  <a className="btn secondary" href={outlookHref} target="_blank" rel="noreferrer noopener">Open Outlook Web</a>
-                  <button type="button" className="btn secondary" onClick={() => copyToClipboard(`${subject}\n\n${body}`)}>
-                    Copy Message
-                  </button>
-                  <button type="button" className="btn secondary" onClick={() => copyToClipboard(to)}>
-                    Copy Email
-                  </button>
-                </div>
-              </div>
-            )}
-          </form>
+      <div className="section-shell metrics-grid" aria-label="Selected impact metrics">
+        {metrics.map((metric) => (
+          <MetricCard key={metric.label} {...metric} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function TimelineItem({ item, index }) {
+  return (
+    <details className="timeline-item" open={index === 0}>
+      <summary>
+        <span className="timeline-node" aria-hidden="true" />
+        <span className="timeline-summary">
+          <span className="timeline-meta">
+            {item.period} / {item.location}
+          </span>
+          <span className="timeline-title">
+            {item.role}
+            <span>{item.company}</span>
+          </span>
+          <span className="timeline-preview">{item.summary}</span>
+        </span>
+      </summary>
+      <div className="timeline-panel">
+        <ul>
+          {item.bullets.map((bullet) => (
+            <li key={bullet}>{bullet}</li>
+          ))}
+        </ul>
+        <div className="badge-row">
+          {item.tech.map((tech) => (
+            <Badge key={tech}>{tech}</Badge>
+          ))}
         </div>
       </div>
+    </details>
+  );
+}
+
+function ExperienceTimeline() {
+  return (
+    <div className="timeline">
+      {experience.map((item, index) => (
+        <TimelineItem key={`${item.company}-${item.role}`} item={item} index={index} />
+      ))}
     </div>
   );
 }
 
-function Contact({ onOpenForm }) {
+function ProjectCaseStudy({ project, featured }) {
   return (
-    <div className="contact">
-      <button type="button" className="btn" onClick={onOpenForm}>Email Me</button>
-      <a className="btn secondary" href={PROFILE.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
-      <a className="btn secondary" href={PROFILE.github} target="_blank" rel="noreferrer">GitHub</a>
-      <div className="muted" style={{ marginTop: ".5rem" }}>
-        {PROFILE.location} · {PROFILE.phone}
+    <article className={`project-case ${featured ? "project-featured" : ""}`}>
+      <div className="project-case-header">
+        <div>
+          <p className="eyebrow">{project.period}</p>
+          <h3>{project.title}</h3>
+        </div>
+        <div className="project-actions">
+          <ContactButton href={project.links?.github} variant="ghost" disabled={!project.links?.github}>
+            GitHub
+          </ContactButton>
+          <ContactButton href={project.links?.live} variant="ghost" disabled={!project.links?.live}>
+            Live
+          </ContactButton>
+        </div>
+      </div>
+      <div className="case-grid">
+        <div>
+          <h4>Problem</h4>
+          <p>{project.problem}</p>
+        </div>
+        <div>
+          <h4>What I built</h4>
+          <p>{project.built}</p>
+        </div>
+        <div>
+          <h4>Technical highlights</h4>
+          <ul>
+            {project.highlights.map((highlight) => (
+              <li key={highlight}>{highlight}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h4>Impact</h4>
+          <p>{project.impact}</p>
+        </div>
+      </div>
+      <div className="badge-row">
+        {project.stack.map((tech) => (
+          <Badge key={tech} tone="accent">
+            {tech}
+          </Badge>
+        ))}
+      </div>
+    </article>
+  );
+}
+
+function SkillsGrid() {
+  return (
+    <div className="skills-grid">
+      {Object.entries(skills).map(([group, values]) => (
+        <Card key={group} className="skill-card">
+          <h3>{group}</h3>
+          <div className="badge-row">
+            {values.map((value) => (
+              <Badge key={value}>{value}</Badge>
+            ))}
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+function EducationPanel() {
+  return (
+    <div className="education-grid">
+      <Card className="education-card">
+        <p className="eyebrow">{education.period}</p>
+        <h3>{education.school}</h3>
+        <p className="card-lead">
+          {education.degree} / GPA {education.gpa}
+        </p>
+        <p>{education.location}</p>
+      </Card>
+      <Card>
+        <h3>Coursework</h3>
+        <div className="badge-row">
+          {education.coursework.map((course) => (
+            <Badge key={course}>{course}</Badge>
+          ))}
+        </div>
+      </Card>
+      <Card>
+        <h3>Honors</h3>
+        <ul className="clean-list">
+          {education.honors.map((honor) => (
+            <li key={honor}>{honor}</li>
+          ))}
+        </ul>
+      </Card>
+      <Card>
+        <h3>Certifications</h3>
+        <div className="cert-list">
+          {certifications.map((cert) => (
+            <div key={cert.name}>
+              <strong>{cert.name}</strong>
+              <span>{cert.date}</span>
+            </div>
+          ))}
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+function ContactPanel() {
+  return (
+    <div className="contact-panel">
+      <div>
+        <p className="eyebrow">Contact</p>
+        <h2>Recruiters, hiring managers, and engineering teams can reach me directly.</h2>
+        <p>
+          I am interested in software engineering internships across backend systems, AI/NLP tools,
+          infrastructure, and full-stack product engineering.
+        </p>
+      </div>
+      <div className="contact-card">
+        <ContactButton href={`mailto:${profile.email}`}>Email</ContactButton>
+        <ContactButton href={profile.linkedin} variant="secondary">
+          LinkedIn
+        </ContactButton>
+        <ContactButton href={profile.github} variant="secondary">
+          GitHub
+        </ContactButton>
+        <ContactButton href={profile.resumeUrl} variant="ghost">
+          Resume
+        </ContactButton>
+        <p>
+          {profile.email}
+          <br />
+          {profile.phone}
+          <br />
+          {profile.location}
+        </p>
       </div>
     </div>
   );
 }
 
-/* App */
 export default function App() {
-  const [theme, setTheme] = useState(getInitialTheme());
-  const [showResume, setShowResume] = useState(false);
-  const [showContact, setShowContact] = useState(false);
+  const [theme, setTheme] = useState(getInitialTheme);
 
-  useEffect(() => applyTheme(theme), [theme]);
-
-  const projects = useMemo(() => PROJECTS, []);
-  const experience = useMemo(() => EXPERIENCE, []);
+  useEffect(() => {
+    setDocumentTheme(theme);
+  }, [theme]);
 
   return (
     <>
-      <a href="#main" className="skip">Skip to content</a>
-      <Navbar theme={theme} onToggleTheme={() => setTheme(t => (t === "dark" ? "light" : "dark"))} />
-
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
+      <Navbar
+        theme={theme}
+        onToggleTheme={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
+      />
       <main id="main">
-        <section id="home" className="section">
-          <div className="container">
-            <div className="profile-hero">
-              <img src={PROFILE.photoUrl} alt="Aryan Rawat headshot" className="avatar" loading="lazy" />
-              <div className="hero-text">
-                <h1 className="section-title">{PROFILE.name}</h1>
-                <p className="lead">{PROFILE.title} · {PROFILE.location}</p>
-                <p className="section-subtitle">{PROFILE.blurb}</p>
-                <div className="actions">
-                  <a className="btn" href="#contact">Contact Me</a>
-                  <button type="button" className="btn secondary" onClick={() => setShowResume(true)}>
-                    View Résumé
-                  </button>
-                </div>
-              </div>
-            </div>
+        <Hero />
+        <Section
+          id="work"
+          eyebrow="Experience"
+          title="A production-minded path through backend systems, AI research, and automation."
+          subtitle="Expandable timeline entries keep the surface scannable while giving engineering managers enough detail to evaluate scope, ownership, and impact."
+        >
+          <ExperienceTimeline />
+        </Section>
+        <Section
+          id="projects"
+          eyebrow="Selected projects"
+          title="Case studies with technical depth."
+          subtitle="Each project is framed around the problem, architecture, implementation details, and measurable outcome."
+        >
+          <div className="project-stack">
+            {projects.map((project, index) => (
+              <ProjectCaseStudy key={project.title} project={project} featured={index === 0} />
+            ))}
           </div>
-        </section>
-
-        <Section id="projects" title="Featured Projects">
-          <Projects items={projects} />
         </Section>
-
-        <Section id="experience" title="Experience">
-          <Experience items={experience} />
+        <Section
+          id="skills"
+          eyebrow="Technical toolkit"
+          title="Grouped for the way engineering teams evaluate fit."
+          subtitle="Backend, frontend, data, database, DevOps, and language skills are separated so the signal is easy to scan."
+        >
+          <SkillsGrid />
         </Section>
-
-        <Section id="education" title="Education">
-          <Education data={EDUCATION} />
+        <Section id="education" eyebrow="Education" title="Computer science foundation with applied math depth.">
+          <EducationPanel />
         </Section>
-
-        <Section id="skills" title="Skills">
-          <Skills data={SKILLS} />
-        </Section>
-
-        <Section id="certs" title="Certifications">
-          <Certifications items={CERTS} />
-        </Section>
-
-        <Section id="contact" title="Get in touch">
-          <Contact onOpenForm={() => setShowContact(true)} />
+        <Section id="contact" eyebrow="Next step" title="Let's connect.">
+          <ContactPanel />
         </Section>
       </main>
-
-      <footer className="footer">
-        <div className="container">
-          <span className="muted">© {new Date().getFullYear()} {PROFILE.name} — Built with React.</span>
-        </div>
+      <footer className="site-footer">
+        <span>© {new Date().getFullYear()} {profile.name}. Built with React.</span>
       </footer>
-
-      <ResumeModal open={showResume} src={PROFILE.resumeUrl} onClose={() => setShowResume(false)} />
-      <ContactModal open={showContact} to={PROFILE.email} onClose={() => setShowContact(false)} />
     </>
   );
 }
