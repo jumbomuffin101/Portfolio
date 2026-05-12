@@ -11,7 +11,7 @@ import {
 } from "./data/portfolio";
 
 const navItems = [
-  { href: "#work", label: "Work" },
+  { href: "#experience", label: "Experience" },
   { href: "#projects", label: "Projects" },
   { href: "#skills", label: "Skills" },
   { href: "#education", label: "Education" },
@@ -113,15 +113,14 @@ function ContactButton({ href, children, variant = "primary", disabled = false }
 function Hero() {
   return (
     <section className="hero section" id="home" aria-labelledby="hero-title">
-      <div className="hero-orb hero-orb-one" aria-hidden="true" />
-      <div className="hero-orb hero-orb-two" aria-hidden="true" />
       <div className="section-shell hero-grid">
         <div className="hero-copy">
           <div className="hero-badges">
             <Badge tone="accent">Software Engineering Intern</Badge>
             <Badge>CS + Applied Math</Badge>
           </div>
-          <h1 id="hero-title">{profile.headline}</h1>
+          <h1 id="hero-title">{profile.name}</h1>
+          <p className="hero-role">{profile.headline}</p>
           <p className="hero-subtitle">{profile.positioning}</p>
           <div className="hero-actions">
             <ContactButton href={`mailto:${profile.email}`}>Email Aryan</ContactButton>
@@ -138,8 +137,8 @@ function Hero() {
           <div className="profile-card-top">
             <img src={profile.photoUrl} alt="Aryan Rawat" className="profile-photo" />
             <div>
-              <p className="eyebrow">Available for internship roles</p>
-              <h2>{profile.name}</h2>
+              <p className="eyebrow">Internship Search</p>
+              <h2>Software Engineering</h2>
               <p>{profile.location}</p>
             </div>
           </div>
@@ -315,8 +314,7 @@ function ContactPanel() {
   return (
     <div className="contact-panel">
       <div>
-        <p className="eyebrow">Contact</p>
-        <h2>Recruiters, hiring managers, and engineering teams can reach me directly.</h2>
+        <h2>Get in touch</h2>
         <p>
           I am interested in software engineering internships across backend systems, AI/NLP tools,
           infrastructure, and full-stack product engineering.
@@ -364,18 +362,16 @@ export default function App() {
       <main id="main">
         <Hero />
         <Section
-          id="work"
-          eyebrow="Experience"
-          title="A production-minded path through backend systems, AI research, and automation."
-          subtitle="Expandable timeline entries keep the surface scannable while giving engineering managers enough detail to evaluate scope, ownership, and impact."
+          id="experience"
+          title="Experience"
+          subtitle="Production backend work, AI/NLP research, full-stack development, and automation."
         >
           <ExperienceTimeline />
         </Section>
         <Section
           id="projects"
-          eyebrow="Selected projects"
-          title="Case studies with technical depth."
-          subtitle="Each project is framed around the problem, architecture, implementation details, and measurable outcome."
+          title="Projects"
+          subtitle="Selected full-stack, data, and security projects with implementation details and impact."
         >
           <div className="project-stack">
             {projects.map((project, index) => (
@@ -385,16 +381,15 @@ export default function App() {
         </Section>
         <Section
           id="skills"
-          eyebrow="Technical toolkit"
-          title="Grouped for the way engineering teams evaluate fit."
-          subtitle="Backend, frontend, data, database, DevOps, and language skills are separated so the signal is easy to scan."
+          title="Skills"
+          subtitle="Core tools grouped by engineering area."
         >
           <SkillsGrid />
         </Section>
-        <Section id="education" eyebrow="Education" title="Computer science foundation with applied math depth.">
+        <Section id="education" title="Education">
           <EducationPanel />
         </Section>
-        <Section id="contact" eyebrow="Next step" title="Let's connect.">
+        <Section id="contact" title="Contact">
           <ContactPanel />
         </Section>
       </main>
