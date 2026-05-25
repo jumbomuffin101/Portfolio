@@ -1,39 +1,43 @@
 :root {
-  color-scheme: dark;
-  --bg: #05080f;
-  --text: #f4f8fb;
-  --muted: #a7b4c2;
-  --border: rgba(172, 203, 230, 0.16);
-  --border-strong: rgba(103, 232, 249, 0.34);
-  --surface: rgba(255, 255, 255, 0.055);
-  --surface-strong: rgba(255, 255, 255, 0.1);
-  --card-bg: rgba(13, 20, 35, 0.78);
-  --header-bg: rgba(5, 8, 15, 0.86);
-  --accent: #67e8f9;
-  --accent-muted: rgba(103, 232, 249, 0.13);
-  --accent-faint: rgba(103, 232, 249, 0.08);
-  --accent-soft: rgba(103, 232, 249, 0.34);
-  --radius: 16px;
-  --shadow: 0 18px 48px rgba(0, 0, 0, 0.2);
+  color-scheme: light;
+  --bg: #f7f8fc;
+  --text: #101828;
+  --muted: #59677b;
+  --muted-strong: #445268;
+  --border: #e2e7f0;
+  --border-strong: #d5ddeb;
+  --surface: #f2f5fa;
+  --card-bg: #ffffff;
+  --header-bg: rgba(247, 248, 252, 0.88);
+  --accent: #2463eb;
+  --accent-strong: #1d4ed8;
+  --accent-faint: rgba(36, 99, 235, 0.075);
+  --accent-glow: rgba(36, 99, 235, 0.14);
+  --accent-border: rgba(36, 99, 235, 0.2);
+  --radius-large: 22px;
+  --shadow: 0 24px 60px rgba(21, 38, 70, 0.08);
+  --shadow-soft: 0 14px 32px rgba(36, 99, 235, 0.07);
   --transition: 180ms ease;
 }
 
-:root[data-theme="light"] {
-  color-scheme: light;
-  --bg: #f7fbff;
-  --text: #08111f;
-  --muted: #4f6074;
-  --border: rgba(15, 23, 42, 0.13);
-  --border-strong: rgba(14, 116, 144, 0.45);
-  --surface: rgba(255, 255, 255, 0.72);
-  --surface-strong: rgba(255, 255, 255, 0.95);
-  --card-bg: rgba(255, 255, 255, 0.86);
-  --header-bg: rgba(247, 251, 255, 0.82);
-  --accent: #0891b2;
-  --accent-muted: rgba(8, 145, 178, 0.1);
-  --accent-faint: rgba(8, 145, 178, 0.08);
-  --accent-soft: rgba(8, 145, 178, 0.28);
-  --shadow: 0 18px 48px rgba(44, 73, 112, 0.12);
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b111c;
+  --text: #f1f5fb;
+  --muted: #a2afc2;
+  --muted-strong: #b8c4d4;
+  --border: #202d41;
+  --border-strong: #33445d;
+  --surface: #111b2a;
+  --card-bg: #0f1826;
+  --header-bg: rgba(11, 17, 28, 0.9);
+  --accent: #70a2ff;
+  --accent-strong: #8eb4ff;
+  --accent-faint: rgba(112, 162, 255, 0.11);
+  --accent-glow: rgba(112, 162, 255, 0.14);
+  --accent-border: rgba(112, 162, 255, 0.26);
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+  --shadow-soft: 0 14px 32px rgba(0, 0, 0, 0.16);
 }
 
 * {
@@ -63,7 +67,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-body,
 button,
 input,
 textarea {
@@ -89,8 +92,7 @@ h2,
 h3,
 h4 {
   color: var(--text);
-  font-weight: 800;
-  letter-spacing: 0;
+  font-weight: 700;
 }
 
 p,

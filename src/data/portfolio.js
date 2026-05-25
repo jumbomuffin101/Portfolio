@@ -1,65 +1,58 @@
-import resumePdf from "../assets/Aryan_Rawat_Resume.pdf";
-
 export const profile = {
   name: "Aryan Rawat",
   location: "Hoboken, New Jersey",
   email: "arawat3@stevens.edu",
-  phone: "+1 (917) 306-4440",
   github: "https://github.com/jumbomuffin101",
   linkedin: "https://www.linkedin.com/in/aryan-rawat-bbb0a6276/",
-  resumeUrl: resumePdf,
   photoUrl: `${process.env.PUBLIC_URL}/headshot.jpg`,
   headline:
-    "Software engineer building reliable backend systems, AI/NLP tools, and full-stack data products.",
+    "Software Engineer building backend systems, AI tools, and full-stack products.",
   positioning:
-    "Software Engineering Intern and CS student focused on production APIs, data pipelines, research tooling, and responsive product experiences.",
+    "Computer Science student at Stevens focused on dependable APIs, practical AI workflows, and data-driven product experiences.",
 };
 
 export const metrics = [
-  { value: "10+", label: "microservices supported" },
-  { value: "3,000+", label: "medical education maps evaluated" },
+  { value: "10+", label: "microservices served by platform APIs" },
   { value: "200+", label: "claims processed weekly" },
-  { value: "85%", label: "test coverage across validation workflows" },
-  { value: "15 -> 2 min", label: "CI/CD deployment improvement" },
+  { value: "85%", label: "test coverage across core validations" },
+  { value: "15 to 2 min", label: "deployment time after CI/CD improvements" },
 ];
 
 export const experience = [
   {
-    company: "GENIE AI",
-    role: "Software Engineering Intern",
-    location: "New York, NY",
-    period: "Oct 2025 - Present",
-    tech: ["NestJS", "Node.js", "PostgreSQL", "Next.js", "AWS", "Jenkins", "CI/CD"],
-    summary: "Shipping APIs and deployment infrastructure for a property analytics platform.",
+    company: "Stevens Institute of Technology",
+    role: "Incoming Course Assistant",
+    scope: "Introduction to Computer Science & Discrete Structures",
+    location: "Hoboken, NJ",
+    period: "Aug 2026 - Dec 2026",
+    tech: ["Python"],
     bullets: [
-      "Architected and shipped RESTful APIs for a property analytics platform, designing normalized PostgreSQL schemas for tenant workflows and usage metrics consumed across 10+ microservices by 3 cross-functional operations teams.",
-      "Diagnosed and resolved production data inconsistencies by tracing request flows across distributed systems, identifying schema mismatches responsible for 15% of nightly batch job failures and preventing recurring data loss.",
-      "Overhauled Jenkins CI/CD pipelines by parallelizing test execution and introducing Docker layer caching, cutting deployment time from 15 to 2 minutes and scaling release cadence from daily to 4x per day.",
+      "Selected to serve as Course Assistant for two undergraduate computer science courses beginning in August 2026.",
     ],
   },
   {
     company: "Stevens Institute of Technology",
     role: "Research Assistant",
+    scope: "Human-Centered AI / Multimodal AI / LLMs",
     location: "Hoboken, NJ",
     period: "Jan 2026 - Present",
-    tech: ["Python", "Human-Centered AI", "NLP"],
-    summary: "Building clinical NLP preprocessing and evaluation systems for medical education research.",
+    tech: ["Python", "NLP", "API Integration", "Multimodal AI"],
     bullets: [
-      "Built Python-based preprocessing pipelines for unstructured clinical text datasets, applying tokenization, normalization, and noise filtering to prepare data for downstream NLP model evaluation and concept map analysis.",
-      "Developed and applied a custom grading scale aligned with complex learning theory to evaluate student-generated concept maps with Hackensack Meridian School of Medicine, supporting a multi-agent AI framework across 3,000+ maps in medical education.",
-      "Evaluated and benchmarked model outputs across clinical NLP tasks, synthesizing experimental findings to drive iterative research decisions in support of a knowledge-graph-driven multi-agent system for diagnosing medical student learning gaps.",
+      "Built a Python pipeline integrating multimodal LLM APIs and PDF preprocessing workflows for automated analysis of medical concept maps.",
+      "Developed a structured methodology for AI-assisted concept map assessment, enabling comparison between AI-generated and human-generated evaluations.",
+      "Benchmarked models across concept extraction and hierarchy detection tasks, identifying hallucination patterns and output consistency differences.",
     ],
   },
   {
-    company: "Stevens Institute of Technology",
-    role: "Blueprint Engineering Program",
-    location: "Hoboken, NJ",
-    period: "Oct 2025 - Present",
-    tech: ["Node.js", "REST APIs", "PostgreSQL", "Git"],
-    summary: "Structured full-stack engineering program focused on backend systems and team workflows.",
+    company: "GENIE AI",
+    role: "Software Engineering Intern",
+    location: "New York, NY",
+    period: "Oct 2025 - May 2026",
+    tech: ["NestJS", "Node.js", "PostgreSQL", "Next.js", "AWS", "Jenkins", "CI/CD"],
     bullets: [
-      "Built and iterated backend projects using Node.js and PostgreSQL, implementing REST API endpoints and relational schemas as part of a structured full-stack development program.",
-      "Reinforced Git-based collaboration workflows including branching and code review across team projects.",
+      "Architected RESTful APIs and normalized PostgreSQL schemas for tenant workflows and usage metrics consumed across 10+ microservices.",
+      "Resolved production data inconsistencies by tracing distributed request flows and identifying schema mismatches responsible for 15% of nightly batch job failures.",
+      "Parallelized test execution and introduced Docker layer caching in Jenkins pipelines, reducing deployment time from 15 minutes to 2 minutes.",
     ],
   },
   {
@@ -68,66 +61,86 @@ export const experience = [
     location: "Remote",
     period: "Jan 2025 - Aug 2025",
     tech: ["Flask", "Python", "PostgreSQL", "REST APIs", "CI/CD"],
-    summary: "Automated production claims screening workflows and hardened validation systems.",
     bullets: [
-      "Built and deployed backend services for a production claims screening platform using Flask and PostgreSQL, implementing rule-based validation workflows that reliably processed 200+ claims weekly.",
-      "Replaced manual review processes with automated Python logic and SQL triggers, eliminating 15 hours/week of ops overhead and reducing validation error rates by 22%.",
-      "Drove test coverage from baseline to 85% across core validation workflows through unit and integration testing, measurably reducing regression defects surfaced in CI/CD pipelines.",
+      "Built Flask and PostgreSQL backend services for a production claims screening platform, delivering rule-based validation workflows that processed 200+ claims weekly.",
+      "Replaced manual review steps with Python logic and SQL triggers, eliminating 15 hours per week of operations overhead and reducing validation error rates by 22%.",
+      "Raised test coverage to 85% across core validation workflows through unit and integration testing.",
     ],
   },
 ];
 
 export const projects = [
   {
-    title: "gym-risk",
-    period: "Oct 2025 - Present",
-    stack: ["Next.js", "React", "Prisma", "PostgreSQL", "NextAuth"],
+    title: "AI Clinical Ops Agent",
+    period: "Feb 2026 - May 2026",
+    category: "Clinical billing review platform",
+    stack: [
+      "FastAPI",
+      "Next.js",
+      "PostgreSQL",
+      "SQLAlchemy",
+      "Alembic",
+      "Docker",
+      "Pytest",
+      "Render",
+      "Vercel",
+      "Groq LLM",
+    ],
     problem:
-      "Athletes and coaches need a reliable way to track training load signals before workload spikes become injury risk.",
+      "Clinical billing review must identify documentation gaps and billing risk without treating inconsistent model output as reliable evidence.",
     built:
-      "A full-stack athlete training load platform with JWT-based authentication, real-time session tracking, and data models for users, workouts, exercises, sets, RPE, and pain metrics.",
+      "A platform that processes synthetic operative notes through deterministic and LLM-assisted workflows for procedure extraction, CPT candidate mapping, documentation gap detection, and billing risk analysis.",
     highlights: [
-      "Normalized Prisma schemas for training history, session telemetry, RPE, and pain inputs.",
-      "7-day and 28-day rolling average queries to compute acute-to-chronic workload ratios.",
-      "Risk classification logic designed around training load trends rather than isolated workout entries.",
+      "Normalized malformed LLM responses with Pydantic validation, provider-response transformation, and deterministic fallbacks.",
+      "Built FastAPI services with PostgreSQL, SQLAlchemy, Alembic migrations, and Pytest integration coverage.",
+      "Applied PHI detection and blocking on both frontend and backend, with a Render API deployment and Vercel dashboard.",
     ],
     impact:
-      "Turns raw workout logs into a structured risk signal that can support safer programming decisions.",
-    links: {},
+      "Creates a more reliable review workflow for synthetic clinical notes by combining bounded AI assistance with validation and privacy controls.",
+    links: {
+      github: "https://github.com/jumbomuffin101/AI-Clinical-Ops-Agent",
+    },
+  },
+  {
+    title: "Gym-Risk",
+    period: "Oct 2025 - Mar 2026",
+    category: "Training load analytics platform",
+    stack: ["Next.js", "React", "TypeScript", "PostgreSQL", "Prisma", "NextAuth", "Tailwind"],
+    problem:
+      "Workout history alone does not clearly show workload spikes, sustained high effort, or the areas absorbing repeated training stress.",
+    built:
+      "A full-stack application with normalized workout data, persistent sessions, reusable templates, dynamic exercise search, and JWT-based authentication.",
+    highlights: [
+      "Computed session load, 7-day and 28-day workload baselines, acute-to-chronic workload ratio, week-over-week deltas, and high-RPE exposure trends.",
+      "Built custom SVG visualizations and front/back muscle heatmaps tied to logged regional workload exposure.",
+      "Modeled users, workouts, exercises, and set-level records in PostgreSQL and Prisma for durable analytics.",
+    ],
+    impact:
+      "Surfaces explainable workload risk signals from training history without relying on black-box scoring.",
+    links: {
+      github: "https://github.com/jumbomuffin101/gym-risk-app",
+    },
   },
   {
     title: "Trading Analytics Dashboard",
-    period: "Oct 2025 - Nov 2025",
-    stack: ["React", "Serverless Functions", "Netlify", "REST APIs", "Client-Side Caching"],
+    period: "Featured project",
+    category: "Serverless equity backtesting dashboard",
+    stack: ["React", "TypeScript", "Vite", "Netlify Functions", "Recharts", "Market Data"],
     problem:
-      "Strategy testing becomes slow and repetitive when historical market requests are duplicated across views.",
+      "Exploring strategy outcomes becomes difficult when historical market requests are repeated across disconnected workflows and dense outputs.",
     built:
-      "A serverless equity backtesting platform that processes 10,000+ historical data points through a React frontend backed by Netlify functions.",
+      "A serverless equity backtesting and analytics dashboard that processes historical market datasets through a React frontend and Netlify serverless functions.",
     highlights: [
-      "Serverless function layer for strategy evaluation and upstream API coordination.",
-      "Client-side caching that eliminated redundant calls across dashboard interactions.",
-      "Performance-oriented UI for scanning strategy outcomes and historical behavior.",
+      "Consolidated duplicated request workflows behind reusable data-access paths.",
+      "Structured serverless functions around market-data processing and backtesting interactions.",
+      "Presented trading data in a cleaner dashboard designed for quicker strategy comparison.",
     ],
     impact:
-      "Improved client-side performance by 35% while enabling faster strategy performance evaluation.",
-    links: {},
-  },
-  {
-    title: "Secure-Message-Exchange",
-    period: "Sep 2025 - Oct 2025",
-    stack: ["React", "Node.js", "PostgreSQL", "Docker", "Netlify"],
-    problem:
-      "Secure message workflows need clear key handling, auditable operations, and a deployable full-stack architecture.",
-    built:
-      "A full-stack RSA encryption service with public/private key pair workflows for secure message exchange.",
-    highlights: [
-      "Dockerized multi-container architecture for frontend, backend, and database concerns.",
-      "Serverless backend functions for encryption operations and message workflows.",
-      "Documented REST endpoints for encryption operations and audit log management.",
-    ],
-    impact:
-      "Demonstrates production-oriented thinking around encryption workflows, API design, and operational traceability.",
-    links: {},
+      "Reduces repeated client workflows and makes historical equity analysis easier to review in one focused interface.",
+    links: {
+      github: "https://github.com/jumbomuffin101/Trading-Analytics-Dashboard",
+      live: "https://jumbomuffin101.github.io/Trading-Analytics-Dashboard/",
+    },
   },
 ];
 
@@ -136,28 +149,30 @@ export const education = {
   location: "Hoboken, NJ",
   degree: "B.S. Computer Science, Minor in Applied Mathematics",
   period: "Aug 2024 - Dec 2027",
-  gpa: "3.8/4.0",
+  gpa: "3.7/4.0",
   coursework: [
-    "Data Structures",
     "Algorithms",
+    "Data Structures",
+    "Computer Architecture & Organization",
     "Principles of Programming Languages",
     "Mathematical Foundations of Machine Learning",
+    "Discrete Structures",
+    "Linear Algebra",
+    "Intermediate Statistics",
   ],
   honors: [
     "Upsilon Pi Epsilon (UPE), International Computer Science Honor Society",
-    "Dean's List, all semesters",
+    "Dean's List (All Semesters)",
     "Presidential Scholarship",
     "Edwin A. Stevens Scholarship",
   ],
 };
 
 export const skills = {
-  Backend: ["Flask", "NestJS", "Node.js", "REST APIs", "Prisma"],
-  Frontend: ["React", "Next.js", "JavaScript", "TypeScript", "HTML/CSS"],
-  "Data/AI": ["Python", "NLP", "Clinical text preprocessing", "Model evaluation"],
-  Databases: ["PostgreSQL", "SQL", "Relational schema design"],
-  DevOps: ["Docker", "AWS", "CI/CD", "GitHub Actions", "Jenkins", "Git"],
-  Languages: ["Python", "Java", "C++", "SQL", "JavaScript", "TypeScript", "HTML/CSS"],
+  Languages: ["Python", "Java", "SQL", "TypeScript", "JavaScript", "HTML/CSS"],
+  "Frameworks & APIs": ["FastAPI", "NestJS", "Node.js", "React", "Next.js", "REST APIs"],
+  "Data & Persistence": ["PostgreSQL", "SQLAlchemy", "Prisma"],
+  "Cloud & Delivery": ["Docker", "AWS", "CI/CD", "GitHub Actions", "Jenkins", "Git"],
 };
 
 export const certifications = [
