@@ -14,3 +14,15 @@ test("presents the selected projects without a resume download", () => {
   expect(screen.getByRole("heading", { name: "Trading Analytics Dashboard" })).toBeInTheDocument();
   expect(screen.queryByRole("link", { name: /resume/i })).not.toBeInTheDocument();
 });
+
+test("uses the updated contact email and omits impact statistics", () => {
+  render(<App />);
+
+  const emailLinks = screen.getAllByRole("link", { name: "Email" });
+  expect(emailLinks).toHaveLength(2);
+  emailLinks.forEach((link) => {
+    expect(link).toHaveAttribute("href", "mailto:ryanrawat@gmail.com");
+  });
+  expect(screen.queryByText("10+")).not.toBeInTheDocument();
+  expect(screen.getByText("Created by Aryan Rawat")).toBeInTheDocument();
+});

@@ -274,39 +274,6 @@ p {
   font-size: 0.9rem;
 }
 
-.metrics-strip {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin: clamp(3.5rem, 7vw, 5rem) auto 0;
-  padding: 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  list-style: none;
-}
-
-.metrics-strip li {
-  min-height: 128px;
-  padding: 1.5rem clamp(1rem, 2.5vw, 1.6rem);
-}
-
-.metrics-strip li + li {
-  border-left: 1px solid var(--border);
-}
-
-.metrics-strip strong {
-  display: block;
-  margin-bottom: 0.45rem;
-  color: var(--text);
-  font-size: clamp(1.6rem, 2.5vw, 2.1rem);
-  font-weight: 680;
-  letter-spacing: -0.05em;
-}
-
-.metrics-strip span {
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
 .experience-list {
   border-top: 1px solid var(--border);
 }
@@ -595,6 +562,7 @@ p {
   color: var(--muted);
   font-size: 0.88rem;
   padding: 1.6rem 0 2.25rem;
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -627,19 +595,6 @@ p {
 
   .portrait-panel {
     max-width: 380px;
-  }
-
-  .metrics-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .metrics-strip li:nth-child(3) {
-    border-left: 0;
-    border-top: 1px solid var(--border);
-  }
-
-  .metrics-strip li:nth-child(4) {
-    border-top: 1px solid var(--border);
   }
 
   .coursework {
@@ -694,21 +649,6 @@ p {
 
   .hero-role {
     font-size: 1.36rem;
-  }
-
-  .metrics-strip {
-    grid-template-columns: 1fr;
-  }
-
-  .metrics-strip li + li,
-  .metrics-strip li:nth-child(3) {
-    border-top: 1px solid var(--border);
-    border-left: 0;
-  }
-
-  .metrics-strip li {
-    min-height: 0;
-    padding: 1.2rem 0.15rem;
   }
 
   .experience-item,

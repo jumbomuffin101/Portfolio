@@ -4,7 +4,6 @@ import {
   certifications,
   education,
   experience,
-  metrics,
   profile,
   projects,
   skills,
@@ -129,15 +128,6 @@ function Hero() {
           </div>
         </aside>
       </div>
-
-      <ul className="section-shell metrics-strip" aria-label="Selected professional outcomes">
-        {metrics.map((metric) => (
-          <li key={metric.label}>
-            <strong>{metric.value}</strong>
-            <span>{metric.label}</span>
-          </li>
-        ))}
-      </ul>
     </section>
   );
 }
@@ -370,7 +360,7 @@ export default function App() {
         </Section>
       </main>
       <footer className="site-footer">
-        <span>Copyright {new Date().getFullYear()} {profile.name}. Built with React.</span>
+        <span>Created by {profile.name}</span>
       </footer>
     </>
   );

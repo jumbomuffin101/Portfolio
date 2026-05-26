@@ -1,7 +1,7 @@
 export const profile = {
   name: "Aryan Rawat",
   location: "Hoboken, New Jersey",
-  email: "arawat3@stevens.edu",
+  email: "ryanrawat@gmail.com",
   github: "https://github.com/jumbomuffin101",
   linkedin: "https://www.linkedin.com/in/aryan-rawat-bbb0a6276/",
   photoUrl: `${process.env.PUBLIC_URL}/headshot.jpg`,
@@ -10,13 +10,6 @@ export const profile = {
   positioning:
     "Computer Science student at Stevens focused on dependable APIs, practical AI workflows, and data-driven product experiences.",
 };
-
-export const metrics = [
-  { value: "10+", label: "microservices served by platform APIs" },
-  { value: "200+", label: "claims processed weekly" },
-  { value: "85%", label: "test coverage across core validations" },
-  { value: "15 to 2 min", label: "deployment time after CI/CD improvements" },
-];
 
 export const experience = [
   {
