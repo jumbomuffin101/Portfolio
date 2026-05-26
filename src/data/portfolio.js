@@ -1,7 +1,6 @@
 export const profile = {
   name: "Aryan Rawat",
   location: "Hoboken, New Jersey",
-  email: "ryanrawat@gmail.com",
   github: "https://github.com/jumbomuffin101",
   linkedin: "https://www.linkedin.com/in/aryan-rawat-bbb0a6276/",
   photoUrl: `${process.env.PUBLIC_URL}/headshot.jpg`,

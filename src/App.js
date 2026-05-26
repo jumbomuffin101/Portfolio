@@ -109,7 +109,9 @@ function Hero() {
           <p className="hero-role">{profile.headline}</p>
           <p className="hero-subtitle">{profile.positioning}</p>
           <div className="hero-actions" aria-label="Contact links">
-            <LinkButton href={`mailto:${profile.email}`}>Email</LinkButton>
+            <a className="button button-primary" href="mailto:ryanrawat@gmail.com">
+              Email
+            </a>
             <LinkButton href={profile.github} variant="secondary">
               GitHub
             </LinkButton>
@@ -239,41 +241,47 @@ function SkillsPanel() {
 
 function EducationPanel() {
   return (
-    <div className="education-layout">
-      <article className="degree-panel">
-        <p className="eyebrow">{education.period}</p>
+    <div className="education-grid">
+      <article className="credential-card education-card">
+        <p className="eyebrow">Education</p>
         <h3>{education.school}</h3>
         <p className="degree">{education.degree}</p>
         <p className="gpa">GPA {education.gpa}</p>
-        <p>{education.location}</p>
+        <p className="credential-meta">
+          {education.location} | {education.period}
+        </p>
       </article>
-      <div className="credential-column">
-        <div className="credential-group">
-          <h3>Certifications</h3>
-          {certifications.map((cert) => (
-            <p key={cert.name} className="credential-item">
-              <strong>{cert.name}</strong>
-              <span>{cert.date}</span>
-            </p>
+
+      <article className="credential-card">
+        <p className="eyebrow">Credentials</p>
+        <h3>Certifications</h3>
+        {certifications.map((cert) => (
+          <p key={cert.name} className="credential-item">
+            <strong>{cert.name}</strong>
+            <span>{cert.date}</span>
+          </p>
+        ))}
+      </article>
+
+      <article className="credential-card">
+        <p className="eyebrow">Recognition</p>
+        <h3>Honors</h3>
+        <ul className="plain-list">
+          {education.honors.map((honor) => (
+            <li key={honor}>{honor}</li>
           ))}
-        </div>
-        <div className="credential-group">
-          <h3>Honors</h3>
-          <ul className="plain-list">
-            {education.honors.map((honor) => (
-              <li key={honor}>{honor}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      <div className="coursework">
+        </ul>
+      </article>
+
+      <article className="credential-card">
+        <p className="eyebrow">Foundation</p>
         <h3>Relevant Coursework</h3>
         <div className="tag-row">
           {education.coursework.map((course) => (
             <Tag key={course}>{course}</Tag>
           ))}
         </div>
-      </div>
+      </article>
     </div>
   );
 }
@@ -286,7 +294,9 @@ function ContactPanel() {
         full-stack products.
       </p>
       <div className="contact-actions" aria-label="Contact links">
-        <LinkButton href={`mailto:${profile.email}`}>Email</LinkButton>
+        <a className="button button-primary" href="mailto:ryanrawat@gmail.com">
+          Email
+        </a>
         <LinkButton href={profile.github} variant="secondary">
           GitHub
         </LinkButton>

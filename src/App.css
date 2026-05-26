@@ -122,7 +122,7 @@
 .project-category,
 .project-narrative p,
 .technical-panel li,
-.degree-panel > p:last-child,
+.credential-meta,
 .contact-panel p {
   color: var(--muted);
 }
@@ -454,21 +454,27 @@ p {
   font-weight: 650;
 }
 
-.education-layout {
+.education-grid {
   display: grid;
-  grid-template-columns: minmax(290px, 1fr) minmax(300px, 1fr);
-  gap: 1rem 3rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
 }
 
-.degree-panel {
-  grid-row: span 2;
+.credential-card {
   border: 1px solid var(--border);
   border-radius: var(--radius-large);
   background: var(--card-bg);
   padding: clamp(1.35rem, 3vw, 2rem);
 }
 
-.degree-panel h3 {
+.credential-card h3 {
+  margin: 0 0 0.9rem;
+  font-size: 1.08rem;
+  font-weight: 650;
+}
+
+.education-card h3 {
   margin: 0 0 0.9rem;
   font-size: clamp(1.35rem, 2vw, 1.62rem);
   letter-spacing: -0.04em;
@@ -490,21 +496,9 @@ p {
   padding: 0.35rem 0.7rem;
 }
 
-.credential-column {
-  display: grid;
-  gap: 1.4rem;
-}
-
-.credential-group {
-  padding-bottom: 1.3rem;
-  border-bottom: 1px solid var(--border);
-}
-
-.credential-group h3,
-.coursework h3 {
-  margin: 0 0 0.9rem;
-  font-size: 1rem;
-  font-weight: 650;
+.credential-meta {
+  margin-bottom: 0;
+  font-size: 0.94rem;
 }
 
 .credential-item {
@@ -527,11 +521,6 @@ p {
 
 .plain-list li + li {
   margin-top: 0.35rem;
-}
-
-.coursework {
-  grid-column: 2;
-  padding-top: 0.25rem;
 }
 
 .contact-panel {
@@ -589,20 +578,12 @@ p {
 
   .hero-grid,
   .project-grid,
-  .education-layout {
+  .education-grid {
     grid-template-columns: 1fr;
   }
 
   .portrait-panel {
     max-width: 380px;
-  }
-
-  .coursework {
-    grid-column: auto;
-  }
-
-  .degree-panel {
-    grid-row: auto;
   }
 
   .contact-panel {
