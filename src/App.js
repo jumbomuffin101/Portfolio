@@ -10,9 +10,9 @@ import {
 } from "./data/portfolio";
 
 const navItems = [
-  { href: "#experience", label: "Experience" },
   { href: "#projects", label: "Projects" },
-  { href: "#skills", label: "Skills" },
+  { href: "#skills", label: "Stack" },
+  { href: "#experience", label: "Experience" },
   { href: "#education", label: "Education" },
   { href: "#contact", label: "Contact" },
 ];
@@ -269,16 +269,16 @@ function ProjectCaseStudy({ project, featured }) {
 
 function SkillsPanel() {
   return (
-    <div className="skills-panel">
+    <div className="skills-grid">
       {Object.entries(skills).map(([group, values]) => (
-        <div key={group} className="skill-row">
+        <article key={group} className="skill-card">
           <h3>{group}</h3>
           <div className="tag-row">
             {values.map((value) => (
               <Tag key={value}>{value}</Tag>
             ))}
           </div>
-        </div>
+        </article>
       ))}
     </div>
   );
@@ -378,6 +378,26 @@ export default function App() {
       <main id="main">
         <Hero />
         <Section
+          id="projects"
+          eyebrow="Product showcase"
+          title="Featured Projects"
+          subtitle="End-to-end products built around reliable systems, explainable analytics, and thoughtful user workflows."
+        >
+          <div className="project-stack">
+            {projects.map((project, index) => (
+              <ProjectCaseStudy key={project.title} project={project} featured={index < 2} />
+            ))}
+          </div>
+        </Section>
+        <Section
+          id="skills"
+          eyebrow="Engineering toolkit"
+          title="Technologies & Engineering Stack"
+          subtitle="Tools, frameworks, and technologies used across production systems, AI applications, and full-stack products."
+        >
+          <SkillsPanel />
+        </Section>
+        <Section
           id="experience"
           eyebrow="Professional work"
           title="Experience"
@@ -388,26 +408,6 @@ export default function App() {
               <ExperienceItem key={`${item.company}-${item.role}`} item={item} />
             ))}
           </div>
-        </Section>
-        <Section
-          id="projects"
-          eyebrow="Selected work"
-          title="Featured Projects"
-          subtitle="Products designed around reliable workflows, explainable analytics, and clear user experiences."
-        >
-          <div className="project-stack">
-            {projects.map((project, index) => (
-              <ProjectCaseStudy key={project.title} project={project} featured={index === 0} />
-            ))}
-          </div>
-        </Section>
-        <Section
-          id="skills"
-          eyebrow="Technical toolkit"
-          title="Skills"
-          subtitle="Languages and technologies used across production engineering and applied AI work."
-        >
-          <SkillsPanel />
         </Section>
         <Section id="education" eyebrow="Background" title="Education & Credentials">
           <EducationPanel />

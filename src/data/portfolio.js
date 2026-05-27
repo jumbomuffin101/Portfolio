@@ -5,9 +5,9 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/aryan-rawat-bbb0a6276/",
   photoUrl: `${process.env.PUBLIC_URL}/headshot.jpg`,
   headline:
-    "Software Engineer building backend systems, AI tools, and full-stack products.",
+    "Software Engineer building AI systems, backend platforms, and full-stack products.",
   positioning:
-    "Computer Science student at Stevens focused on dependable APIs, practical AI workflows, and data-driven product experiences.",
+    "I design dependable software that turns complex workflows into clear, production-minded experiences across applied AI, backend engineering, and modern web products.",
 };
 
 export const experience = [
@@ -164,9 +164,24 @@ export const education = {
 
 export const skills = {
   Languages: ["Python", "Java", "SQL", "TypeScript", "JavaScript", "HTML/CSS"],
-  "Frameworks & APIs": ["FastAPI", "NestJS", "Node.js", "React", "Next.js", "REST APIs"],
-  "Data & Persistence": ["PostgreSQL", "SQLAlchemy", "Prisma"],
-  "Cloud & Delivery": ["Docker", "AWS", "CI/CD", "GitHub Actions", "Jenkins", "Git"],
+  "Frontend Engineering": ["React", "Next.js", "Tailwind", "TypeScript"],
+  "Backend Engineering": ["FastAPI", "Flask", "NestJS", "Node.js", "REST APIs"],
+  "Databases & Data": ["PostgreSQL", "SQLAlchemy", "Prisma"],
+  "AI / Machine Learning": [
+    "LLMs",
+    "NLP",
+    "Human-Centered AI",
+    "Multimodal AI",
+    "API Integration",
+  ],
+  "Cloud / DevOps / Infrastructure": [
+    "Docker",
+    "AWS",
+    "Git",
+    "GitHub Actions",
+    "Jenkins",
+    "CI/CD",
+  ],
 };
 
 export const certifications = [

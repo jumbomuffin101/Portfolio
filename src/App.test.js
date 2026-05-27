@@ -4,6 +4,9 @@ import App from "./App";
 test("renders Aryan's name", () => {
   render(<App />);
   expect(screen.getByRole("heading", { name: /aryan rawat/i })).toBeInTheDocument();
+  expect(
+    screen.getByText("Software Engineer building AI systems, backend platforms, and full-stack products.")
+  ).toBeInTheDocument();
 });
 
 test("presents the selected projects without a resume download", () => {
@@ -72,4 +75,14 @@ test("renders education and credentials as balanced content cards", () => {
   expect(screen.getByRole("heading", { name: "Certifications" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Honors" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Relevant Coursework" })).toBeInTheDocument();
+});
+
+test("presents the engineering stack as categorized technology cards", () => {
+  render(<App />);
+
+  expect(screen.getByRole("heading", { name: "Technologies & Engineering Stack" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Frontend Engineering" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Backend Engineering" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "AI / Machine Learning" })).toBeInTheDocument();
+  expect(screen.getByText("Human-Centered AI")).toBeInTheDocument();
 });
