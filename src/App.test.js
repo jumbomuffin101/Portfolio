@@ -15,35 +15,36 @@ test("presents the selected projects without a resume download", () => {
   expect(screen.queryByRole("link", { name: /resume/i })).not.toBeInTheDocument();
 });
 
-test("uses the updated hero contact actions and omits impact statistics", () => {
+test("uses copy-only email actions and omits impact statistics", () => {
   render(<App />);
 
-  const emailLink = screen.getByRole("link", { name: "Email Aryan Rawat" });
-  expect(emailLink.tagName).toBe("A");
-  expect(emailLink).toHaveAttribute(
-    "href",
-    "https://mail.google.com/mail/?view=cm&fs=1&to=ryanrawat@gmail.com"
-  );
-  expect(emailLink).toHaveAttribute("target", "_blank");
-  expect(emailLink).toHaveAttribute("rel", "noopener noreferrer");
-  expect(screen.getByRole("button", { name: "Copy email" })).toBeInTheDocument();
+  expect(screen.getAllByRole("button", { name: "Copy Email" })).toHaveLength(2);
+  expect(document.querySelector('a[href^="mailto:"]')).not.toBeInTheDocument();
+  expect(document.querySelector('a[href*="mail.google.com"]')).not.toBeInTheDocument();
   expect(screen.getByText("ryanrawat@gmail.com")).toBeInTheDocument();
   expect(screen.queryByText("10+")).not.toBeInTheDocument();
   expect(screen.getByText("Created by Aryan Rawat")).toBeInTheDocument();
 });
 
-test("confirms when the hero email address is copied", async () => {
+test("copies the email independently from both contact buttons", async () => {
   Object.defineProperty(navigator, "clipboard", {
     configurable: true,
     value: { writeText: jest.fn().mockResolvedValue(undefined) },
   });
 
   render(<App />);
-  fireEvent.click(screen.getByRole("button", { name: "Copy email" }));
+  fireEvent.click(screen.getAllByRole("button", { name: "Copy Email" })[0]);
 
   await waitFor(() => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith("ryanrawat@gmail.com");
-    expect(screen.getByRole("status")).toHaveTextContent("Copied!");
+    expect(screen.getAllByRole("button", { name: "Copied!" })).toHaveLength(1);
+  });
+
+  fireEvent.click(screen.getByRole("button", { name: "Copy Email" }));
+
+  await waitFor(() => {
+    expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(2);
+    expect(screen.getAllByRole("button", { name: "Copied!" })).toHaveLength(2);
   });
 });
 

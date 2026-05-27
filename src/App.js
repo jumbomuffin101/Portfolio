@@ -69,6 +69,46 @@ function LinkButton({ href, children, variant = "primary" }) {
   );
 }
 
+function CopyEmailButton({ variant = "primary" }) {
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!copied) return undefined;
+
+    const timeoutId = window.setTimeout(() => setCopied(false), 2000);
+    return () => window.clearTimeout(timeoutId);
+  }, [copied]);
+
+  async function copyEmail() {
+    const email = "ryanrawat@gmail.com";
+
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
+      await navigator.clipboard.writeText(email);
+      setCopied(true);
+      return;
+    } catch {
+      const textArea = document.createElement("textarea");
+      textArea.value = email;
+      textArea.setAttribute("readonly", "");
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.select();
+
+      const didCopy = document.execCommand?.("copy");
+      document.body.removeChild(textArea);
+      if (didCopy) setCopied(true);
+    }
+  }
+
+  return (
+    <button className={`button button-${variant}`} type="button" onClick={copyEmail}>
+      {copied ? "Copied!" : "Copy Email"}
+    </button>
+  );
+}
+
 function Navbar({ theme, onToggleTheme }) {
   const nextTheme = theme === "dark" ? "light" : "dark";
 
@@ -100,37 +140,6 @@ function Navbar({ theme, onToggleTheme }) {
 }
 
 function Hero() {
-  const [copyStatus, setCopyStatus] = useState("");
-
-  useEffect(() => {
-    if (!copyStatus) return undefined;
-
-    const timeoutId = window.setTimeout(() => setCopyStatus(""), 2000);
-    return () => window.clearTimeout(timeoutId);
-  }, [copyStatus]);
-
-  async function copyEmail() {
-    const email = "ryanrawat@gmail.com";
-
-    try {
-      await navigator.clipboard.writeText(email);
-      setCopyStatus("Copied!");
-      return;
-    } catch {
-      const textArea = document.createElement("textarea");
-      textArea.value = email;
-      textArea.setAttribute("readonly", "");
-      textArea.style.position = "fixed";
-      textArea.style.opacity = "0";
-      document.body.appendChild(textArea);
-      textArea.select();
-
-      const copied = document.execCommand?.("copy");
-      document.body.removeChild(textArea);
-      setCopyStatus(copied ? "Copied!" : "Copy unavailable");
-    }
-  }
-
   return (
     <section className="hero" id="home" aria-labelledby="hero-title">
       <div className="section-shell hero-grid">
@@ -140,18 +149,7 @@ function Hero() {
           <p className="hero-role">{profile.headline}</p>
           <p className="hero-subtitle">{profile.positioning}</p>
           <div className="hero-actions" aria-label="Contact links">
-            <a
-              className="button button-primary"
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=ryanrawat@gmail.com"
-              aria-label="Email Aryan Rawat"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Email Me
-            </a>
-            <button className="button button-secondary" type="button" onClick={copyEmail}>
-              Copy email
-            </button>
+            <CopyEmailButton />
             <LinkButton href={profile.github} variant="secondary">
               GitHub
             </LinkButton>
@@ -161,9 +159,6 @@ function Hero() {
           </div>
           <div className="hero-email-line">
             <span>ryanrawat@gmail.com</span>
-            <span className="copy-status" role="status" aria-live="polite">
-              {copyStatus}
-            </span>
           </div>
         </div>
 
@@ -348,15 +343,7 @@ function ContactPanel() {
         full-stack products.
       </p>
       <div className="contact-actions" aria-label="Contact links">
-        <a
-          className="button button-primary"
-          href="https://mail.google.com/mail/?view=cm&fs=1&to=ryanrawat@gmail.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Email Aryan Rawat from the contact section"
-        >
-          Email Me
-        </a>
+        <CopyEmailButton />
         <LinkButton href={profile.github} variant="secondary">
           GitHub
         </LinkButton>
