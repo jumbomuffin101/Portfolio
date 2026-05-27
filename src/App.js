@@ -62,7 +62,7 @@ function LinkButton({ href, children, variant = "primary" }) {
       className={`button button-${variant}`}
       href={href}
       target={isExternal ? "_blank" : undefined}
-      rel={isExternal ? "noreferrer" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
     >
       {children}
     </a>

@@ -15,6 +15,22 @@ test("presents the selected projects without a resume download", () => {
   expect(screen.queryByRole("link", { name: /resume/i })).not.toBeInTheDocument();
 });
 
+test("links the published project demos in new tabs", () => {
+  render(<App />);
+
+  const aiProject = screen.getByRole("heading", { name: "AI Clinical Ops Agent" }).closest("article");
+  const gymProject = screen.getByRole("heading", { name: "Gym-Risk" }).closest("article");
+  const aiLiveLink = aiProject.querySelector('a[href="https://ai-clinical-ops-agent.vercel.app/"]');
+  const gymLiveLink = gymProject.querySelector('a[href="https://gym-risk-app.vercel.app/"]');
+
+  expect(aiLiveLink).toHaveTextContent("Live");
+  expect(aiLiveLink).toHaveAttribute("target", "_blank");
+  expect(aiLiveLink).toHaveAttribute("rel", "noopener noreferrer");
+  expect(gymLiveLink).toHaveTextContent("Live");
+  expect(gymLiveLink).toHaveAttribute("target", "_blank");
+  expect(gymLiveLink).toHaveAttribute("rel", "noopener noreferrer");
+});
+
 test("uses copy-only email actions and omits impact statistics", () => {
   render(<App />);
 

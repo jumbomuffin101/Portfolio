@@ -91,6 +91,7 @@ export const projects = [
       "Creates a more reliable review workflow for synthetic clinical notes by combining bounded AI assistance with validation and privacy controls.",
     links: {
       github: "https://github.com/jumbomuffin101/AI-Clinical-Ops-Agent",
+      live: "https://ai-clinical-ops-agent.vercel.app/",
     },
   },
   {
@@ -111,6 +112,7 @@ export const projects = [
       "Surfaces explainable workload risk signals from training history without relying on black-box scoring.",
     links: {
       github: "https://github.com/jumbomuffin101/gym-risk-app",
+      live: "https://gym-risk-app.vercel.app/",
     },
   },
   {
