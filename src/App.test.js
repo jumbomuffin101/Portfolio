@@ -54,6 +54,7 @@ test("copies the email independently from both contact buttons", async () => {
   await waitFor(() => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith("ryanrawat@gmail.com");
     expect(screen.getAllByRole("button", { name: "Copied!" })).toHaveLength(1);
+    expect(screen.getByRole("button", { name: "Copied!" })).toHaveClass("button-success");
   });
 
   fireEvent.click(screen.getByRole("button", { name: "Copy Email" }));

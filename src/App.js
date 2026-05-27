@@ -103,7 +103,11 @@ function CopyEmailButton({ variant = "primary" }) {
   }
 
   return (
-    <button className={`button button-${variant}`} type="button" onClick={copyEmail}>
+    <button
+      className={`button button-${variant} ${copied ? "button-success" : ""}`}
+      type="button"
+      onClick={copyEmail}
+    >
       {copied ? "Copied!" : "Copy Email"}
     </button>
   );
