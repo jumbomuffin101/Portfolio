@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import App from "./App";
 
 test("renders Aryan's name", () => {
@@ -15,18 +15,32 @@ test("presents the selected projects without a resume download", () => {
   expect(screen.queryByRole("link", { name: /resume/i })).not.toBeInTheDocument();
 });
 
-test("uses the updated contact email and omits impact statistics", () => {
+test("uses the updated hero contact actions and omits impact statistics", () => {
   render(<App />);
 
-  const emailLinks = screen.getAllByRole("link", { name: "Email" });
-  expect(emailLinks).toHaveLength(2);
-  emailLinks.forEach((link) => {
-    expect(link.tagName).toBe("A");
-    expect(link).toHaveAttribute("href", "mailto:ryanrawat@gmail.com");
-    expect(link).not.toHaveAttribute("aria-disabled");
-  });
+  const emailLink = screen.getByRole("link", { name: "Email Aryan Rawat" });
+  expect(emailLink.tagName).toBe("A");
+  expect(emailLink).toHaveAttribute("href", "mailto:ryanrawat@gmail.com");
+  expect(emailLink).toHaveAttribute("target", "_self");
+  expect(screen.getByRole("button", { name: "Copy email" })).toBeInTheDocument();
+  expect(screen.getByText("ryanrawat@gmail.com")).toBeInTheDocument();
   expect(screen.queryByText("10+")).not.toBeInTheDocument();
   expect(screen.getByText("Created by Aryan Rawat")).toBeInTheDocument();
+});
+
+test("confirms when the hero email address is copied", async () => {
+  Object.defineProperty(navigator, "clipboard", {
+    configurable: true,
+    value: { writeText: jest.fn().mockResolvedValue(undefined) },
+  });
+
+  render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Copy email" }));
+
+  await waitFor(() => {
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith("ryanrawat@gmail.com");
+    expect(screen.getByRole("status")).toHaveTextContent("Copied");
+  });
 });
 
 test("renders education and credentials as balanced content cards", () => {

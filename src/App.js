@@ -100,6 +100,37 @@ function Navbar({ theme, onToggleTheme }) {
 }
 
 function Hero() {
+  const [copyStatus, setCopyStatus] = useState("");
+
+  useEffect(() => {
+    if (!copyStatus) return undefined;
+
+    const timeoutId = window.setTimeout(() => setCopyStatus(""), 2000);
+    return () => window.clearTimeout(timeoutId);
+  }, [copyStatus]);
+
+  async function copyEmail() {
+    const email = "ryanrawat@gmail.com";
+
+    try {
+      await navigator.clipboard.writeText(email);
+      setCopyStatus("Copied");
+      return;
+    } catch {
+      const textArea = document.createElement("textarea");
+      textArea.value = email;
+      textArea.setAttribute("readonly", "");
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.select();
+
+      const copied = document.execCommand?.("copy");
+      document.body.removeChild(textArea);
+      setCopyStatus(copied ? "Copied" : "Copy unavailable");
+    }
+  }
+
   return (
     <section className="hero" id="home" aria-labelledby="hero-title">
       <div className="section-shell hero-grid">
@@ -109,15 +140,29 @@ function Hero() {
           <p className="hero-role">{profile.headline}</p>
           <p className="hero-subtitle">{profile.positioning}</p>
           <div className="hero-actions" aria-label="Contact links">
-            <a className="button button-primary" href="mailto:ryanrawat@gmail.com">
-              Email
+            <a
+              className="button button-primary"
+              href="mailto:ryanrawat@gmail.com"
+              aria-label="Email Aryan Rawat"
+              target="_self"
+            >
+              Email me
             </a>
+            <button className="button button-secondary" type="button" onClick={copyEmail}>
+              Copy email
+            </button>
             <LinkButton href={profile.github} variant="secondary">
               GitHub
             </LinkButton>
             <LinkButton href={profile.linkedin} variant="secondary">
               LinkedIn
             </LinkButton>
+          </div>
+          <div className="hero-email-line">
+            <span>ryanrawat@gmail.com</span>
+            <span className="copy-status" role="status" aria-live="polite">
+              {copyStatus}
+            </span>
           </div>
         </div>
 
