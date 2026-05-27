@@ -20,8 +20,12 @@ test("uses the updated hero contact actions and omits impact statistics", () => 
 
   const emailLink = screen.getByRole("link", { name: "Email Aryan Rawat" });
   expect(emailLink.tagName).toBe("A");
-  expect(emailLink).toHaveAttribute("href", "mailto:ryanrawat@gmail.com");
-  expect(emailLink).toHaveAttribute("target", "_self");
+  expect(emailLink).toHaveAttribute(
+    "href",
+    "https://mail.google.com/mail/?view=cm&fs=1&to=ryanrawat@gmail.com"
+  );
+  expect(emailLink).toHaveAttribute("target", "_blank");
+  expect(emailLink).toHaveAttribute("rel", "noopener noreferrer");
   expect(screen.getByRole("button", { name: "Copy email" })).toBeInTheDocument();
   expect(screen.getByText("ryanrawat@gmail.com")).toBeInTheDocument();
   expect(screen.queryByText("10+")).not.toBeInTheDocument();
@@ -39,7 +43,7 @@ test("confirms when the hero email address is copied", async () => {
 
   await waitFor(() => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith("ryanrawat@gmail.com");
-    expect(screen.getByRole("status")).toHaveTextContent("Copied");
+    expect(screen.getByRole("status")).toHaveTextContent("Copied!");
   });
 });
 

@@ -114,7 +114,7 @@ function Hero() {
 
     try {
       await navigator.clipboard.writeText(email);
-      setCopyStatus("Copied");
+      setCopyStatus("Copied!");
       return;
     } catch {
       const textArea = document.createElement("textarea");
@@ -127,7 +127,7 @@ function Hero() {
 
       const copied = document.execCommand?.("copy");
       document.body.removeChild(textArea);
-      setCopyStatus(copied ? "Copied" : "Copy unavailable");
+      setCopyStatus(copied ? "Copied!" : "Copy unavailable");
     }
   }
 
@@ -142,11 +142,12 @@ function Hero() {
           <div className="hero-actions" aria-label="Contact links">
             <a
               className="button button-primary"
-              href="mailto:ryanrawat@gmail.com"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=ryanrawat@gmail.com"
               aria-label="Email Aryan Rawat"
-              target="_self"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Email me
+              Email Me
             </a>
             <button className="button button-secondary" type="button" onClick={copyEmail}>
               Copy email
@@ -287,44 +288,52 @@ function SkillsPanel() {
 function EducationPanel() {
   return (
     <div className="education-grid">
-      <article className="credential-card education-card">
-        <p className="eyebrow">Education</p>
-        <h3>{education.school}</h3>
-        <p className="degree">{education.degree}</p>
-        <p className="gpa">GPA {education.gpa}</p>
-        <p className="credential-meta">
-          {education.location} | {education.period}
-        </p>
-      </article>
-
-      <article className="credential-card">
-        <p className="eyebrow">Credentials</p>
-        <h3>Certifications</h3>
-        {certifications.map((cert) => (
-          <p key={cert.name} className="credential-item">
-            <strong>{cert.name}</strong>
-            <span>{cert.date}</span>
+      <article className="credential-card education-card degree-card">
+        <div className="education-card-content">
+          <p className="eyebrow">Education</p>
+          <h3>{education.school}</h3>
+          <p className="degree">{education.degree}</p>
+          <p className="gpa">GPA {education.gpa}</p>
+          <p className="credential-meta">
+            {education.location} | {education.period}
           </p>
-        ))}
+        </div>
       </article>
 
-      <article className="credential-card">
-        <p className="eyebrow">Recognition</p>
-        <h3>Honors</h3>
-        <ul className="plain-list">
-          {education.honors.map((honor) => (
-            <li key={honor}>{honor}</li>
+      <article className="credential-card education-card">
+        <div className="education-card-content">
+          <p className="eyebrow">Credentials</p>
+          <h3>Certifications</h3>
+          {certifications.map((cert) => (
+            <p key={cert.name} className="credential-item">
+              <strong>{cert.name}</strong>
+              <span>{cert.date}</span>
+            </p>
           ))}
-        </ul>
+        </div>
       </article>
 
-      <article className="credential-card">
-        <p className="eyebrow">Foundation</p>
-        <h3>Relevant Coursework</h3>
-        <div className="tag-row">
-          {education.coursework.map((course) => (
-            <Tag key={course}>{course}</Tag>
-          ))}
+      <article className="credential-card education-card">
+        <div className="education-card-content">
+          <p className="eyebrow">Recognition</p>
+          <h3>Honors</h3>
+          <ul className="plain-list">
+            {education.honors.map((honor) => (
+              <li key={honor}>{honor}</li>
+            ))}
+          </ul>
+        </div>
+      </article>
+
+      <article className="credential-card education-card">
+        <div className="education-card-content">
+          <p className="eyebrow">Foundation</p>
+          <h3>Relevant Coursework</h3>
+          <div className="tag-row">
+            {education.coursework.map((course) => (
+              <Tag key={course}>{course}</Tag>
+            ))}
+          </div>
         </div>
       </article>
     </div>
@@ -339,8 +348,14 @@ function ContactPanel() {
         full-stack products.
       </p>
       <div className="contact-actions" aria-label="Contact links">
-        <a className="button button-primary" href="mailto:ryanrawat@gmail.com">
-          Email
+        <a
+          className="button button-primary"
+          href="https://mail.google.com/mail/?view=cm&fs=1&to=ryanrawat@gmail.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Email Aryan Rawat from the contact section"
+        >
+          Email Me
         </a>
         <LinkButton href={profile.github} variant="secondary">
           GitHub
