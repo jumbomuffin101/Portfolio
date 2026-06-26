@@ -5,9 +5,9 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/aryan-rawat-bbb0a6276/",
   photoUrl: `${process.env.PUBLIC_URL}/headshot.jpg`,
   headline:
-    "Software Engineer building AI systems, backend platforms, and full-stack products.",
+    "I build AI-powered systems, backend platforms, and full-stack products that turn messy workflows into usable software.",
   positioning:
-    "I design dependable software that turns complex workflows into clear, production-minded experiences across applied AI, backend engineering, and modern web products.",
+    "Computer Science student at Stevens focused on production-grade APIs, LLM workflows, data systems, and clean user experiences.",
 };
 
 export const experience = [

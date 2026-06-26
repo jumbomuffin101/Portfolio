@@ -11,11 +11,51 @@ import {
 
 const navItems = [
   { href: "#projects", label: "Projects" },
+  { href: "#lab", label: "Lab" },
   { href: "#skills", label: "Stack" },
   { href: "#experience", label: "Experience" },
   { href: "#education", label: "Education" },
   { href: "#contact", label: "Contact" },
 ];
+
+const coreStack = ["Python", "TypeScript", "FastAPI", "Next.js", "PostgreSQL", "Docker", "AWS"];
+
+const labItems = [
+  {
+    title: "Reliable AI Pipelines",
+    text: "LLM outputs are messy, so I like building validation layers, fallbacks, and deterministic guardrails.",
+  },
+  {
+    title: "Backend Systems",
+    text: "APIs, schemas, databases, and workflows that make products actually work.",
+  },
+  {
+    title: "Product Dashboards",
+    text: "Interfaces that make complex data easier to understand and act on.",
+  },
+  {
+    title: "Performance + Reliability",
+    text: "CI/CD, Docker, testing, and deployment workflows that reduce friction.",
+  },
+];
+
+const projectVisuals = {
+  "AI Clinical Ops Agent": {
+    label: "LLM review pipeline",
+    lines: ["notes.ingest()", "normalize_llm_output()", "risk.review()"],
+    flow: ["PHI Block", "CPT Map", "Risk Signals"],
+  },
+  "Gym-Risk": {
+    label: "Training load analytics",
+    lines: ["session_load = sets * rpe", "baseline_28d.compare()", "risk_trends.render()"],
+    flow: ["ACWR", "Heatmaps", "RPE Trends"],
+  },
+  "Trading Analytics Dashboard": {
+    label: "Market data workspace",
+    lines: ["fetch.history()", "backtest.strategy()", "dashboard.plot()"],
+    flow: ["Market Data", "Backtest", "Charts"],
+  },
+};
 
 function getInitialTheme() {
   try {
@@ -24,7 +64,7 @@ function getInitialTheme() {
   } catch {
     // Use the polished light theme when storage is unavailable.
   }
-  return "light";
+  return "dark";
 }
 
 function setDocumentTheme(theme) {
@@ -148,9 +188,9 @@ function Hero() {
     <section className="hero" id="home" aria-labelledby="hero-title">
       <div className="section-shell hero-grid">
         <div className="hero-copy">
-          <p className="eyebrow">Computer Science at Stevens Institute of Technology</p>
-          <h1 id="hero-title">{profile.name}</h1>
-          <p className="hero-role">{profile.headline}</p>
+          <p className="hero-badge">CS @ Stevens | Backend + AI Systems | Building useful software</p>
+          <p className="hero-name">{profile.name}</p>
+          <h1 id="hero-title">{profile.headline}</h1>
           <p className="hero-subtitle">{profile.positioning}</p>
           <div className="hero-actions" aria-label="Contact links">
             <CopyEmailButton />
@@ -166,12 +206,28 @@ function Hero() {
           </div>
         </div>
 
-        <aside className="portrait-panel" aria-label="Profile">
-          <img src={profile.photoUrl} alt="Aryan Rawat" className="profile-photo" />
-          <div className="portrait-caption">
-            <strong>B.S. Computer Science</strong>
-            <span>Applied Mathematics minor | GPA {education.gpa}</span>
-            <span>{profile.location}</span>
+        <aside className="hero-visual" aria-label="Profile and current focus">
+          <div className="portrait-panel">
+            <img src={profile.photoUrl} alt="Aryan Rawat" className="profile-photo" />
+            <div className="portrait-caption">
+              <strong>B.S. Computer Science</strong>
+              <span>Applied Mathematics minor | GPA {education.gpa}</span>
+              <span>{profile.location}</span>
+            </div>
+          </div>
+          <div className="terminal-card" aria-label="Currently building">
+            <div className="terminal-topline">
+              <span />
+              <span />
+              <span />
+            </div>
+            <p className="terminal-label">currently building</p>
+            <code>backend APIs + LLM guardrails + product dashboards</code>
+          </div>
+          <div className="floating-stack" aria-label="Core technologies">
+            {["FastAPI", "Next.js", "Postgres", "Docker"].map((tech) => (
+              <span key={tech}>{tech}</span>
+            ))}
           </div>
         </aside>
       </div>
@@ -179,37 +235,60 @@ function Hero() {
   );
 }
 
-function ExperienceItem({ item }) {
+function ExperienceItem({ item, index }) {
   return (
     <article className="experience-item">
-      <div className="experience-meta">
-        <p>{item.period}</p>
-        <span>{item.location}</span>
+      <div className="timeline-marker" aria-hidden="true">
+        <span>{String(index + 1).padStart(2, "0")}</span>
       </div>
-      <div className="experience-content">
-        <h3>{item.role}</h3>
-        <p className="company">
-          {item.company}
-          {item.scope ? <span>{item.scope}</span> : null}
-        </p>
-        <div className="tag-row">
-          {item.tech.map((tech) => (
-            <Tag key={tech}>{tech}</Tag>
-          ))}
+      <div className="experience-card">
+        <div className="experience-meta">
+          <p>{item.period}</p>
+          <span>{item.location}</span>
         </div>
-        <ul className="achievement-list">
-          {item.bullets.map((bullet) => (
-            <li key={bullet}>{bullet}</li>
-          ))}
-        </ul>
+        <div className="experience-content">
+          <h3>{item.role}</h3>
+          <p className="company">
+            {item.company}
+            {item.scope ? <span>{item.scope}</span> : null}
+          </p>
+          <div className="tag-row">
+            {item.tech.map((tech) => (
+              <Tag key={tech}>{tech}</Tag>
+            ))}
+          </div>
+          <ul className="achievement-list">
+            {item.bullets.map((bullet) => (
+              <li key={bullet}>{bullet}</li>
+            ))}
+          </ul>
+        </div>
       </div>
     </article>
   );
 }
 
-function ProjectCaseStudy({ project, featured }) {
+function ProjectCaseStudy({ project, featured, index }) {
+  const visual = projectVisuals[project.title];
+
   return (
-    <article className={`project-case ${featured ? "project-featured" : ""}`}>
+    <article className={`project-case project-accent-${index} ${featured ? "project-featured" : ""}`}>
+      <div className="project-visual" aria-label={`${project.title} visual summary`}>
+        <div>
+          <span className="project-orb" />
+          <p>{visual.label}</p>
+        </div>
+        <div className="mock-window">
+          {visual.lines.map((line) => (
+            <code key={line}>{line}</code>
+          ))}
+        </div>
+        <div className="flow-row">
+          {visual.flow.map((item) => (
+            <span key={item}>{item}</span>
+          ))}
+        </div>
+      </div>
       <header className="project-header">
         <div>
           <p className="eyebrow">{project.period}</p>
@@ -269,15 +348,37 @@ function ProjectCaseStudy({ project, featured }) {
 
 function SkillsPanel() {
   return (
-    <div className="skills-grid">
-      {Object.entries(skills).map(([group, values]) => (
-        <article key={group} className="skill-card">
-          <h3>{group}</h3>
-          <div className="tag-row">
-            {values.map((value) => (
-              <Tag key={value}>{value}</Tag>
-            ))}
-          </div>
+    <>
+      <div className="core-stack" aria-label="Core stack">
+        {coreStack.map((tech) => (
+          <span key={tech}>{tech}</span>
+        ))}
+      </div>
+      <div className="skills-grid">
+        {Object.entries(skills).map(([group, values]) => (
+          <article key={group} className="skill-card">
+            <p className="skill-index">{String(values.length).padStart(2, "0")}</p>
+            <h3>{group}</h3>
+            <div className="tag-row">
+              {values.map((value) => (
+                <Tag key={value}>{value}</Tag>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </>
+  );
+}
+
+function LabPanel() {
+  return (
+    <div className="lab-grid">
+      {labItems.map((item, index) => (
+        <article key={item.title} className="lab-card">
+          <span className="lab-number">{String(index + 1).padStart(2, "0")}</span>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
         </article>
       ))}
     </div>
@@ -342,10 +443,13 @@ function EducationPanel() {
 function ContactPanel() {
   return (
     <div className="contact-panel">
-      <p>
-        Interested in building dependable software across backend systems, AI tooling, and
-        full-stack products.
-      </p>
+      <div>
+        <h3>Want to build something useful?</h3>
+        <p>
+          Open to software engineering internships, AI/backend projects, and technical
+          collaborations that turn complex systems into practical products.
+        </p>
+      </div>
       <div className="contact-actions" aria-label="Contact links">
         <CopyEmailButton />
         <LinkButton href={profile.github} variant="secondary">
@@ -385,9 +489,22 @@ export default function App() {
         >
           <div className="project-stack">
             {projects.map((project, index) => (
-              <ProjectCaseStudy key={project.title} project={project} featured={index < 2} />
+              <ProjectCaseStudy
+                key={project.title}
+                project={project}
+                featured={index < 2}
+                index={index}
+              />
             ))}
           </div>
+        </Section>
+        <Section
+          id="lab"
+          eyebrow="Engineering lab"
+          title="What I Like Building"
+          subtitle="The patterns I keep coming back to: reliable AI workflows, sturdy backends, useful dashboards, and delivery systems that reduce friction."
+        >
+          <LabPanel />
         </Section>
         <Section
           id="skills"
@@ -404,8 +521,8 @@ export default function App() {
           subtitle="Backend product engineering, research workflows, and applied teaching support."
         >
           <div className="experience-list">
-            {experience.map((item) => (
-              <ExperienceItem key={`${item.company}-${item.role}`} item={item} />
+            {experience.map((item, index) => (
+              <ExperienceItem key={`${item.company}-${item.role}`} item={item} index={index} />
             ))}
           </div>
         </Section>

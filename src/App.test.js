@@ -3,9 +3,11 @@ import App from "./App";
 
 test("renders Aryan's name", () => {
   render(<App />);
-  expect(screen.getByRole("heading", { name: /aryan rawat/i })).toBeInTheDocument();
+  expect(screen.getAllByText("Aryan Rawat")).toHaveLength(2);
   expect(
-    screen.getByText("Software Engineer building AI systems, backend platforms, and full-stack products.")
+    screen.getByRole("heading", {
+      name: "I build AI-powered systems, backend platforms, and full-stack products that turn messy workflows into usable software.",
+    })
   ).toBeInTheDocument();
 });
 
@@ -85,4 +87,14 @@ test("presents the engineering stack as categorized technology cards", () => {
   expect(screen.getByRole("heading", { name: "Backend Engineering" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "AI / Machine Learning" })).toBeInTheDocument();
   expect(screen.getByText("Human-Centered AI")).toBeInTheDocument();
+});
+
+test("adds the engineering lab section with personal building themes", () => {
+  render(<App />);
+
+  expect(screen.getByRole("heading", { name: "What I Like Building" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Reliable AI Pipelines" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Backend Systems" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Product Dashboards" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Performance + Reliability" })).toBeInTheDocument();
 });
