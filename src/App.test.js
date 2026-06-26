@@ -3,16 +3,21 @@ import App from "./App";
 
 test("renders Aryan's name", () => {
   render(<App />);
-  expect(screen.getAllByText("Aryan Rawat")).toHaveLength(2);
+  expect(screen.getByText("Aryan Rawat")).toBeInTheDocument();
   expect(
     screen.getByRole("heading", {
-      name: "Software Engineer",
+      name: "Hey, I'm Aryan Rawat.",
     })
   ).toBeInTheDocument();
-  expect(screen.getByText("AI systems • backend platforms • full-stack products")).toBeInTheDocument();
+  expect(
+    screen.getByText("Software Engineer building AI systems, backend platforms, and full-stack products.")
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText("CS @ Stevens focused on production-grade APIs, LLM workflows, and data systems.")
+  ).toBeInTheDocument();
 });
 
-test("presents the selected projects and resume link", () => {
+test("presents the selected projects with screenshot previews", () => {
   render(<App />);
 
   expect(screen.getByRole("heading", { name: "RecruitIQ" })).toBeInTheDocument();
@@ -20,7 +25,19 @@ test("presents the selected projects and resume link", () => {
   expect(screen.getByRole("heading", { name: "AI Clinical Ops Agent" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Gym-Risk" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Trading Analytics Dashboard" })).toBeInTheDocument();
-  expect(screen.getAllByRole("link", { name: "Resume" })).toHaveLength(1);
+  expect(screen.queryByRole("link", { name: "Resume" })).not.toBeInTheDocument();
+  expect(screen.getByAltText("RecruitIQ interface preview")).toHaveAttribute(
+    "src",
+    "/projects/recruitiq.png"
+  );
+  expect(screen.getByAltText("ConsensusIQ interface preview")).toHaveAttribute(
+    "src",
+    "/projects/consensusiq.png"
+  );
+  expect(screen.getByAltText("AI Clinical Ops Agent interface preview")).toHaveAttribute(
+    "src",
+    "/projects/ai-clinical-ops-agent.png"
+  );
 });
 
 test("renders the hero social actions as three icon-only controls", () => {
@@ -30,7 +47,7 @@ test("renders the hero social actions as three icon-only controls", () => {
   const heroActions = hero.querySelectorAll(".action-card");
 
   expect(heroActions).toHaveLength(3);
-  expect(hero.querySelector('button[aria-label="Email"]')).toBeInTheDocument();
+  expect(hero.querySelector('button[aria-label="Copy email"]')).toBeInTheDocument();
   expect(hero.querySelector('a[aria-label="GitHub"]')).toBeInTheDocument();
   expect(hero.querySelector('a[aria-label="LinkedIn"]')).toBeInTheDocument();
   expect(hero.querySelector('a[aria-label="Resume"]')).not.toBeInTheDocument();
@@ -40,11 +57,29 @@ test("renders the hero social actions as three icon-only controls", () => {
 test("links the published project demos in new tabs", () => {
   render(<App />);
 
+  const recruitProject = screen.getByRole("heading", { name: "RecruitIQ" }).closest("article");
+  const consensusProject = screen.getByRole("heading", { name: "ConsensusIQ" }).closest("article");
   const aiProject = screen.getByRole("heading", { name: "AI Clinical Ops Agent" }).closest("article");
   const gymProject = screen.getByRole("heading", { name: "Gym-Risk" }).closest("article");
+  const recruitLiveLink = recruitProject.querySelector('a[href="https://recruit-iq-five.vercel.app/"]');
+  const recruitGithubLink = recruitProject.querySelector('a[href="https://github.com/jumbomuffin101/RecruitIQ"]');
+  const consensusLiveLink = consensusProject.querySelector('a[href="https://consensus-iq.vercel.app/"]');
+  const consensusGithubLink = consensusProject.querySelector('a[href="https://github.com/jumbomuffin101/consensus-iq"]');
   const aiLiveLink = aiProject.querySelector('a[href="https://ai-clinical-ops-agent.vercel.app/"]');
   const gymLiveLink = gymProject.querySelector('a[href="https://gym-risk-app.vercel.app/"]');
 
+  expect(recruitGithubLink).toHaveTextContent("GitHub");
+  expect(recruitGithubLink).toHaveAttribute("target", "_blank");
+  expect(recruitGithubLink).toHaveAttribute("rel", "noopener noreferrer");
+  expect(recruitLiveLink).toHaveTextContent("Live");
+  expect(recruitLiveLink).toHaveAttribute("target", "_blank");
+  expect(recruitLiveLink).toHaveAttribute("rel", "noopener noreferrer");
+  expect(consensusGithubLink).toHaveTextContent("GitHub");
+  expect(consensusGithubLink).toHaveAttribute("target", "_blank");
+  expect(consensusGithubLink).toHaveAttribute("rel", "noopener noreferrer");
+  expect(consensusLiveLink).toHaveTextContent("Live");
+  expect(consensusLiveLink).toHaveAttribute("target", "_blank");
+  expect(consensusLiveLink).toHaveAttribute("rel", "noopener noreferrer");
   expect(aiLiveLink).toHaveTextContent("Live");
   expect(aiLiveLink).toHaveAttribute("target", "_blank");
   expect(aiLiveLink).toHaveAttribute("rel", "noopener noreferrer");
@@ -56,7 +91,7 @@ test("links the published project demos in new tabs", () => {
 test("uses email copy actions and omits stale impact statistics", () => {
   render(<App />);
 
-  expect(screen.getAllByRole("button", { name: "Email" })).toHaveLength(2);
+  expect(screen.getAllByRole("button", { name: "Copy email" })).toHaveLength(2);
   expect(document.querySelector('a[href^="mailto:"]')).not.toBeInTheDocument();
   expect(document.querySelector('a[href*="mail.google.com"]')).not.toBeInTheDocument();
   expect(screen.getByText("ryanrawat@gmail.com")).toBeInTheDocument();
@@ -71,7 +106,7 @@ test("copies the email independently from both email buttons", async () => {
   });
 
   render(<App />);
-  fireEvent.click(screen.getAllByRole("button", { name: "Email" })[0]);
+  fireEvent.click(screen.getAllByRole("button", { name: "Copy email" })[0]);
 
   await waitFor(() => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith("ryanrawat@gmail.com");
@@ -79,7 +114,7 @@ test("copies the email independently from both email buttons", async () => {
     expect(document.querySelector(".action-card-success")).toBeInTheDocument();
   });
 
-  fireEvent.click(screen.getAllByRole("button", { name: "Email" })[1]);
+  fireEvent.click(screen.getAllByRole("button", { name: "Copy email" })[1]);
 
   await waitFor(() => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(2);
@@ -111,7 +146,7 @@ test("presents the engineering stack as categorized technology cards", () => {
 test("adds the engineering lab section with personal building themes", () => {
   render(<App />);
 
-  expect(screen.getByRole("heading", { name: "What I Like Building" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Lab" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Reliable AI Pipelines" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Backend Systems" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Product Dashboards" })).toBeInTheDocument();

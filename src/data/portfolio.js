@@ -3,12 +3,10 @@ export const profile = {
   location: "Hoboken, New Jersey",
   github: "https://github.com/jumbomuffin101",
   linkedin: "https://www.linkedin.com/in/aryan-rawat-bbb0a6276/",
-  resumeUrl: `${process.env.PUBLIC_URL}/Aryan_Rawat_Resume.pdf`,
   photoUrl: `${process.env.PUBLIC_URL}/headshot.jpg`,
-  headline: "Software Engineer",
-  focusLine: "AI systems • backend platforms • full-stack products",
-  positioning:
-    "Computer Science student at Stevens focused on production-grade APIs, LLM workflows, data systems, and clean user experiences.",
+  headline: "Hey, I'm Aryan Rawat.",
+  focusLine: "Software Engineer building AI systems, backend platforms, and full-stack products.",
+  positioning: "CS @ Stevens focused on production-grade APIs, LLM workflows, and data systems.",
 };
 
 export const experience = [
@@ -64,6 +62,7 @@ export const experience = [
 export const projects = [
   {
     title: "RecruitIQ",
+    image: `${process.env.PUBLIC_URL}/projects/recruitiq.png`,
     period: "Amazon AWS Hackathon",
     category: "AI-powered applicant tracking system",
     stack: ["Next.js", "React", "TypeScript", "Amazon Aurora PostgreSQL", "Prisma", "Vercel"],
@@ -78,10 +77,14 @@ export const projects = [
     ],
     impact:
       "Turns applicant review into a structured workflow for ranking, analysis, and pipeline movement.",
-    links: {},
+    links: {
+      github: "https://github.com/jumbomuffin101/RecruitIQ",
+      live: "https://recruit-iq-five.vercel.app/",
+    },
   },
   {
     title: "ConsensusIQ",
+    image: `${process.env.PUBLIC_URL}/projects/consensusiq.png`,
     period: "Microsoft Agents League Hackathon",
     category: "Multi-agent AI decision support platform",
     stack: ["Next.js", "FastAPI", "Azure AI Search", "Python", "TypeScript"],
@@ -96,10 +99,14 @@ export const projects = [
     ],
     impact:
       "Helps users compare agent reasoning and make decisions with clearer evidence and confidence signals.",
-    links: {},
+    links: {
+      github: "https://github.com/jumbomuffin101/consensus-iq",
+      live: "https://consensus-iq.vercel.app/",
+    },
   },
   {
     title: "AI Clinical Ops Agent",
+    image: `${process.env.PUBLIC_URL}/projects/ai-clinical-ops-agent.png`,
     period: "Feb 2026 - May 2026",
     category: "Clinical billing review platform",
     stack: [
@@ -132,6 +139,7 @@ export const projects = [
   },
   {
     title: "Gym-Risk",
+    image: `${process.env.PUBLIC_URL}/projects/gym-risk.png`,
     period: "Oct 2025 - Mar 2026",
     category: "Training load analytics platform",
     stack: ["Next.js", "React", "TypeScript", "PostgreSQL", "Prisma", "NextAuth", "Tailwind"],
@@ -153,6 +161,7 @@ export const projects = [
   },
   {
     title: "Trading Analytics Dashboard",
+    image: `${process.env.PUBLIC_URL}/projects/trading-analytics-dashboard.png`,
     period: "Featured project",
     category: "Serverless equity backtesting dashboard",
     stack: ["React", "TypeScript", "Vite", "Netlify Functions", "Recharts", "Market Data"],

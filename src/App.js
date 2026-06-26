@@ -39,39 +39,6 @@ const labItems = [
   },
 ];
 
-const projectVisuals = {
-  RecruitIQ: {
-    glyph: "RI",
-    label: "Recruiting intelligence",
-    lines: ["resume.parse()", "rank.candidates()", "pipeline.move()"],
-    flow: ["Aurora", "Copilot", "Kanban"],
-  },
-  ConsensusIQ: {
-    glyph: "CI",
-    label: "Agent consensus engine",
-    lines: ["agents.retrieve()", "debate.evidence()", "consensus.score()"],
-    flow: ["Azure Search", "Agents", "Confidence"],
-  },
-  "AI Clinical Ops Agent": {
-    glyph: "AI",
-    label: "LLM review pipeline",
-    lines: ["notes.ingest()", "normalize_llm_output()", "risk.review()"],
-    flow: ["PHI Block", "CPT Map", "Risk Signals"],
-  },
-  "Gym-Risk": {
-    glyph: "GR",
-    label: "Training load analytics",
-    lines: ["session_load = sets * rpe", "baseline_28d.compare()", "risk_trends.render()"],
-    flow: ["ACWR", "Heatmaps", "RPE Trends"],
-  },
-  "Trading Analytics Dashboard": {
-    glyph: "TD",
-    label: "Market data workspace",
-    lines: ["fetch.history()", "backtest.strategy()", "dashboard.plot()"],
-    flow: ["Market Data", "Backtest", "Charts"],
-  },
-};
-
 function ActionIcon({ type }) {
   if (type === "email") {
     return (
@@ -100,14 +67,7 @@ function ActionIcon({ type }) {
     );
   }
 
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="action-svg">
-      <path d="M7 3.75h7.25L19 8.5v11.75H7V3.75Z" />
-      <path d="M14 3.75V8.5h5" />
-      <path d="M9.5 13h5" />
-      <path d="M9.5 16h4" />
-    </svg>
-  );
+  return null;
 }
 
 function getInitialTheme() {
@@ -243,15 +203,12 @@ function CopyEmailButton({ variant = "primary", card = false, label = "Copy Emai
   );
 }
 
-function ActionButtons({ includeResume = true, iconOnly = false }) {
+function ActionButtons({ iconOnly = false }) {
   return (
     <div className={`action-grid ${iconOnly ? "action-grid-compact" : ""}`} aria-label="Contact links">
-      <CopyEmailButton card label="Email" iconOnly={iconOnly} />
+      <CopyEmailButton card label="Copy email" iconOnly={iconOnly} />
       <ActionLink href={profile.github} icon="github" label="GitHub" iconOnly={iconOnly} />
       <ActionLink href={profile.linkedin} icon="linkedin" label="LinkedIn" iconOnly={iconOnly} />
-      {includeResume ? (
-        <ActionLink href={profile.resumeUrl} icon="resume" label="Resume" iconOnly={iconOnly} />
-      ) : null}
     </div>
   );
 }
@@ -292,11 +249,10 @@ function Hero() {
       <div className="section-shell hero-grid">
         <div className="hero-copy">
           <p className="hero-badge">Software Engineer</p>
-          <p className="hero-name">{profile.name}</p>
           <h1 id="hero-title">{profile.headline}</h1>
           <p className="hero-focus-line">{profile.focusLine}</p>
           <p className="hero-subtitle">{profile.positioning}</p>
-          <ActionButtons includeResume={false} iconOnly />
+          <ActionButtons iconOnly />
           <div className="hero-email-line">
             <span>ryanrawat@gmail.com</span>
           </div>
@@ -365,22 +321,17 @@ function ExperienceItem({ item, index }) {
 }
 
 function ProjectCaseStudy({ project, featured, index }) {
-  const visual = projectVisuals[project.title];
-  const primaryTech = project.stack.slice(0, 4);
+  const primaryTech = project.stack.slice(0, 5);
   const depth = project.highlights.slice(0, 2);
 
   return (
     <article className={`project-case project-accent-${index} ${featured ? "project-featured" : ""}`}>
-      <div className="project-visual" aria-label={`${project.title} visual summary`}>
-        <div className="project-icon-card" aria-hidden="true">
-          <span className="project-glyph">{visual.glyph}</span>
-        </div>
-        <div className="project-visual-copy">
-          <p>{visual.label}</p>
-          {visual.flow.map((item) => (
-            <span key={item}>{item}</span>
-          ))}
-        </div>
+      <div className="project-preview">
+        <img
+          src={project.image}
+          alt={`${project.title} interface preview`}
+          loading={index < 2 ? "eager" : "lazy"}
+        />
       </div>
       <header className="project-header">
         <div>
@@ -540,7 +491,7 @@ function ContactPanel() {
         </p>
       </div>
       <div className="contact-actions" aria-label="Contact links">
-        <ActionButtons />
+        <ActionButtons iconOnly />
       </div>
     </div>
   );
@@ -581,7 +532,7 @@ export default function App() {
         </Section>
         <Section
           id="lab"
-          title="What I Like Building"
+          title="Lab"
         >
           <LabPanel />
         </Section>
