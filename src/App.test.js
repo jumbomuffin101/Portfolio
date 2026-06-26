@@ -6,18 +6,20 @@ test("renders Aryan's name", () => {
   expect(screen.getAllByText("Aryan Rawat")).toHaveLength(2);
   expect(
     screen.getByRole("heading", {
-      name: "I build AI-powered systems, backend platforms, and full-stack products that turn messy workflows into usable software.",
+      name: "Building AI systems, backend platforms, and full-stack products.",
     })
   ).toBeInTheDocument();
 });
 
-test("presents the selected projects without a resume download", () => {
+test("presents the selected projects and resume link", () => {
   render(<App />);
 
+  expect(screen.getByRole("heading", { name: "RecruitIQ" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "ConsensusIQ" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "AI Clinical Ops Agent" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Gym-Risk" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Trading Analytics Dashboard" })).toBeInTheDocument();
-  expect(screen.queryByRole("link", { name: /resume/i })).not.toBeInTheDocument();
+  expect(screen.getAllByRole("link", { name: "Resume" })).toHaveLength(2);
 });
 
 test("links the published project demos in new tabs", () => {
@@ -36,10 +38,10 @@ test("links the published project demos in new tabs", () => {
   expect(gymLiveLink).toHaveAttribute("rel", "noopener noreferrer");
 });
 
-test("uses copy-only email actions and omits impact statistics", () => {
+test("uses email copy actions and omits stale impact statistics", () => {
   render(<App />);
 
-  expect(screen.getAllByRole("button", { name: "Copy Email" })).toHaveLength(2);
+  expect(screen.getAllByRole("button", { name: "Email" })).toHaveLength(2);
   expect(document.querySelector('a[href^="mailto:"]')).not.toBeInTheDocument();
   expect(document.querySelector('a[href*="mail.google.com"]')).not.toBeInTheDocument();
   expect(screen.getByText("ryanrawat@gmail.com")).toBeInTheDocument();
@@ -47,26 +49,26 @@ test("uses copy-only email actions and omits impact statistics", () => {
   expect(screen.getByText("Created by Aryan Rawat")).toBeInTheDocument();
 });
 
-test("copies the email independently from both contact buttons", async () => {
+test("copies the email independently from both email buttons", async () => {
   Object.defineProperty(navigator, "clipboard", {
     configurable: true,
     value: { writeText: jest.fn().mockResolvedValue(undefined) },
   });
 
   render(<App />);
-  fireEvent.click(screen.getAllByRole("button", { name: "Copy Email" })[0]);
+  fireEvent.click(screen.getAllByRole("button", { name: "Email" })[0]);
 
   await waitFor(() => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith("ryanrawat@gmail.com");
-    expect(screen.getAllByRole("button", { name: "Copied!" })).toHaveLength(1);
-    expect(screen.getByRole("button", { name: "Copied!" })).toHaveClass("button-success");
+    expect(screen.getAllByText("Email copied to clipboard.")).toHaveLength(1);
+    expect(document.querySelector(".action-card-success")).toBeInTheDocument();
   });
 
-  fireEvent.click(screen.getByRole("button", { name: "Copy Email" }));
+  fireEvent.click(screen.getAllByRole("button", { name: "Email" })[1]);
 
   await waitFor(() => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(2);
-    expect(screen.getAllByRole("button", { name: "Copied!" })).toHaveLength(2);
+    expect(screen.getAllByText("Email copied to clipboard.")).toHaveLength(2);
   });
 });
 
@@ -87,6 +89,8 @@ test("presents the engineering stack as categorized technology cards", () => {
   expect(screen.getByRole("heading", { name: "Backend Engineering" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "AI / Machine Learning" })).toBeInTheDocument();
   expect(screen.getByText("Human-Centered AI")).toBeInTheDocument();
+  expect(screen.getAllByText("Amazon Aurora PostgreSQL").length).toBeGreaterThan(0);
+  expect(screen.getAllByText("Azure AI Search").length).toBeGreaterThan(0);
 });
 
 test("adds the engineering lab section with personal building themes", () => {

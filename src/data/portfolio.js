@@ -3,36 +3,35 @@ export const profile = {
   location: "Hoboken, New Jersey",
   github: "https://github.com/jumbomuffin101",
   linkedin: "https://www.linkedin.com/in/aryan-rawat-bbb0a6276/",
+  resumeUrl: `${process.env.PUBLIC_URL}/Aryan_Rawat_Resume.pdf`,
   photoUrl: `${process.env.PUBLIC_URL}/headshot.jpg`,
-  headline:
-    "I build AI-powered systems, backend platforms, and full-stack products that turn messy workflows into usable software.",
+  headline: "Building AI systems, backend platforms, and full-stack products.",
   positioning:
     "Computer Science student at Stevens focused on production-grade APIs, LLM workflows, data systems, and clean user experiences.",
 };
 
 export const experience = [
   {
-    company: "Stevens Institute of Technology",
+    company: "Department of Computer Science, Stevens Institute of Technology",
     role: "Incoming Course Assistant",
     scope: "Introduction to Computer Science & Discrete Structures",
     location: "Hoboken, NJ",
     period: "Aug 2026 - Dec 2026",
     tech: ["Python"],
     bullets: [
-      "Selected to serve as Course Assistant for two undergraduate computer science courses beginning in August 2026.",
+      "Selected as Course Assistant for Introduction to Computer Science and Discrete Structures based on outstanding academic performance.",
     ],
   },
   {
-    company: "Stevens Institute of Technology",
+    company: "Stevens Institute for Artificial Intelligence (SIAI)",
     role: "Research Assistant",
-    scope: "Human-Centered AI / Multimodal AI / LLMs",
+    scope: "Clinical concept map assessment with Hackensack Meridian School of Medicine",
     location: "Hoboken, NJ",
-    period: "Jan 2026 - Present",
-    tech: ["Python", "NLP", "API Integration", "Multimodal AI"],
+    period: "May 2026 - Present",
+    tech: ["Python", "FastAPI", "Next.js", "Multimodal AI", "Vision-Language Models"],
     bullets: [
-      "Built a Python pipeline integrating multimodal LLM APIs and PDF preprocessing workflows for automated analysis of medical concept maps.",
-      "Developed a structured methodology for AI-assisted concept map assessment, enabling comparison between AI-generated and human-generated evaluations.",
-      "Benchmarked models across concept extraction and hierarchy detection tasks, identifying hallucination patterns and output consistency differences.",
+      "Built a full-stack platform for AI-powered clinical concept map assessment.",
+      "Integrated multimodal LLMs, rubric-based grading, evidence extraction, dashboards, and configurable model selection.",
     ],
   },
   {
@@ -40,11 +39,11 @@ export const experience = [
     role: "Software Engineering Intern",
     location: "New York, NY",
     period: "Oct 2025 - May 2026",
-    tech: ["NestJS", "Node.js", "PostgreSQL", "Next.js", "AWS", "Jenkins", "CI/CD"],
+    tech: ["NestJS", "Node.js", "PostgreSQL", "Next.js", "Docker", "Jenkins", "CI/CD"],
     bullets: [
-      "Architected RESTful APIs and normalized PostgreSQL schemas for tenant workflows and usage metrics consumed across 10+ microservices.",
-      "Resolved production data inconsistencies by tracing distributed request flows and identifying schema mismatches responsible for 15% of nightly batch job failures.",
-      "Parallelized test execution and introduced Docker layer caching in Jenkins pipelines, reducing deployment time from 15 minutes to 2 minutes.",
+      "Built REST APIs and normalized PostgreSQL schemas for tenant workflows and usage metrics.",
+      "Resolved production data inconsistencies caused by schema mismatches across distributed request flows.",
+      "Added Docker layer caching in Jenkins, cutting deployment time from 15 to 2 minutes and enabling 4x more frequent production deployments.",
     ],
   },
   {
@@ -54,14 +53,50 @@ export const experience = [
     period: "Jan 2025 - Aug 2025",
     tech: ["Flask", "Python", "PostgreSQL", "REST APIs", "CI/CD"],
     bullets: [
-      "Built Flask and PostgreSQL backend services for a production claims screening platform, delivering rule-based validation workflows that processed 200+ claims weekly.",
-      "Replaced manual review steps with Python logic and SQL triggers, eliminating 15 hours per week of operations overhead and reducing validation error rates by 22%.",
-      "Raised test coverage to 85% across core validation workflows through unit and integration testing.",
+      "Built Flask and PostgreSQL services for production claims screening that processed 200+ claims weekly.",
+      "Replaced manual review steps, saving 15 hours per week and reducing validation errors by 22%.",
+      "Raised core validation workflow coverage to 85% with unit and integration tests.",
     ],
   },
 ];
 
 export const projects = [
+  {
+    title: "RecruitIQ",
+    period: "Amazon AWS Hackathon",
+    category: "AI-powered applicant tracking system",
+    stack: ["Next.js", "React", "TypeScript", "Amazon Aurora PostgreSQL", "Prisma", "Vercel"],
+    problem:
+      "Recruiting teams need cleaner ways to parse resumes, compare candidates, and manage hiring pipelines without losing context.",
+    built:
+      "An AI-powered applicant tracking system with resume parsing, candidate ranking, Recruiter Copilot analysis, Kanban pipeline management, and hiring analytics.",
+    highlights: [
+      "Modeled hiring data in Amazon Aurora PostgreSQL with Prisma ORM.",
+      "Built deterministic resume extraction with configurable OpenRouter integration.",
+      "Added server-side AI fallbacks for more reliable recruiter workflows.",
+    ],
+    impact:
+      "Turns applicant review into a structured workflow for ranking, analysis, and pipeline movement.",
+    links: {},
+  },
+  {
+    title: "ConsensusIQ",
+    period: "Microsoft Agents League Hackathon",
+    category: "Multi-agent AI decision support platform",
+    stack: ["Next.js", "FastAPI", "Azure AI Search", "Python", "TypeScript"],
+    problem:
+      "Complex decisions need evidence-backed recommendations, not single-shot model responses.",
+    built:
+      "A multi-agent decision support platform with specialist agents, disagreement analysis, consensus reasoning, and confidence-based recommendations.",
+    highlights: [
+      "Designed retrieval-augmented workflows with Azure AI Search.",
+      "Added deterministic fallback logic and configurable LLM providers.",
+      "Built interactive dashboards for evidence, confidence, and disagreement review.",
+    ],
+    impact:
+      "Helps users compare agent reasoning and make decisions with clearer evidence and confidence signals.",
+    links: {},
+  },
   {
     title: "AI Clinical Ops Agent",
     period: "Feb 2026 - May 2026",
@@ -166,17 +201,19 @@ export const skills = {
   Languages: ["Python", "Java", "SQL", "TypeScript", "JavaScript", "HTML/CSS"],
   "Frontend Engineering": ["React", "Next.js", "Tailwind", "TypeScript"],
   "Backend Engineering": ["FastAPI", "Flask", "NestJS", "Node.js", "REST APIs"],
-  "Databases & Data": ["PostgreSQL", "SQLAlchemy", "Prisma"],
+  "Databases & Data": ["PostgreSQL", "Amazon Aurora PostgreSQL", "Azure AI Search", "SQLAlchemy", "Prisma"],
   "AI / Machine Learning": [
     "LLMs",
     "NLP",
     "Human-Centered AI",
     "Multimodal AI",
+    "Vision-Language Models",
     "API Integration",
   ],
   "Cloud / DevOps / Infrastructure": [
     "Docker",
     "AWS",
+    "Vercel",
     "Git",
     "GitHub Actions",
     "Jenkins",

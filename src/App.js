@@ -40,6 +40,16 @@ const labItems = [
 ];
 
 const projectVisuals = {
+  RecruitIQ: {
+    label: "Recruiting intelligence",
+    lines: ["resume.parse()", "rank.candidates()", "pipeline.move()"],
+    flow: ["Aurora", "Copilot", "Kanban"],
+  },
+  ConsensusIQ: {
+    label: "Agent consensus engine",
+    lines: ["agents.retrieve()", "debate.evidence()", "consensus.score()"],
+    flow: ["Azure Search", "Agents", "Confidence"],
+  },
   "AI Clinical Ops Agent": {
     label: "LLM review pipeline",
     lines: ["notes.ingest()", "normalize_llm_output()", "risk.review()"],
@@ -55,6 +65,13 @@ const projectVisuals = {
     lines: ["fetch.history()", "backtest.strategy()", "dashboard.plot()"],
     flow: ["Market Data", "Backtest", "Charts"],
   },
+};
+
+const actionIcons = {
+  email: "@",
+  github: "GH",
+  linkedin: "in",
+  resume: "CV",
 };
 
 function getInitialTheme() {
@@ -95,21 +112,32 @@ function Section({ id, eyebrow, title, subtitle, children }) {
   );
 }
 
-function LinkButton({ href, children, variant = "primary" }) {
-  const isExternal = href.startsWith("http");
+function LinkButton({ href, children, variant = "primary", className = "" }) {
+  const opensNewTab = href.startsWith("http") || href.endsWith(".pdf");
   return (
     <a
-      className={`button button-${variant}`}
+      className={`button button-${variant} ${className}`.trim()}
       href={href}
-      target={isExternal ? "_blank" : undefined}
-      rel={isExternal ? "noopener noreferrer" : undefined}
+      target={opensNewTab ? "_blank" : undefined}
+      rel={opensNewTab ? "noopener noreferrer" : undefined}
     >
       {children}
     </a>
   );
 }
 
-function CopyEmailButton({ variant = "primary" }) {
+function ActionLink({ href, icon, label }) {
+  return (
+    <a className="action-card" href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
+      <span className="action-icon" aria-hidden="true">
+        {icon}
+      </span>
+      <span aria-hidden="true">{label}</span>
+    </a>
+  );
+}
+
+function CopyEmailButton({ variant = "primary", card = false, label = "Copy Email" }) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -143,13 +171,41 @@ function CopyEmailButton({ variant = "primary" }) {
   }
 
   return (
-    <button
-      className={`button button-${variant} ${copied ? "button-success" : ""}`}
-      type="button"
-      onClick={copyEmail}
-    >
-      {copied ? "Copied!" : "Copy Email"}
-    </button>
+    <span className="copy-action-wrap">
+      <button
+        className={
+          card
+            ? `action-card ${copied ? "action-card-success" : ""}`
+            : `button button-${variant} ${copied ? "button-success" : ""}`
+        }
+        type="button"
+        onClick={copyEmail}
+        aria-label={label}
+      >
+        {card ? (
+          <span className="action-icon" aria-hidden="true">
+            {actionIcons.email}
+          </span>
+        ) : null}
+        <span aria-hidden={card ? "true" : undefined}>{card ? label : copied ? "Copied!" : label}</span>
+      </button>
+      {copied ? (
+        <span className="copy-toast" role="status" aria-live="polite">
+          Email copied to clipboard.
+        </span>
+      ) : null}
+    </span>
+  );
+}
+
+function ActionButtons() {
+  return (
+    <div className="action-grid" aria-label="Contact links">
+      <CopyEmailButton card label="Email" />
+      <ActionLink href={profile.github} icon={actionIcons.github} label="GitHub" />
+      <ActionLink href={profile.linkedin} icon={actionIcons.linkedin} label="LinkedIn" />
+      <ActionLink href={profile.resumeUrl} icon={actionIcons.resume} label="Resume" />
+    </div>
   );
 }
 
@@ -192,15 +248,7 @@ function Hero() {
           <p className="hero-name">{profile.name}</p>
           <h1 id="hero-title">{profile.headline}</h1>
           <p className="hero-subtitle">{profile.positioning}</p>
-          <div className="hero-actions" aria-label="Contact links">
-            <CopyEmailButton />
-            <LinkButton href={profile.github} variant="secondary">
-              GitHub
-            </LinkButton>
-            <LinkButton href={profile.linkedin} variant="secondary">
-              LinkedIn
-            </LinkButton>
-          </div>
+          <ActionButtons />
           <div className="hero-email-line">
             <span>ryanrawat@gmail.com</span>
           </div>
@@ -270,6 +318,8 @@ function ExperienceItem({ item, index }) {
 
 function ProjectCaseStudy({ project, featured, index }) {
   const visual = projectVisuals[project.title];
+  const primaryTech = project.stack.slice(0, 4);
+  const depth = project.highlights.slice(0, 2);
 
   return (
     <article className={`project-case project-accent-${index} ${featured ? "project-featured" : ""}`}>
@@ -294,6 +344,7 @@ function ProjectCaseStudy({ project, featured, index }) {
           <p className="eyebrow">{project.period}</p>
           <h3>{project.title}</h3>
           <p className="project-category">{project.category}</p>
+          <p className="project-summary">{project.built}</p>
         </div>
         {project.links.github || project.links.live ? (
           <div className="project-actions">
@@ -310,15 +361,11 @@ function ProjectCaseStudy({ project, featured, index }) {
           </div>
         ) : null}
       </header>
-      <div className="project-grid">
-        <div className="project-narrative">
+      <div className="project-compact-grid">
+        <div className="project-facts">
           <div>
             <h4>Problem</h4>
             <p>{project.problem}</p>
-          </div>
-          <div>
-            <h4>What I built</h4>
-            <p>{project.built}</p>
           </div>
           <div>
             <h4>Impact</h4>
@@ -326,15 +373,14 @@ function ProjectCaseStudy({ project, featured, index }) {
           </div>
         </div>
         <div className="technical-panel">
-          <h4>Technical depth</h4>
+          <h4>Engineering Depth</h4>
           <ul>
-            {project.highlights.map((highlight) => (
+            {depth.map((highlight) => (
               <li key={highlight}>{highlight}</li>
             ))}
           </ul>
-          <h4 className="stack-title">Tech stack</h4>
-          <div className="tag-row">
-            {project.stack.map((tech) => (
+          <div className="tag-row project-tech-row">
+            {primaryTech.map((tech) => (
               <Tag key={tech} accent>
                 {tech}
               </Tag>
@@ -451,13 +497,7 @@ function ContactPanel() {
         </p>
       </div>
       <div className="contact-actions" aria-label="Contact links">
-        <CopyEmailButton />
-        <LinkButton href={profile.github} variant="secondary">
-          GitHub
-        </LinkButton>
-        <LinkButton href={profile.linkedin} variant="secondary">
-          LinkedIn
-        </LinkButton>
+        <ActionButtons />
       </div>
     </div>
   );
