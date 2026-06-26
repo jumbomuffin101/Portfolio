@@ -170,10 +170,11 @@ p {
   background:
     linear-gradient(90deg, rgba(112, 162, 255, 0.07) 1px, transparent 1px),
     linear-gradient(rgba(112, 162, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(105deg, transparent 15%, rgba(85, 201, 230, 0.12), transparent 58%),
     radial-gradient(circle at 82% 8%, var(--purple-glow), transparent 24rem),
     radial-gradient(circle at 75% 18%, var(--accent-glow), transparent 29rem),
     radial-gradient(circle at 14% 18%, var(--accent-faint), transparent 29rem);
-  background-size: 54px 54px, 54px 54px, auto, auto, auto;
+  background-size: 54px 54px, 54px 54px, auto, auto, auto, auto;
   content: "";
   animation: hero-grid-drift 18s ease-in-out infinite alternate;
   pointer-events: none;
@@ -193,6 +194,14 @@ p {
   font-weight: 760;
   line-height: 0.98;
   letter-spacing: -0.075em;
+}
+
+.hero-focus-line {
+  margin: -0.35rem 0 1.05rem;
+  color: var(--accent-strong);
+  font-size: clamp(1.05rem, 2vw, 1.28rem);
+  font-weight: 720;
+  letter-spacing: -0.02em;
 }
 
 .hero-name {
@@ -247,6 +256,11 @@ p {
   margin-top: 2.35rem;
 }
 
+.action-grid-compact {
+  grid-template-columns: repeat(3, 76px);
+  max-width: none;
+}
+
 .contact-actions .action-grid {
   margin-top: 0;
 }
@@ -258,7 +272,7 @@ p {
 
 .action-card {
   display: grid;
-  min-height: 92px;
+  min-height: 96px;
   place-items: center;
   border: 1px solid var(--border);
   border-radius: 22px;
@@ -278,6 +292,13 @@ p {
     box-shadow var(--transition),
     color var(--transition),
     transform var(--transition);
+}
+
+.action-card-icon-only {
+  width: 76px;
+  height: 76px;
+  min-height: 76px;
+  padding: 0;
 }
 
 .action-card:hover,
@@ -301,8 +322,8 @@ p {
 
 .action-icon {
   display: grid;
-  width: 2.2rem;
-  height: 2.2rem;
+  width: 2.4rem;
+  height: 2.4rem;
   place-items: center;
   border-radius: 13px;
   background: linear-gradient(135deg, var(--accent-faint), rgba(85, 201, 230, 0.14));
@@ -310,6 +331,30 @@ p {
   font-size: 0.82rem;
   font-weight: 850;
   letter-spacing: 0.03em;
+}
+
+.action-card-icon-only .action-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+}
+
+.action-svg {
+  width: 1.35rem;
+  height: 1.35rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.75;
+}
+
+.action-svg-fill {
+  fill: currentColor;
+  stroke: none;
+}
+
+.action-svg-accent {
+  stroke: var(--accent-cyan);
 }
 
 .copy-toast {
@@ -671,13 +716,13 @@ p {
 }
 
 .project-accent-0 {
-  --project-accent: #70a2ff;
-  --project-accent-soft: rgba(112, 162, 255, 0.13);
+  --project-accent: #8b5cf6;
+  --project-accent-soft: rgba(139, 92, 246, 0.14);
 }
 
 .project-accent-1 {
-  --project-accent: #22c7a9;
-  --project-accent-soft: rgba(34, 199, 169, 0.13);
+  --project-accent: #22d3ee;
+  --project-accent-soft: rgba(34, 211, 238, 0.14);
 }
 
 .project-accent-2 {
@@ -691,15 +736,14 @@ p {
 }
 
 .project-accent-4 {
-  --project-accent: #22c55e;
-  --project-accent-soft: rgba(34, 197, 94, 0.13);
+  --project-accent: #34d399;
+  --project-accent-soft: rgba(52, 211, 153, 0.13);
 }
 
 .project-visual {
-  display: grid;
-  grid-template-columns: 1fr minmax(230px, 0.9fr);
+  display: flex;
+  align-items: center;
   gap: 1rem;
-  align-items: stretch;
   margin-bottom: clamp(1.5rem, 3vw, 2rem);
   border: 1px solid color-mix(in srgb, var(--project-accent) 35%, transparent);
   border-radius: 20px;
@@ -709,44 +753,57 @@ p {
   padding: 1rem;
 }
 
-.project-visual > div:first-child {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
 .project-visual p {
-  margin: 0;
+  margin: 0 0 0.5rem;
   color: var(--text);
   font-weight: 720;
   letter-spacing: -0.02em;
 }
 
-.project-orb {
-  width: 42px;
-  height: 42px;
-  border-radius: 16px;
-  background: radial-gradient(circle at 30% 25%, #ffffff, var(--project-accent));
-  box-shadow: 0 0 28px var(--project-accent-soft);
-}
-
-.mock-window {
+.project-icon-card {
   display: grid;
-  gap: 0.4rem;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: rgba(3, 8, 18, 0.35);
-  padding: 0.85rem;
+  flex: 0 0 76px;
+  width: 76px;
+  height: 76px;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 22px;
+  background:
+    linear-gradient(rgba(8, 17, 31, 0.84), rgba(8, 17, 31, 0.84)) padding-box,
+    linear-gradient(145deg, var(--project-accent), transparent 58%, var(--accent-cyan)) border-box;
+  box-shadow: 0 0 32px var(--project-accent-soft);
 }
 
-.mock-window code {
-  color: var(--muted-strong);
-  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
-  font-size: 0.78rem;
+.project-glyph {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 16px;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.35), var(--project-accent));
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+}
+
+.project-visual-copy {
+  min-width: 0;
+}
+
+.project-visual-copy span {
+  display: inline-flex;
+  margin: 0.25rem 0.35rem 0 0;
+  border: 1px solid color-mix(in srgb, var(--project-accent) 35%, transparent);
+  border-radius: 999px;
+  background: var(--project-accent-soft);
+  color: var(--text);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0.36rem 0.65rem;
 }
 
 .flow-row {
-  grid-column: 1 / -1;
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -1148,11 +1205,11 @@ p {
 
 @keyframes hero-grid-drift {
   from {
-    background-position: 0 0, 0 0, center, center, center;
+    background-position: 0 0, 0 0, center, center, center, center;
   }
 
   to {
-    background-position: 26px 18px, 18px 26px, center, center, center;
+    background-position: 26px 18px, 18px 26px, center, center, center, center;
   }
 }
 
@@ -1227,6 +1284,10 @@ p {
 
   .action-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .action-grid-compact {
+    grid-template-columns: repeat(3, 76px);
   }
 }
 
@@ -1312,7 +1373,17 @@ p {
     max-width: none;
   }
 
+  .action-grid-compact {
+    grid-template-columns: repeat(3, 72px);
+  }
+
   .action-card {
     min-height: 82px;
+  }
+
+  .action-card-icon-only {
+    width: 72px;
+    height: 72px;
+    min-height: 72px;
   }
 }

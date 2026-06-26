@@ -5,7 +5,8 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/aryan-rawat-bbb0a6276/",
   resumeUrl: `${process.env.PUBLIC_URL}/Aryan_Rawat_Resume.pdf`,
   photoUrl: `${process.env.PUBLIC_URL}/headshot.jpg`,
-  headline: "Building AI systems, backend platforms, and full-stack products.",
+  headline: "Software Engineer",
+  focusLine: "AI systems • backend platforms • full-stack products",
   positioning:
     "Computer Science student at Stevens focused on production-grade APIs, LLM workflows, data systems, and clean user experiences.",
 };

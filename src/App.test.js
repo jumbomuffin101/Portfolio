@@ -6,9 +6,10 @@ test("renders Aryan's name", () => {
   expect(screen.getAllByText("Aryan Rawat")).toHaveLength(2);
   expect(
     screen.getByRole("heading", {
-      name: "Building AI systems, backend platforms, and full-stack products.",
+      name: "Software Engineer",
     })
   ).toBeInTheDocument();
+  expect(screen.getByText("AI systems • backend platforms • full-stack products")).toBeInTheDocument();
 });
 
 test("presents the selected projects and resume link", () => {
@@ -19,7 +20,21 @@ test("presents the selected projects and resume link", () => {
   expect(screen.getByRole("heading", { name: "AI Clinical Ops Agent" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Gym-Risk" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Trading Analytics Dashboard" })).toBeInTheDocument();
-  expect(screen.getAllByRole("link", { name: "Resume" })).toHaveLength(2);
+  expect(screen.getAllByRole("link", { name: "Resume" })).toHaveLength(1);
+});
+
+test("renders the hero social actions as three icon-only controls", () => {
+  render(<App />);
+
+  const hero = document.querySelector(".hero");
+  const heroActions = hero.querySelectorAll(".action-card");
+
+  expect(heroActions).toHaveLength(3);
+  expect(hero.querySelector('button[aria-label="Email"]')).toBeInTheDocument();
+  expect(hero.querySelector('a[aria-label="GitHub"]')).toBeInTheDocument();
+  expect(hero.querySelector('a[aria-label="LinkedIn"]')).toBeInTheDocument();
+  expect(hero.querySelector('a[aria-label="Resume"]')).not.toBeInTheDocument();
+  expect(screen.queryByText("Product showcase")).not.toBeInTheDocument();
 });
 
 test("links the published project demos in new tabs", () => {
@@ -84,7 +99,7 @@ test("renders education and credentials as balanced content cards", () => {
 test("presents the engineering stack as categorized technology cards", () => {
   render(<App />);
 
-  expect(screen.getByRole("heading", { name: "Technologies & Engineering Stack" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "Stack" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Frontend Engineering" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Backend Engineering" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "AI / Machine Learning" })).toBeInTheDocument();

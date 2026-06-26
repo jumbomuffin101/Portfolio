@@ -41,38 +41,74 @@ const labItems = [
 
 const projectVisuals = {
   RecruitIQ: {
+    glyph: "RI",
     label: "Recruiting intelligence",
     lines: ["resume.parse()", "rank.candidates()", "pipeline.move()"],
     flow: ["Aurora", "Copilot", "Kanban"],
   },
   ConsensusIQ: {
+    glyph: "CI",
     label: "Agent consensus engine",
     lines: ["agents.retrieve()", "debate.evidence()", "consensus.score()"],
     flow: ["Azure Search", "Agents", "Confidence"],
   },
   "AI Clinical Ops Agent": {
+    glyph: "AI",
     label: "LLM review pipeline",
     lines: ["notes.ingest()", "normalize_llm_output()", "risk.review()"],
     flow: ["PHI Block", "CPT Map", "Risk Signals"],
   },
   "Gym-Risk": {
+    glyph: "GR",
     label: "Training load analytics",
     lines: ["session_load = sets * rpe", "baseline_28d.compare()", "risk_trends.render()"],
     flow: ["ACWR", "Heatmaps", "RPE Trends"],
   },
   "Trading Analytics Dashboard": {
+    glyph: "TD",
     label: "Market data workspace",
     lines: ["fetch.history()", "backtest.strategy()", "dashboard.plot()"],
     flow: ["Market Data", "Backtest", "Charts"],
   },
 };
 
-const actionIcons = {
-  email: "@",
-  github: "GH",
-  linkedin: "in",
-  resume: "CV",
-};
+function ActionIcon({ type }) {
+  if (type === "email") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 24 24" className="action-svg">
+        <path d="M4.75 6.5h14.5a1.75 1.75 0 0 1 1.75 1.75v7.5a1.75 1.75 0 0 1-1.75 1.75H4.75A1.75 1.75 0 0 1 3 15.75v-7.5A1.75 1.75 0 0 1 4.75 6.5Z" />
+        <path d="m4 8 8 5.65L20 8" />
+        <path className="action-svg-accent" d="M5.25 17.5 10.2 12.9" />
+        <path className="action-svg-accent" d="m18.75 17.5-4.95-4.6" />
+      </svg>
+    );
+  }
+
+  if (type === "github") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 24 24" className="action-svg action-svg-fill">
+        <path d="M12 2.75a9.35 9.35 0 0 0-2.96 18.22c.47.08.64-.2.64-.45v-1.64c-2.6.56-3.15-1.1-3.15-1.1-.43-1.08-1.04-1.36-1.04-1.36-.85-.58.06-.57.06-.57.94.07 1.43.97 1.43.97.83 1.42 2.18 1.01 2.72.77.08-.6.32-1.01.59-1.24-2.08-.24-4.27-1.04-4.27-4.62 0-1.02.36-1.85.96-2.5-.1-.24-.42-1.2.09-2.47 0 0 .79-.25 2.58.96A8.9 8.9 0 0 1 12 7.38c.8 0 1.59.1 2.34.31 1.79-1.21 2.58-.96 2.58-.96.51 1.27.19 2.23.09 2.47.6.65.96 1.48.96 2.5 0 3.59-2.19 4.38-4.28 4.61.34.3.64.87.64 1.76v2.45c0 .25.17.54.65.45A9.35 9.35 0 0 0 12 2.75Z" />
+      </svg>
+    );
+  }
+
+  if (type === "linkedin") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 24 24" className="action-svg action-svg-fill">
+        <path d="M5.35 8.95h3.13v9.72H5.35V8.95Zm1.57-4.83a1.81 1.81 0 1 1 0 3.62 1.81 1.81 0 0 1 0-3.62Zm3.47 4.83h3v1.33h.04c.42-.8 1.44-1.64 2.96-1.64 3.17 0 3.76 2.08 3.76 4.79v5.24h-3.13v-4.65c0-1.1-.02-2.53-1.54-2.53-1.54 0-1.78 1.2-1.78 2.45v4.73h-3.31V8.95Z" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="action-svg">
+      <path d="M7 3.75h7.25L19 8.5v11.75H7V3.75Z" />
+      <path d="M14 3.75V8.5h5" />
+      <path d="M9.5 13h5" />
+      <path d="M9.5 16h4" />
+    </svg>
+  );
+}
 
 function getInitialTheme() {
   try {
@@ -97,14 +133,13 @@ function Tag({ children, accent = false }) {
   return <span className={`tag ${accent ? "tag-accent" : ""}`}>{children}</span>;
 }
 
-function Section({ id, eyebrow, title, subtitle, children }) {
+function Section({ id, eyebrow, title, children }) {
   return (
     <section className="section" id={id} aria-labelledby={`${id}-title`}>
       <div className="section-shell">
         <div className="section-heading">
           {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
           <h2 id={`${id}-title`}>{title}</h2>
-          {subtitle ? <p>{subtitle}</p> : null}
         </div>
         {children}
       </div>
@@ -126,18 +161,25 @@ function LinkButton({ href, children, variant = "primary", className = "" }) {
   );
 }
 
-function ActionLink({ href, icon, label }) {
+function ActionLink({ href, icon, label, iconOnly = false }) {
   return (
-    <a className="action-card" href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
+    <a
+      className={`action-card ${iconOnly ? "action-card-icon-only" : ""}`}
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      title={label}
+    >
       <span className="action-icon" aria-hidden="true">
-        {icon}
+        <ActionIcon type={icon} />
       </span>
-      <span aria-hidden="true">{label}</span>
+      {iconOnly ? null : <span aria-hidden="true">{label}</span>}
     </a>
   );
 }
 
-function CopyEmailButton({ variant = "primary", card = false, label = "Copy Email" }) {
+function CopyEmailButton({ variant = "primary", card = false, label = "Copy Email", iconOnly = false }) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -181,13 +223,16 @@ function CopyEmailButton({ variant = "primary", card = false, label = "Copy Emai
         type="button"
         onClick={copyEmail}
         aria-label={label}
+        title={label}
       >
         {card ? (
           <span className="action-icon" aria-hidden="true">
-            {actionIcons.email}
+            <ActionIcon type="email" />
           </span>
         ) : null}
-        <span aria-hidden={card ? "true" : undefined}>{card ? label : copied ? "Copied!" : label}</span>
+        {card && iconOnly ? null : (
+          <span aria-hidden={card ? "true" : undefined}>{card ? label : copied ? "Copied!" : label}</span>
+        )}
       </button>
       {copied ? (
         <span className="copy-toast" role="status" aria-live="polite">
@@ -198,13 +243,15 @@ function CopyEmailButton({ variant = "primary", card = false, label = "Copy Emai
   );
 }
 
-function ActionButtons() {
+function ActionButtons({ includeResume = true, iconOnly = false }) {
   return (
-    <div className="action-grid" aria-label="Contact links">
-      <CopyEmailButton card label="Email" />
-      <ActionLink href={profile.github} icon={actionIcons.github} label="GitHub" />
-      <ActionLink href={profile.linkedin} icon={actionIcons.linkedin} label="LinkedIn" />
-      <ActionLink href={profile.resumeUrl} icon={actionIcons.resume} label="Resume" />
+    <div className={`action-grid ${iconOnly ? "action-grid-compact" : ""}`} aria-label="Contact links">
+      <CopyEmailButton card label="Email" iconOnly={iconOnly} />
+      <ActionLink href={profile.github} icon="github" label="GitHub" iconOnly={iconOnly} />
+      <ActionLink href={profile.linkedin} icon="linkedin" label="LinkedIn" iconOnly={iconOnly} />
+      {includeResume ? (
+        <ActionLink href={profile.resumeUrl} icon="resume" label="Resume" iconOnly={iconOnly} />
+      ) : null}
     </div>
   );
 }
@@ -244,11 +291,12 @@ function Hero() {
     <section className="hero" id="home" aria-labelledby="hero-title">
       <div className="section-shell hero-grid">
         <div className="hero-copy">
-          <p className="hero-badge">CS @ Stevens | Backend + AI Systems | Building useful software</p>
+          <p className="hero-badge">Software Engineer</p>
           <p className="hero-name">{profile.name}</p>
           <h1 id="hero-title">{profile.headline}</h1>
+          <p className="hero-focus-line">{profile.focusLine}</p>
           <p className="hero-subtitle">{profile.positioning}</p>
-          <ActionButtons />
+          <ActionButtons includeResume={false} iconOnly />
           <div className="hero-email-line">
             <span>ryanrawat@gmail.com</span>
           </div>
@@ -324,16 +372,11 @@ function ProjectCaseStudy({ project, featured, index }) {
   return (
     <article className={`project-case project-accent-${index} ${featured ? "project-featured" : ""}`}>
       <div className="project-visual" aria-label={`${project.title} visual summary`}>
-        <div>
-          <span className="project-orb" />
+        <div className="project-icon-card" aria-hidden="true">
+          <span className="project-glyph">{visual.glyph}</span>
+        </div>
+        <div className="project-visual-copy">
           <p>{visual.label}</p>
-        </div>
-        <div className="mock-window">
-          {visual.lines.map((line) => (
-            <code key={line}>{line}</code>
-          ))}
-        </div>
-        <div className="flow-row">
           {visual.flow.map((item) => (
             <span key={item}>{item}</span>
           ))}
@@ -523,9 +566,7 @@ export default function App() {
         <Hero />
         <Section
           id="projects"
-          eyebrow="Product showcase"
-          title="Featured Projects"
-          subtitle="End-to-end products built around reliable systems, explainable analytics, and thoughtful user workflows."
+          title="Projects"
         >
           <div className="project-stack">
             {projects.map((project, index) => (
@@ -540,25 +581,19 @@ export default function App() {
         </Section>
         <Section
           id="lab"
-          eyebrow="Engineering lab"
           title="What I Like Building"
-          subtitle="The patterns I keep coming back to: reliable AI workflows, sturdy backends, useful dashboards, and delivery systems that reduce friction."
         >
           <LabPanel />
         </Section>
         <Section
           id="skills"
-          eyebrow="Engineering toolkit"
-          title="Technologies & Engineering Stack"
-          subtitle="Tools, frameworks, and technologies used across production systems, AI applications, and full-stack products."
+          title="Stack"
         >
           <SkillsPanel />
         </Section>
         <Section
           id="experience"
-          eyebrow="Professional work"
           title="Experience"
-          subtitle="Backend product engineering, research workflows, and applied teaching support."
         >
           <div className="experience-list">
             {experience.map((item, index) => (
@@ -566,13 +601,12 @@ export default function App() {
             ))}
           </div>
         </Section>
-        <Section id="education" eyebrow="Background" title="Education & Credentials">
+        <Section id="education" title="Education">
           <EducationPanel />
         </Section>
         <Section
           id="contact"
-          eyebrow="Contact"
-          title="Let's build useful software."
+          title="Contact"
         >
           <ContactPanel />
         </Section>
