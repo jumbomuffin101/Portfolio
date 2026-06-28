@@ -13,6 +13,7 @@
   --accent: #2463eb;
   --accent-strong: #1d4ed8;
   --accent-cyan: #0891b2;
+  --display-accent: #0891b2;
   --accent-faint: rgba(36, 99, 235, 0.075);
   --accent-glow: rgba(36, 99, 235, 0.14);
   --accent-border: rgba(36, 99, 235, 0.2);
@@ -41,6 +42,7 @@
   --accent: #70a2ff;
   --accent-strong: #8eb4ff;
   --accent-cyan: #55c9e6;
+  --display-accent: #22d3ee;
   --accent-faint: rgba(112, 162, 255, 0.11);
   --accent-glow: rgba(112, 162, 255, 0.14);
   --accent-border: rgba(112, 162, 255, 0.26);

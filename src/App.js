@@ -206,7 +206,11 @@ function Hero() {
       <div className="section-shell hero-grid">
         <div className="hero-copy">
           <p className="hero-badge">Software Engineer</p>
-          <h1 id="hero-title">{profile.headline}</h1>
+          <h1 id="hero-title" aria-label="Hey, I’m Aryan Rawat.">
+            <span>{profile.greeting} </span>
+            <span className="hero-name-accent">{profile.name}</span>
+            <span>.</span>
+          </h1>
           <p className="hero-focus-line">{profile.focusLine}</p>
           <p className="hero-subtitle">{profile.positioning}</p>
           <ActionButtons />
@@ -261,6 +265,16 @@ function ExperienceItem({ item, index }) {
             {item.company}
             {item.scope ? <span>{item.scope}</span> : null}
           </p>
+          {item.repo ? (
+            <a
+              className="experience-repo-link"
+              href={item.repo}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View Research Repo <span aria-hidden="true">↗</span>
+            </a>
+          ) : null}
           <div className="tag-row">
             {item.tech.map((tech) => (
               <Tag key={tech}>{tech}</Tag>
@@ -283,7 +297,7 @@ function ProjectCaseStudy({ project, index }) {
   return (
     <article className="project-case">
       <header className="project-header">
-        <p className="project-context">{project.period} / {project.category}</p>
+        <p className="project-context">{project.eyebrow}</p>
         <h3>{project.title}</h3>
         <p className="project-summary">{project.built}</p>
         <div className="tag-row project-tech-row">

@@ -3,10 +3,10 @@ import App from "./App";
 
 test("renders Aryan's name", () => {
   render(<App />);
-  expect(screen.getByText("Aryan Rawat")).toBeInTheDocument();
+  expect(document.querySelector(".hero-name-accent")).toHaveTextContent("Aryan Rawat");
   expect(
     screen.getByRole("heading", {
-      name: "Hey, I'm Aryan Rawat.",
+      name: "Hey, I’m Aryan Rawat.",
     })
   ).toBeInTheDocument();
   expect(
@@ -15,6 +15,20 @@ test("renders Aryan's name", () => {
   expect(
     screen.getByText("CS @ Stevens focused on production-grade APIs, LLM workflows, and data systems.")
   ).toBeInTheDocument();
+});
+
+test("uses consistent project type and domain eyebrow labels", () => {
+  render(<App />);
+
+  [
+    "HACKATHON PROJECT / RECRUITING AI",
+    "HACKATHON PROJECT / MULTI-AGENT AI",
+    "FULL-STACK PROJECT / CLINICAL AI",
+    "FULL-STACK PROJECT / TRAINING ANALYTICS",
+    "FULL-STACK PROJECT / MARKET DATA",
+  ].forEach((label) => {
+    expect(screen.getByText(label)).toHaveClass("project-context");
+  });
 });
 
 test("presents the selected projects with screenshot previews", () => {
@@ -139,6 +153,20 @@ test("renders education and credentials as balanced content cards", () => {
   expect(screen.getByRole("heading", { name: "Certifications" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Honors" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Relevant Coursework" })).toBeInTheDocument();
+});
+
+test("links the Research Assistant experience to its repository", () => {
+  render(<App />);
+
+  const researchRole = screen.getByRole("heading", { name: "Research Assistant" });
+  const researchCard = researchRole.closest("article");
+  const repoLink = researchCard.querySelector(
+    'a[href="https://github.com/jumbomuffin101/AI-Research-ConceptMapAnalysis"]'
+  );
+
+  expect(repoLink).toHaveTextContent("View Research Repo");
+  expect(repoLink).toHaveAttribute("target", "_blank");
+  expect(repoLink).toHaveAttribute("rel", "noopener noreferrer");
 });
 
 test("presents the engineering stack as categorized technology cards", () => {

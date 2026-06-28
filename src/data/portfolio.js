@@ -4,7 +4,7 @@ export const profile = {
   github: "https://github.com/jumbomuffin101",
   linkedin: "https://www.linkedin.com/in/aryan-rawat-bbb0a6276/",
   photoUrl: `${process.env.PUBLIC_URL}/headshot.jpg`,
-  headline: "Hey, I'm Aryan Rawat.",
+  greeting: "Hey, I’m",
   focusLine: "Software Engineer building AI systems, backend platforms, and full-stack products.",
   positioning: "CS @ Stevens focused on production-grade APIs, LLM workflows, and data systems.",
 };
@@ -27,6 +27,7 @@ export const experience = [
     scope: "Clinical concept map assessment with Hackensack Meridian School of Medicine",
     location: "Hoboken, NJ",
     period: "May 2026 - Present",
+    repo: "https://github.com/jumbomuffin101/AI-Research-ConceptMapAnalysis",
     tech: ["Python", "FastAPI", "Next.js", "Multimodal AI", "Vision-Language Models"],
     bullets: [
       "Built a full-stack platform for AI-powered clinical concept map assessment.",
@@ -62,6 +63,7 @@ export const experience = [
 export const projects = [
   {
     title: "RecruitIQ",
+    eyebrow: "HACKATHON PROJECT / RECRUITING AI",
     image: `${process.env.PUBLIC_URL}/projects/recruitiq.png`,
     period: "Amazon AWS Hackathon",
     category: "AI-powered applicant tracking system",
@@ -84,6 +86,7 @@ export const projects = [
   },
   {
     title: "ConsensusIQ",
+    eyebrow: "HACKATHON PROJECT / MULTI-AGENT AI",
     image: `${process.env.PUBLIC_URL}/projects/consensusiq.png`,
     period: "Microsoft Agents League Hackathon",
     category: "Multi-agent AI decision support platform",
@@ -106,6 +109,7 @@ export const projects = [
   },
   {
     title: "AI Clinical Ops Agent",
+    eyebrow: "FULL-STACK PROJECT / CLINICAL AI",
     image: `${process.env.PUBLIC_URL}/projects/ai-clinical-ops-agent.png`,
     period: "Feb 2026 - May 2026",
     category: "Clinical billing review platform",
@@ -139,6 +143,7 @@ export const projects = [
   },
   {
     title: "Gym-Risk",
+    eyebrow: "FULL-STACK PROJECT / TRAINING ANALYTICS",
     image: `${process.env.PUBLIC_URL}/projects/gym-risk.png`,
     period: "Oct 2025 - Mar 2026",
     category: "Training load analytics platform",
@@ -161,6 +166,7 @@ export const projects = [
   },
   {
     title: "Trading Analytics Dashboard",
+    eyebrow: "FULL-STACK PROJECT / MARKET DATA",
     image: `${process.env.PUBLIC_URL}/projects/trading-analytics-dashboard.png`,
     period: "Featured project",
     category: "Serverless equity backtesting dashboard",

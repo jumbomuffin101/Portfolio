@@ -153,6 +153,7 @@
 
 .section-heading h2 {
   margin: 0 0 0.9rem;
+  color: var(--display-accent);
   font-size: clamp(2.15rem, 3.8vw, 3.15rem);
   line-height: 1.08;
   letter-spacing: -0.06em;
@@ -224,10 +225,15 @@ p {
   letter-spacing: -0.075em;
 }
 
+.hero-name-accent {
+  color: var(--display-accent);
+  text-shadow: 0 0 24px rgba(34, 211, 238, 0.2);
+}
+
 .hero-focus-line {
   max-width: 850px;
   margin: -0.15rem 0 1.05rem;
-  color: var(--accent-strong);
+  color: var(--text);
   font-size: clamp(1.2rem, 2.35vw, 1.58rem);
   font-weight: 720;
   letter-spacing: -0.02em;
@@ -667,6 +673,27 @@ p {
   font-weight: 450;
 }
 
+.experience-repo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  margin: -0.2rem 0 1rem;
+  color: var(--display-accent);
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color var(--transition), text-shadow var(--transition), transform var(--transition);
+}
+
+.experience-repo-link:hover,
+.experience-repo-link:focus-visible {
+  color: var(--text);
+  outline: none;
+  text-shadow: 0 0 18px rgba(34, 211, 238, 0.35);
+  transform: translateY(-1px);
+}
+
 .tag {
   display: inline-flex;
   align-items: center;
@@ -758,7 +785,7 @@ p {
 
 .project-context {
   margin: 0 0 0.75rem;
-  color: var(--accent);
+  color: var(--display-accent);
   font-size: 0.78rem;
   font-weight: 750;
   letter-spacing: 0.09em;
