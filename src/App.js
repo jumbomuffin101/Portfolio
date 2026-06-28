@@ -11,7 +11,6 @@ import {
 
 const navItems = [
   { href: "#projects", label: "Projects" },
-  { href: "#lab", label: "Lab" },
   { href: "#skills", label: "Stack" },
   { href: "#experience", label: "Experience" },
   { href: "#education", label: "Education" },
@@ -19,25 +18,6 @@ const navItems = [
 ];
 
 const coreStack = ["Python", "TypeScript", "FastAPI", "Next.js", "PostgreSQL", "Docker", "AWS"];
-
-const labItems = [
-  {
-    title: "Reliable AI Pipelines",
-    text: "LLM outputs are messy, so I like building validation layers, fallbacks, and deterministic guardrails.",
-  },
-  {
-    title: "Backend Systems",
-    text: "APIs, schemas, databases, and workflows that make products actually work.",
-  },
-  {
-    title: "Product Dashboards",
-    text: "Interfaces that make complex data easier to understand and act on.",
-  },
-  {
-    title: "Performance + Reliability",
-    text: "CI/CD, Docker, testing, and deployment workflows that reduce friction.",
-  },
-];
 
 function ActionIcon({ type }) {
   if (type === "email") {
@@ -121,25 +101,7 @@ function LinkButton({ href, children, variant = "primary", className = "" }) {
   );
 }
 
-function ActionLink({ href, icon, label, iconOnly = false }) {
-  return (
-    <a
-      className={`action-card ${iconOnly ? "action-card-icon-only" : ""}`}
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={label}
-      title={label}
-    >
-      <span className="action-icon" aria-hidden="true">
-        <ActionIcon type={icon} />
-      </span>
-      {iconOnly ? null : <span aria-hidden="true">{label}</span>}
-    </a>
-  );
-}
-
-function CopyEmailButton({ variant = "primary", card = false, label = "Copy Email", iconOnly = false }) {
+function SocialIconButton({ type, href, label }) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -172,29 +134,24 @@ function CopyEmailButton({ variant = "primary", card = false, label = "Copy Emai
     }
   }
 
+  const sharedProps = {
+    className: `social-icon-button ${copied ? "social-icon-button-success" : ""}`,
+    "aria-label": label,
+    title: label,
+  };
+
   return (
-    <span className="copy-action-wrap">
-      <button
-        className={
-          card
-            ? `action-card ${copied ? "action-card-success" : ""}`
-            : `button button-${variant} ${copied ? "button-success" : ""}`
-        }
-        type="button"
-        onClick={copyEmail}
-        aria-label={label}
-        title={label}
-      >
-        {card ? (
-          <span className="action-icon" aria-hidden="true">
-            <ActionIcon type="email" />
-          </span>
-        ) : null}
-        {card && iconOnly ? null : (
-          <span aria-hidden={card ? "true" : undefined}>{card ? label : copied ? "Copied!" : label}</span>
-        )}
-      </button>
-      {copied ? (
+    <span className="social-icon-wrap">
+      {type === "email" ? (
+        <button {...sharedProps} type="button" onClick={copyEmail}>
+          <ActionIcon type={type} />
+        </button>
+      ) : (
+        <a {...sharedProps} href={href} target="_blank" rel="noopener noreferrer">
+          <ActionIcon type={type} />
+        </a>
+      )}
+      {type === "email" && copied ? (
         <span className="copy-toast" role="status" aria-live="polite">
           Email copied to clipboard.
         </span>
@@ -203,12 +160,12 @@ function CopyEmailButton({ variant = "primary", card = false, label = "Copy Emai
   );
 }
 
-function ActionButtons({ iconOnly = false }) {
+function ActionButtons() {
   return (
-    <div className={`action-grid ${iconOnly ? "action-grid-compact" : ""}`} aria-label="Contact links">
-      <CopyEmailButton card label="Copy email" iconOnly={iconOnly} />
-      <ActionLink href={profile.github} icon="github" label="GitHub" iconOnly={iconOnly} />
-      <ActionLink href={profile.linkedin} icon="linkedin" label="LinkedIn" iconOnly={iconOnly} />
+    <div className="social-actions" aria-label="Contact links">
+      <SocialIconButton type="email" label="Copy email" />
+      <SocialIconButton type="github" href={profile.github} label="GitHub" />
+      <SocialIconButton type="linkedin" href={profile.linkedin} label="LinkedIn" />
     </div>
   );
 }
@@ -252,7 +209,7 @@ function Hero() {
           <h1 id="hero-title">{profile.headline}</h1>
           <p className="hero-focus-line">{profile.focusLine}</p>
           <p className="hero-subtitle">{profile.positioning}</p>
-          <ActionButtons iconOnly />
+          <ActionButtons />
           <div className="hero-email-line">
             <span>ryanrawat@gmail.com</span>
           </div>
@@ -320,25 +277,19 @@ function ExperienceItem({ item, index }) {
   );
 }
 
-function ProjectCaseStudy({ project, featured, index }) {
+function ProjectCaseStudy({ project, index }) {
   const primaryTech = project.stack.slice(0, 5);
-  const depth = project.highlights.slice(0, 2);
 
   return (
-    <article className={`project-case project-accent-${index} ${featured ? "project-featured" : ""}`}>
-      <div className="project-preview">
-        <img
-          src={project.image}
-          alt={`${project.title} interface preview`}
-          loading={index < 2 ? "eager" : "lazy"}
-        />
-      </div>
+    <article className="project-case">
       <header className="project-header">
-        <div>
-          <p className="eyebrow">{project.period}</p>
-          <h3>{project.title}</h3>
-          <p className="project-category">{project.category}</p>
-          <p className="project-summary">{project.built}</p>
+        <p className="project-context">{project.period} / {project.category}</p>
+        <h3>{project.title}</h3>
+        <p className="project-summary">{project.built}</p>
+        <div className="tag-row project-tech-row">
+          {primaryTech.map((tech) => (
+            <Tag key={tech}>{tech}</Tag>
+          ))}
         </div>
         {project.links.github || project.links.live ? (
           <div className="project-actions">
@@ -355,32 +306,12 @@ function ProjectCaseStudy({ project, featured, index }) {
           </div>
         ) : null}
       </header>
-      <div className="project-compact-grid">
-        <div className="project-facts">
-          <div>
-            <h4>Problem</h4>
-            <p>{project.problem}</p>
-          </div>
-          <div>
-            <h4>Impact</h4>
-            <p>{project.impact}</p>
-          </div>
-        </div>
-        <div className="technical-panel">
-          <h4>Engineering Depth</h4>
-          <ul>
-            {depth.map((highlight) => (
-              <li key={highlight}>{highlight}</li>
-            ))}
-          </ul>
-          <div className="tag-row project-tech-row">
-            {primaryTech.map((tech) => (
-              <Tag key={tech} accent>
-                {tech}
-              </Tag>
-            ))}
-          </div>
-        </div>
+      <div className="project-preview">
+        <img
+          src={project.image}
+          alt={`${project.title} interface preview`}
+          loading={index < 2 ? "eager" : "lazy"}
+        />
       </div>
     </article>
   );
@@ -408,20 +339,6 @@ function SkillsPanel() {
         ))}
       </div>
     </>
-  );
-}
-
-function LabPanel() {
-  return (
-    <div className="lab-grid">
-      {labItems.map((item, index) => (
-        <article key={item.title} className="lab-card">
-          <span className="lab-number">{String(index + 1).padStart(2, "0")}</span>
-          <h3>{item.title}</h3>
-          <p>{item.text}</p>
-        </article>
-      ))}
-    </div>
   );
 }
 
@@ -491,7 +408,7 @@ function ContactPanel() {
         </p>
       </div>
       <div className="contact-actions" aria-label="Contact links">
-        <ActionButtons iconOnly />
+        <ActionButtons />
       </div>
     </div>
   );
@@ -524,17 +441,10 @@ export default function App() {
               <ProjectCaseStudy
                 key={project.title}
                 project={project}
-                featured={index < 2}
                 index={index}
               />
             ))}
           </div>
-        </Section>
-        <Section
-          id="lab"
-          title="Lab"
-        >
-          <LabPanel />
         </Section>
         <Section
           id="skills"

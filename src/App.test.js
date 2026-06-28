@@ -44,7 +44,7 @@ test("renders the hero social actions as three icon-only controls", () => {
   render(<App />);
 
   const hero = document.querySelector(".hero");
-  const heroActions = hero.querySelectorAll(".action-card");
+  const heroActions = hero.querySelectorAll(".social-icon-button");
 
   expect(heroActions).toHaveLength(3);
   expect(hero.querySelector('button[aria-label="Copy email"]')).toBeInTheDocument();
@@ -52,6 +52,16 @@ test("renders the hero social actions as three icon-only controls", () => {
   expect(hero.querySelector('a[aria-label="LinkedIn"]')).toBeInTheDocument();
   expect(hero.querySelector('a[aria-label="Resume"]')).not.toBeInTheDocument();
   expect(screen.queryByText("Product showcase")).not.toBeInTheDocument();
+  expect(document.querySelectorAll(".social-icon-button")).toHaveLength(6);
+});
+
+test("places each project screenshot after its information and actions", () => {
+  render(<App />);
+
+  document.querySelectorAll(".project-case").forEach((projectCard) => {
+    expect(projectCard.lastElementChild).toHaveClass("project-preview");
+    expect(projectCard.querySelector(".project-header")).toBe(projectCard.firstElementChild);
+  });
 });
 
 test("links the published project demos in new tabs", () => {
@@ -111,7 +121,7 @@ test("copies the email independently from both email buttons", async () => {
   await waitFor(() => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith("ryanrawat@gmail.com");
     expect(screen.getAllByText("Email copied to clipboard.")).toHaveLength(1);
-    expect(document.querySelector(".action-card-success")).toBeInTheDocument();
+    expect(document.querySelector(".social-icon-button-success")).toBeInTheDocument();
   });
 
   fireEvent.click(screen.getAllByRole("button", { name: "Copy email" })[1]);
@@ -143,12 +153,9 @@ test("presents the engineering stack as categorized technology cards", () => {
   expect(screen.getAllByText("Azure AI Search").length).toBeGreaterThan(0);
 });
 
-test("adds the engineering lab section with personal building themes", () => {
+test("omits the Lab section and its navigation target", () => {
   render(<App />);
 
-  expect(screen.getByRole("heading", { name: "Lab" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "Reliable AI Pipelines" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "Backend Systems" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "Product Dashboards" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "Performance + Reliability" })).toBeInTheDocument();
+  expect(screen.queryByRole("heading", { name: "Lab" })).not.toBeInTheDocument();
+  expect(document.querySelector('a[href="#lab"]')).not.toBeInTheDocument();
 });
