@@ -98,7 +98,6 @@ body::before {
     linear-gradient(90deg, rgba(112, 162, 255, 0.025) 1px, transparent 1px);
   background-size: 32px 32px, 64px 64px, 64px 64px;
   content: "";
-  animation: page-pattern-drift 22s linear infinite;
   mask-image: radial-gradient(circle at 50% 0%, black, transparent 72%);
   pointer-events: none;
 }
@@ -113,19 +112,8 @@ body::after {
     radial-gradient(ellipse at 20% 78%, rgba(59, 130, 246, 0.1), transparent 38rem),
     radial-gradient(ellipse at 84% 92%, rgba(34, 211, 238, 0.08), transparent 34rem);
   content: "";
-  filter: blur(18px);
-  opacity: 0.9;
+  opacity: 0.72;
   pointer-events: none;
-}
-
-@keyframes page-pattern-drift {
-  from {
-    background-position: 0 0, 0 0, 0 0;
-  }
-
-  to {
-    background-position: 28px 18px, 64px 32px, 32px 64px;
-  }
 }
 
 .site-header,

@@ -21,7 +21,7 @@
   z-index: 100;
   border-bottom: 1px solid var(--border);
   background: var(--header-bg);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(10px);
 }
 
 .header-shell {
@@ -133,6 +133,8 @@
 .section {
   position: relative;
   padding: clamp(6rem, 10vw, 8.75rem) 0 0;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
 }
 
 .section + .section::before {
@@ -205,7 +207,6 @@ p {
     radial-gradient(circle at 14% 18%, var(--accent-faint), transparent 29rem);
   background-size: 54px 54px, 54px 54px, auto, auto, auto, auto;
   content: "";
-  animation: hero-grid-drift 18s ease-in-out infinite alternate;
   pointer-events: none;
 }
 
@@ -474,7 +475,6 @@ p {
   border-radius: 999px;
   background: radial-gradient(circle, var(--accent-glow), transparent 67%);
   content: "";
-  filter: blur(12px);
 }
 
 .portrait-panel {
@@ -487,7 +487,6 @@ p {
   box-shadow: var(--shadow), 0 0 50px var(--accent-faint);
   overflow: hidden;
   padding: 0.8rem;
-  backdrop-filter: blur(16px);
   transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
 }
 
@@ -497,7 +496,6 @@ p {
   border-radius: 20px;
   background: var(--card-glass);
   box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(16px);
 }
 
 .terminal-card {
@@ -543,9 +541,16 @@ p {
 
 .floating-stack {
   display: flex;
-  flex-wrap: wrap;
+  grid-column: 1 / -1;
+  flex-wrap: nowrap;
   gap: 0.5rem;
+  overflow-x: auto;
   padding: 0.85rem;
+  scrollbar-width: thin;
+}
+
+.floating-stack span {
+  flex: 0 0 auto;
 }
 
 .floating-stack span,
@@ -636,7 +641,6 @@ p {
   background: var(--card-glass);
   box-shadow: 0 4px 20px rgba(21, 38, 70, 0.035);
   padding: clamp(1.55rem, 3.5vw, 2.2rem);
-  backdrop-filter: blur(14px);
   transition: border-color var(--transition), background var(--transition), box-shadow var(--transition), transform var(--transition);
 }
 
@@ -737,7 +741,6 @@ p {
     linear-gradient(128deg, var(--accent-border), transparent 52%, var(--accent-border)) border-box;
   padding: clamp(1.7rem, 4vw, 2.7rem);
   box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(16px);
   transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
 }
 
@@ -769,7 +772,7 @@ p {
   height: 100%;
   object-fit: cover;
   object-position: top center;
-  transition: transform 320ms ease, filter var(--transition);
+  transition: transform 260ms ease;
 }
 
 .project-header {
@@ -842,7 +845,6 @@ p {
     linear-gradient(145deg, var(--border), transparent 45%, var(--accent-border)) border-box;
   box-shadow: 0 8px 26px rgba(21, 38, 70, 0.04);
   padding: clamp(1.3rem, 2.5vw, 1.6rem);
-  backdrop-filter: blur(14px);
   transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
 }
 
@@ -876,7 +878,6 @@ p {
   border-radius: var(--radius-large);
   background: var(--card-glass);
   padding: clamp(1.35rem, 3vw, 2rem);
-  backdrop-filter: blur(14px);
   transition: border-color var(--transition), box-shadow var(--transition);
 }
 
@@ -957,7 +958,6 @@ p {
     linear-gradient(110deg, var(--accent-border), transparent 48%, var(--accent-border)) border-box;
   padding: clamp(1.65rem, 4vw, 2.6rem);
   box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(14px);
   transition: border-color var(--transition), box-shadow var(--transition);
 }
 
@@ -1016,7 +1016,6 @@ p {
   }
 
   .project-case:hover .project-preview img {
-    filter: saturate(1.08) contrast(1.03);
     transform: scale(1.025);
   }
 
@@ -1026,41 +1025,6 @@ p {
     border-color: var(--accent-border);
     box-shadow: var(--shadow-hover);
     transform: translateY(-2px);
-  }
-}
-
-@supports (animation-timeline: view()) {
-  .section-heading,
-  .project-case,
-  .skill-card,
-  .experience-card,
-  .credential-card,
-  .contact-panel {
-    animation: reveal-up both;
-    animation-timeline: view();
-    animation-range: entry 8% cover 28%;
-  }
-}
-
-@keyframes reveal-up {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes hero-grid-drift {
-  from {
-    background-position: 0 0, 0 0, center, center, center, center;
-  }
-
-  to {
-    background-position: 26px 18px, 18px 26px, center, center, center, center;
   }
 }
 

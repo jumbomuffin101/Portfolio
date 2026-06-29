@@ -237,12 +237,12 @@ function Hero() {
             <p className="terminal-label">currently building</p>
             <code>backend APIs + LLM guardrails + product dashboards</code>
           </div>
-          <div className="floating-stack" aria-label="Core technologies">
-            {["FastAPI", "Next.js", "Postgres", "Docker"].map((tech) => (
-              <span key={tech}>{tech}</span>
-            ))}
-          </div>
         </aside>
+        <div className="floating-stack" aria-label="Core technologies">
+          {coreStack.map((tech) => (
+            <span key={tech}>{tech}</span>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -291,7 +291,7 @@ function ExperienceItem({ item, index }) {
   );
 }
 
-function ProjectCaseStudy({ project, index }) {
+function ProjectCaseStudy({ project }) {
   const primaryTech = project.stack.slice(0, 5);
 
   return (
@@ -324,7 +324,8 @@ function ProjectCaseStudy({ project, index }) {
         <img
           src={project.image}
           alt={`${project.title} interface preview`}
-          loading={index < 2 ? "eager" : "lazy"}
+          loading="lazy"
+          decoding="async"
         />
       </div>
     </article>
@@ -340,9 +341,9 @@ function SkillsPanel() {
         ))}
       </div>
       <div className="skills-grid">
-        {Object.entries(skills).map(([group, values]) => (
+        {Object.entries(skills).map(([group, values], index) => (
           <article key={group} className="skill-card">
-            <p className="skill-index">{String(values.length).padStart(2, "0")}</p>
+            <p className="skill-index">{String(index + 1).padStart(2, "0")}</p>
             <h3>{group}</h3>
             <div className="tag-row">
               {values.map((value) => (
@@ -451,11 +452,10 @@ export default function App() {
           title="Projects"
         >
           <div className="project-stack">
-            {projects.map((project, index) => (
+            {projects.map((project) => (
               <ProjectCaseStudy
                 key={project.title}
                 project={project}
-                index={index}
               />
             ))}
           </div>

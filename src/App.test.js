@@ -179,6 +179,35 @@ test("presents the engineering stack as categorized technology cards", () => {
   expect(screen.getByText("Human-Centered AI")).toBeInTheDocument();
   expect(screen.getAllByText("Amazon Aurora PostgreSQL").length).toBeGreaterThan(0);
   expect(screen.getAllByText("Azure AI Search").length).toBeGreaterThan(0);
+
+  const expectedCategories = [
+    ["01", "Languages"],
+    ["02", "Frontend Engineering"],
+    ["03", "Backend Engineering"],
+    ["04", "Databases & Data"],
+    ["05", "AI / Machine Learning"],
+    ["06", "Cloud / DevOps / Infrastructure"],
+  ];
+
+  document.querySelectorAll(".skill-card").forEach((card, index) => {
+    expect(card.querySelector(".skill-index")).toHaveTextContent(expectedCategories[index][0]);
+    expect(card.querySelector("h3")).toHaveTextContent(expectedCategories[index][1]);
+  });
+});
+
+test("shows the resume-based core stack in one hero tools row", () => {
+  render(<App />);
+
+  const heroTools = document.querySelector(".hero .floating-stack");
+  expect(Array.from(heroTools.children).map((chip) => chip.textContent)).toEqual([
+    "Python",
+    "TypeScript",
+    "FastAPI",
+    "Next.js",
+    "PostgreSQL",
+    "Docker",
+    "AWS",
+  ]);
 });
 
 test("omits the Lab section and its navigation target", () => {
