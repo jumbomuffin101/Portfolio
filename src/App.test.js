@@ -26,6 +26,9 @@ test("uses consistent project type and domain eyebrow labels", () => {
     "FULL-STACK PROJECT / CLINICAL AI",
     "FULL-STACK PROJECT / TRAINING ANALYTICS",
     "FULL-STACK PROJECT / MARKET DATA",
+    "OPEN SOURCE / DOCUMENT AI",
+    "FULL-STACK AI / CAREER TECHNOLOGY",
+    "AI AGENT / DEVELOPER PRODUCTIVITY",
   ].forEach((label) => {
     expect(screen.getByText(label)).toHaveClass("project-context");
   });
@@ -39,6 +42,9 @@ test("presents the selected projects with screenshot previews", () => {
   expect(screen.getByRole("heading", { name: "AI Clinical Ops Agent" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Gym-Risk" })).toBeInTheDocument();
   expect(screen.getByRole("heading", { name: "Trading Analytics Dashboard" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "IBM Docling" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "OfferOS" })).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: "OpsPilot" })).toBeInTheDocument();
   expect(screen.queryByRole("link", { name: "Resume" })).not.toBeInTheDocument();
   expect(screen.getByAltText("RecruitIQ interface preview")).toHaveAttribute(
     "src",
@@ -52,6 +58,31 @@ test("presents the selected projects with screenshot previews", () => {
     "src",
     "/projects/ai-clinical-ops-agent.png"
   );
+  expect(screen.getByAltText("IBM Docling interface preview")).toHaveAttribute(
+    "src",
+    "/projects/ibm-docling.png"
+  );
+  expect(screen.getByAltText("OfferOS interface preview")).toHaveAttribute(
+    "src",
+    "/projects/offeros.png"
+  );
+  expect(screen.getByAltText("OpsPilot interface preview")).toHaveAttribute(
+    "src",
+    "/projects/opspilot.png"
+  );
+});
+
+test("orders the new project cards as IBM Docling, OfferOS, then OpsPilot", () => {
+  render(<App />);
+
+  const titles = Array.from(document.querySelectorAll(".project-case h3")).map(
+    (heading) => heading.textContent
+  );
+  const newProjectTitles = titles.filter((title) =>
+    ["IBM Docling", "OfferOS", "OpsPilot"].includes(title)
+  );
+
+  expect(newProjectTitles).toEqual(["IBM Docling", "OfferOS", "OpsPilot"]);
 });
 
 test("renders the hero social actions as three icon-only controls", () => {
@@ -91,6 +122,9 @@ test("links the published project demos in new tabs", () => {
   const consensusGithubLink = consensusProject.querySelector('a[href="https://github.com/jumbomuffin101/consensus-iq"]');
   const aiLiveLink = aiProject.querySelector('a[href="https://ai-clinical-ops-agent.vercel.app/"]');
   const gymLiveLink = gymProject.querySelector('a[href="https://gym-risk-app.vercel.app/"]');
+  const doclingProject = screen.getByRole("heading", { name: "IBM Docling" }).closest("article");
+  const offerosProject = screen.getByRole("heading", { name: "OfferOS" }).closest("article");
+  const opsPilotProject = screen.getByRole("heading", { name: "OpsPilot" }).closest("article");
 
   expect(recruitGithubLink).toHaveTextContent("GitHub");
   expect(recruitGithubLink).toHaveAttribute("target", "_blank");
@@ -110,6 +144,22 @@ test("links the published project demos in new tabs", () => {
   expect(gymLiveLink).toHaveTextContent("Live");
   expect(gymLiveLink).toHaveAttribute("target", "_blank");
   expect(gymLiveLink).toHaveAttribute("rel", "noopener noreferrer");
+
+  [
+    [doclingProject, "https://github.com/docling-project/docling", "https://docling-project.github.io/docling/"],
+    [offerosProject, "https://github.com/jumbomuffin101/offeros", "https://offeros-web-two.vercel.app/"],
+    [opsPilotProject, "https://github.com/jumbomuffin101/opspilot", "https://opspilot-puce.vercel.app/"],
+  ].forEach(([project, githubUrl, liveUrl]) => {
+    const githubLink = project.querySelector(`a[href="${githubUrl}"]`);
+    const liveLink = project.querySelector(`a[href="${liveUrl}"]`);
+
+    expect(githubLink).toHaveTextContent("GitHub");
+    expect(githubLink).toHaveAttribute("target", "_blank");
+    expect(githubLink).toHaveAttribute("rel", "noopener noreferrer");
+    expect(liveLink).toHaveTextContent("Live");
+    expect(liveLink).toHaveAttribute("target", "_blank");
+    expect(liveLink).toHaveAttribute("rel", "noopener noreferrer");
+  });
 });
 
 test("uses email copy actions and omits stale impact statistics", () => {
