@@ -72,17 +72,14 @@ test("presents the selected projects with screenshot previews", () => {
   );
 });
 
-test("orders the new project cards as IBM Docling, OfferOS, then OpsPilot", () => {
+test("shows the new project cards before all existing projects", () => {
   render(<App />);
 
   const titles = Array.from(document.querySelectorAll(".project-case h3")).map(
     (heading) => heading.textContent
   );
-  const newProjectTitles = titles.filter((title) =>
-    ["IBM Docling", "OfferOS", "OpsPilot"].includes(title)
-  );
 
-  expect(newProjectTitles).toEqual(["IBM Docling", "OfferOS", "OpsPilot"]);
+  expect(titles.slice(0, 3)).toEqual(["IBM Docling", "OfferOS", "OpsPilot"]);
 });
 
 test("renders the hero social actions as three icon-only controls", () => {

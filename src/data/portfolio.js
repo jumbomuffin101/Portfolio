@@ -62,6 +62,42 @@ export const experience = [
 
 export const projects = [
   {
+    title: "IBM Docling",
+    eyebrow: "OPEN SOURCE / DOCUMENT AI",
+    image: `${process.env.PUBLIC_URL}/projects/ibm-docling.png`,
+    stack: ["Python", "Open Source", "Document AI", "LLMs"],
+    built:
+      "Contributed to IBM's open-source document intelligence toolkit, which parses PDFs and other complex document formats into structured, AI-ready representations for downstream retrieval and generative AI workflows.",
+    links: {
+      github: "https://github.com/docling-project/docling",
+      live: "https://docling-project.github.io/docling/",
+    },
+  },
+  {
+    title: "OfferOS",
+    eyebrow: "FULL-STACK AI / CAREER TECHNOLOGY",
+    image: `${process.env.PUBLIC_URL}/projects/offeros.png`,
+    stack: ["Next.js", "TypeScript", "FastAPI", "PostgreSQL", "Clerk"],
+    built:
+      "A full-stack job-search operating system that centralizes applications, targeted resumes, interview preparation, analytics, and AI-powered resume intelligence in one workspace.",
+    links: {
+      github: "https://github.com/jumbomuffin101/offeros",
+      live: "https://offeros-web-two.vercel.app/",
+    },
+  },
+  {
+    title: "OpsPilot",
+    eyebrow: "AI AGENT / DEVELOPER PRODUCTIVITY",
+    image: `${process.env.PUBLIC_URL}/projects/opspilot.png`,
+    stack: ["Next.js", "TypeScript", "Slack API", "GitHub API", "PostgreSQL"],
+    built:
+      "A Slack-native engineering agent that interprets operational requests, audits GitHub repositories, and returns actionable project insights through secure, event-driven workflows.",
+    links: {
+      github: "https://github.com/jumbomuffin101/opspilot",
+      live: "https://opspilot-puce.vercel.app/",
+    },
+  },
+  {
     title: "RecruitIQ",
     eyebrow: "HACKATHON PROJECT / RECRUITING AI",
     image: `${process.env.PUBLIC_URL}/projects/recruitiq.png`,
@@ -185,42 +221,6 @@ export const projects = [
     links: {
       github: "https://github.com/jumbomuffin101/Trading-Analytics-Dashboard",
       live: "https://jumbomuffin101.github.io/Trading-Analytics-Dashboard/",
-    },
-  },
-  {
-    title: "IBM Docling",
-    eyebrow: "OPEN SOURCE / DOCUMENT AI",
-    image: `${process.env.PUBLIC_URL}/projects/ibm-docling.png`,
-    stack: ["Python", "Open Source", "Document AI", "LLMs"],
-    built:
-      "Contributed to IBM's open-source document intelligence toolkit, which parses PDFs and other complex document formats into structured, AI-ready representations for downstream retrieval and generative AI workflows.",
-    links: {
-      github: "https://github.com/docling-project/docling",
-      live: "https://docling-project.github.io/docling/",
-    },
-  },
-  {
-    title: "OfferOS",
-    eyebrow: "FULL-STACK AI / CAREER TECHNOLOGY",
-    image: `${process.env.PUBLIC_URL}/projects/offeros.png`,
-    stack: ["Next.js", "TypeScript", "FastAPI", "PostgreSQL", "Clerk"],
-    built:
-      "A full-stack job-search operating system that centralizes applications, targeted resumes, interview preparation, analytics, and AI-powered resume intelligence in one workspace.",
-    links: {
-      github: "https://github.com/jumbomuffin101/offeros",
-      live: "https://offeros-web-two.vercel.app/",
-    },
-  },
-  {
-    title: "OpsPilot",
-    eyebrow: "AI AGENT / DEVELOPER PRODUCTIVITY",
-    image: `${process.env.PUBLIC_URL}/projects/opspilot.png`,
-    stack: ["Next.js", "TypeScript", "Slack API", "GitHub API", "PostgreSQL"],
-    built:
-      "A Slack-native engineering agent that interprets operational requests, audits GitHub repositories, and returns actionable project insights through secure, event-driven workflows.",
-    links: {
-      github: "https://github.com/jumbomuffin101/opspilot",
-      live: "https://opspilot-puce.vercel.app/",
     },
   },
 ];
