@@ -242,18 +242,32 @@ test("presents the engineering stack as categorized technology cards", () => {
   });
 });
 
-test("shows the resume-based core stack in one hero tools row", () => {
+test("shows the resume-based toolset in the hero panel", () => {
   render(<App />);
 
   const heroTools = document.querySelector(".hero .floating-stack");
   expect(Array.from(heroTools.children).map((chip) => chip.textContent)).toEqual([
     "Python",
+    "Java",
+    "SQL",
     "TypeScript",
+    "JavaScript",
     "FastAPI",
+    "NestJS",
+    "Node.js",
+    "React",
     "Next.js",
     "PostgreSQL",
+    "SQLAlchemy",
+    "Prisma",
     "Docker",
     "AWS",
+    "Git",
+    "GitHub Actions",
+    "Jenkins",
+    "CI/CD",
+    "REST APIs",
+    "LLMs",
   ]);
 });
 

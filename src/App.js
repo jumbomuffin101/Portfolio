@@ -18,6 +18,29 @@ const navItems = [
 ];
 
 const coreStack = ["Python", "TypeScript", "FastAPI", "Next.js", "PostgreSQL", "Docker", "AWS"];
+const heroTools = [
+  "Python",
+  "Java",
+  "SQL",
+  "TypeScript",
+  "JavaScript",
+  "FastAPI",
+  "NestJS",
+  "Node.js",
+  "React",
+  "Next.js",
+  "PostgreSQL",
+  "SQLAlchemy",
+  "Prisma",
+  "Docker",
+  "AWS",
+  "Git",
+  "GitHub Actions",
+  "Jenkins",
+  "CI/CD",
+  "REST APIs",
+  "LLMs",
+];
 
 function ActionIcon({ type }) {
   if (type === "email") {
@@ -239,7 +262,7 @@ function Hero() {
           </div>
         </aside>
         <div className="floating-stack" aria-label="Core technologies">
-          {coreStack.map((tech) => (
+          {heroTools.map((tech) => (
             <span key={tech}>{tech}</span>
           ))}
         </div>
