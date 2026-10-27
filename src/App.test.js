@@ -1,279 +1,479 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import App from "./App";
+import { projects } from "./data/portfolio";
+import { disciplines } from "./data/disciplines";
+import ResumeAction, { resumeHref } from "./components/ResumeAction";
+import { readFileSync } from "fs";
+import path from "path";
 
-test("renders Aryan's name", () => {
+jest.mock("gsap/ScrollTrigger", () => ({ ScrollTrigger: { name: "scrollTrigger" } }));
+
+// Animation rendering is exercised in the real browser; these tests cover user flows.
+jest.mock("./components/InteractionSystem", () => ({
+  __esModule: true,
+  default: () => null,
+  Magnetic: ({ children, className, ...props }) => (
+    <a className={className} {...props}>
+      {children}
+    </a>
+  ),
+}));
+
+beforeEach(() => {
+  localStorage.clear();
+  window.history.replaceState(null, "", window.location.pathname);
+  window.matchMedia = jest.fn().mockImplementation((query) => ({
+    matches: query.includes("prefers-reduced-motion"),
+    media: query,
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+  }));
+  window.IntersectionObserver = jest.fn().mockImplementation(() => ({
+    observe: jest.fn(),
+    disconnect: jest.fn(),
+  }));
+});
+
+test("renders the real identity, hero actions and mobile/reduced-motion visual", () => {
   render(<App />);
-  expect(document.querySelector(".hero-name-accent")).toHaveTextContent("Aryan Rawat");
+  expect(
+    screen.getByRole("heading", { name: "Aryan Rawat" }),
+  ).toBeInTheDocument();
   expect(
     screen.getByRole("heading", {
-      name: "Hey, I’m Aryan Rawat.",
-    })
+      name: /Software Engineer Building Intelligent Systems/,
+    }),
   ).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: /Explore my work/ })).toHaveAttribute(
+    "href",
+    "#projects",
+  );
+  const resumeLinks = screen.getAllByRole("link", {
+    name: "Download Resume",
+  });
+  expect(resumeLinks).toHaveLength(2);
+  resumeLinks.forEach((link) => {
+    expect(link).toHaveAttribute(
+      "href",
+      `${process.env.PUBLIC_URL || ""}/resume.pdf`,
+    );
+    expect(link).toHaveAttribute("download", "Aryan-Rawat-Resume.pdf");
+  });
   expect(
-    screen.getByText("Software Engineer building AI systems, backend platforms, and full-stack products.")
-  ).toBeInTheDocument();
+    screen.queryByRole("button", { name: "Download Resume" }),
+  ).not.toBeInTheDocument();
+  expect(screen.queryByText(/PDF not yet available/)).not.toBeInTheDocument();
+  expect(document.querySelector(".orbit-fallback")).toBeInTheDocument();
+  expect(document.documentElement.dataset.motion).toBe("reduced");
+});
+
+test("features the requested projects with real previews, links and engineering details", () => {
+  render(<App />);
+  const titles = [...document.querySelectorAll(".project-case h3")].map(
+    (element) => element.textContent,
+  );
+  expect(titles).toEqual([
+    "Next Chapter",
+    "IBM Docling",
+    "OfferOS",
+    "OpsPilot",
+  ]);
+  projects.slice(0, 4).forEach((project) => {
+    const article = screen
+      .getByRole("heading", { name: project.title })
+      .closest("article");
+    expect(within(article).getByRole("img")).toHaveAttribute(
+      "src",
+      project.image,
+    );
+    const github = within(article).getByRole("link", { name: "GitHub ↗" });
+    expect(github).toHaveAttribute("href", project.links.github);
+    expect(github).toHaveAttribute("rel", "noopener noreferrer");
+    if (project.repositoryVisibility === "private") {
+      expect(github).toHaveAccessibleDescription("Private repository · access required");
+    }
+    if (project.links.live) {
+      expect(within(article).getByRole("link", { name: "Live ↗" })).toHaveAttribute("href", project.links.live);
+    }
+    expect(article.querySelector("details ul")).toBeInTheDocument();
+  });
+  const nextChapter = screen
+    .getByRole("heading", { name: "Next Chapter" })
+    .closest("article");
   expect(
-    screen.getByText("CS @ Stevens focused on production-grade APIs, LLM workflows, and data systems.")
-  ).toBeInTheDocument();
+    within(nextChapter).queryByRole("link", { name: "Live ↗" }),
+  ).not.toBeInTheDocument();
 });
 
-test("uses consistent project type and domain eyebrow labels", () => {
+test("opens the archive and retains all previous project links", () => {
   render(<App />);
-
-  [
-    "HACKATHON PROJECT / RECRUITING AI",
-    "HACKATHON PROJECT / MULTI-AGENT AI",
-    "FULL-STACK PROJECT / CLINICAL AI",
-    "FULL-STACK PROJECT / TRAINING ANALYTICS",
-    "FULL-STACK PROJECT / MARKET DATA",
-    "OPEN SOURCE / DOCUMENT AI",
-    "FULL-STACK AI / CAREER TECHNOLOGY",
-    "AI AGENT / DEVELOPER PRODUCTIVITY",
-  ].forEach((label) => {
-    expect(screen.getByText(label)).toHaveClass("project-context");
+  expect(
+    screen.queryByRole("heading", { name: "RecruitIQ" }),
+  ).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: /Keep exploring/ }));
+  projects.slice(4).forEach((project) => {
+    const article = screen
+      .getByRole("heading", { name: project.title })
+      .closest("article");
+    expect(
+      within(article).getByRole("link", { name: "GitHub ↗" }),
+    ).toHaveAttribute("href", project.links.github);
+    expect(
+      within(article).getByRole("link", { name: "Live ↗" }),
+    ).toHaveAttribute("href", project.links.live);
   });
+  fireEvent.click(screen.getByRole("button", { name: /Close archive/ }));
+  expect(
+    screen.queryByRole("heading", { name: "RecruitIQ" }),
+  ).not.toBeInTheDocument();
 });
 
-test("presents the selected projects with screenshot previews", () => {
+test("technology selection traces exact relationships from the real project data", () => {
   render(<App />);
-
-  expect(screen.getByRole("heading", { name: "RecruitIQ" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "ConsensusIQ" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "AI Clinical Ops Agent" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "Gym-Risk" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "Trading Analytics Dashboard" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "IBM Docling" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "OfferOS" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "OpsPilot" })).toBeInTheDocument();
-  expect(screen.queryByRole("link", { name: "Resume" })).not.toBeInTheDocument();
-  expect(screen.getByAltText("RecruitIQ interface preview")).toHaveAttribute(
-    "src",
-    "/projects/recruitiq.png"
+  fireEvent.click(screen.getByRole("button", { name: "PostgreSQL" }));
+  expect(screen.getByRole("button", { name: "PostgreSQL" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
   );
-  expect(screen.getByAltText("ConsensusIQ interface preview")).toHaveAttribute(
-    "src",
-    "/projects/consensusiq.png"
+  expect(screen.getByRole("button", { name: "Python" })).toHaveAttribute(
+    "aria-pressed",
+    "false",
   );
-  expect(screen.getByAltText("AI Clinical Ops Agent interface preview")).toHaveAttribute(
-    "src",
-    "/projects/ai-clinical-ops-agent.png"
+  const inspector = document.querySelector(".ecosystem-inspector");
+  const related = projects.filter((project) =>
+    project.stack.includes("PostgreSQL"),
   );
-  expect(screen.getByAltText("IBM Docling interface preview")).toHaveAttribute(
-    "src",
-    "/projects/ibm-docling.png"
+  expect(within(inspector).getAllByRole("link")).toHaveLength(related.length);
+  related.forEach((project) =>
+    expect(within(inspector).getByText(project.title)).toBeInTheDocument(),
   );
-  expect(screen.getByAltText("OfferOS interface preview")).toHaveAttribute(
-    "src",
-    "/projects/offeros.png"
-  );
-  expect(screen.getByAltText("OpsPilot interface preview")).toHaveAttribute(
-    "src",
-    "/projects/opspilot.png"
-  );
+  expect(within(inspector).queryByText("IBM Docling")).not.toBeInTheDocument();
 });
 
-test("shows the new project cards before all existing projects", () => {
+test("mobile navigation opens, navigates and closes with Escape", () => {
   render(<App />);
-
-  const titles = Array.from(document.querySelectorAll(".project-case h3")).map(
-    (heading) => heading.textContent
-  );
-
-  expect(titles.slice(0, 3)).toEqual(["IBM Docling", "OfferOS", "OpsPilot"]);
+  const toggle = screen.getByRole("button", { name: "Menu +" });
+  fireEvent.click(toggle);
+  expect(toggle).toHaveAttribute("aria-expanded", "true");
+  fireEvent.keyDown(window, { key: "Escape" });
+  expect(toggle).toHaveAttribute("aria-expanded", "false");
+  expect(toggle).toHaveFocus();
+  fireEvent.click(toggle);
+  fireEvent.click(screen.getByRole("link", { name: "01 Work" }));
+  expect(toggle).toHaveAttribute("aria-expanded", "false");
 });
 
-test("renders the hero social actions as three icon-only controls", () => {
-  render(<App />);
-
-  const hero = document.querySelector(".hero");
-  const heroActions = hero.querySelectorAll(".social-icon-button");
-
-  expect(heroActions).toHaveLength(3);
-  expect(hero.querySelector('button[aria-label="Copy email"]')).toBeInTheDocument();
-  expect(hero.querySelector('a[aria-label="GitHub"]')).toBeInTheDocument();
-  expect(hero.querySelector('a[aria-label="LinkedIn"]')).toBeInTheDocument();
-  expect(hero.querySelector('a[aria-label="Resume"]')).not.toBeInTheDocument();
-  expect(screen.queryByText("Product showcase")).not.toBeInTheDocument();
-  expect(document.querySelectorAll(".social-icon-button")).toHaveLength(6);
-});
-
-test("places each project screenshot after its information and actions", () => {
-  render(<App />);
-
-  document.querySelectorAll(".project-case").forEach((projectCard) => {
-    expect(projectCard.lastElementChild).toHaveClass("project-preview");
-    expect(projectCard.querySelector(".project-header")).toBe(projectCard.firstElementChild);
-  });
-});
-
-test("links the published project demos in new tabs", () => {
-  render(<App />);
-
-  const recruitProject = screen.getByRole("heading", { name: "RecruitIQ" }).closest("article");
-  const consensusProject = screen.getByRole("heading", { name: "ConsensusIQ" }).closest("article");
-  const aiProject = screen.getByRole("heading", { name: "AI Clinical Ops Agent" }).closest("article");
-  const gymProject = screen.getByRole("heading", { name: "Gym-Risk" }).closest("article");
-  const recruitLiveLink = recruitProject.querySelector('a[href="https://recruit-iq-five.vercel.app/"]');
-  const recruitGithubLink = recruitProject.querySelector('a[href="https://github.com/jumbomuffin101/RecruitIQ"]');
-  const consensusLiveLink = consensusProject.querySelector('a[href="https://consensus-iq.vercel.app/"]');
-  const consensusGithubLink = consensusProject.querySelector('a[href="https://github.com/jumbomuffin101/consensus-iq"]');
-  const aiLiveLink = aiProject.querySelector('a[href="https://ai-clinical-ops-agent.vercel.app/"]');
-  const gymLiveLink = gymProject.querySelector('a[href="https://gym-risk-app.vercel.app/"]');
-  const doclingProject = screen.getByRole("heading", { name: "IBM Docling" }).closest("article");
-  const offerosProject = screen.getByRole("heading", { name: "OfferOS" }).closest("article");
-  const opsPilotProject = screen.getByRole("heading", { name: "OpsPilot" }).closest("article");
-
-  expect(recruitGithubLink).toHaveTextContent("GitHub");
-  expect(recruitGithubLink).toHaveAttribute("target", "_blank");
-  expect(recruitGithubLink).toHaveAttribute("rel", "noopener noreferrer");
-  expect(recruitLiveLink).toHaveTextContent("Live");
-  expect(recruitLiveLink).toHaveAttribute("target", "_blank");
-  expect(recruitLiveLink).toHaveAttribute("rel", "noopener noreferrer");
-  expect(consensusGithubLink).toHaveTextContent("GitHub");
-  expect(consensusGithubLink).toHaveAttribute("target", "_blank");
-  expect(consensusGithubLink).toHaveAttribute("rel", "noopener noreferrer");
-  expect(consensusLiveLink).toHaveTextContent("Live");
-  expect(consensusLiveLink).toHaveAttribute("target", "_blank");
-  expect(consensusLiveLink).toHaveAttribute("rel", "noopener noreferrer");
-  expect(aiLiveLink).toHaveTextContent("Live");
-  expect(aiLiveLink).toHaveAttribute("target", "_blank");
-  expect(aiLiveLink).toHaveAttribute("rel", "noopener noreferrer");
-  expect(gymLiveLink).toHaveTextContent("Live");
-  expect(gymLiveLink).toHaveAttribute("target", "_blank");
-  expect(gymLiveLink).toHaveAttribute("rel", "noopener noreferrer");
-
-  [
-    [doclingProject, "https://github.com/docling-project/docling", "https://docling-project.github.io/docling/"],
-    [offerosProject, "https://github.com/jumbomuffin101/offeros", "https://offeros-web-two.vercel.app/"],
-    [opsPilotProject, "https://github.com/jumbomuffin101/opspilot", "https://opspilot-puce.vercel.app/"],
-  ].forEach(([project, githubUrl, liveUrl]) => {
-    const githubLink = project.querySelector(`a[href="${githubUrl}"]`);
-    const liveLink = project.querySelector(`a[href="${liveUrl}"]`);
-
-    expect(githubLink).toHaveTextContent("GitHub");
-    expect(githubLink).toHaveAttribute("target", "_blank");
-    expect(githubLink).toHaveAttribute("rel", "noopener noreferrer");
-    expect(liveLink).toHaveTextContent("Live");
-    expect(liveLink).toHaveAttribute("target", "_blank");
-    expect(liveLink).toHaveAttribute("rel", "noopener noreferrer");
-  });
-});
-
-test("uses email copy actions and omits stale impact statistics", () => {
-  render(<App />);
-
-  expect(screen.getAllByRole("button", { name: "Copy email" })).toHaveLength(2);
-  expect(document.querySelector('a[href^="mailto:"]')).not.toBeInTheDocument();
-  expect(document.querySelector('a[href*="mail.google.com"]')).not.toBeInTheDocument();
-  expect(screen.getByText("ryanrawat@gmail.com")).toBeInTheDocument();
-  expect(screen.queryByText("10+")).not.toBeInTheDocument();
-  expect(screen.getByText("Created by Aryan Rawat")).toBeInTheDocument();
-});
-
-test("copies the email independently from both email buttons", async () => {
+test("copies contact email and reports clipboard failure accessibly", async () => {
   Object.defineProperty(navigator, "clipboard", {
     configurable: true,
     value: { writeText: jest.fn().mockResolvedValue(undefined) },
   });
-
   render(<App />);
-  fireEvent.click(screen.getAllByRole("button", { name: "Copy email" })[0]);
-
-  await waitFor(() => {
-    expect(navigator.clipboard.writeText).toHaveBeenCalledWith("ryanrawat@gmail.com");
-    expect(screen.getAllByText("Email copied to clipboard.")).toHaveLength(1);
-    expect(document.querySelector(".social-icon-button-success")).toBeInTheDocument();
-  });
-
-  fireEvent.click(screen.getAllByRole("button", { name: "Copy email" })[1]);
-
-  await waitFor(() => {
-    expect(navigator.clipboard.writeText).toHaveBeenCalledTimes(2);
-    expect(screen.getAllByText("Email copied to clipboard.")).toHaveLength(2);
-  });
-});
-
-test("renders education and credentials as balanced content cards", () => {
-  render(<App />);
-
-  expect(screen.getByRole("heading", { name: "Stevens Institute of Technology" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "Certifications" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "Honors" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "Relevant Coursework" })).toBeInTheDocument();
-});
-
-test("links the Research Assistant experience to its repository", () => {
-  render(<App />);
-
-  const researchRole = screen.getByRole("heading", { name: "Research Assistant" });
-  const researchCard = researchRole.closest("article");
-  const repoLink = researchCard.querySelector(
-    'a[href="https://github.com/jumbomuffin101/AI-Research-ConceptMapAnalysis"]'
+  fireEvent.click(screen.getByRole("button", { name: "Copy email" }));
+  await waitFor(() =>
+    expect(
+      within(screen.getByRole("region", { name: "Contact" })).getByRole(
+        "status",
+      ),
+    ).toHaveTextContent("Email copied to clipboard."),
   );
-
-  expect(repoLink).toHaveTextContent("View Research Repo");
-  expect(repoLink).toHaveAttribute("target", "_blank");
-  expect(repoLink).toHaveAttribute("rel", "noopener noreferrer");
+  expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+    "arawat3@stevens.edu",
+  );
+  navigator.clipboard.writeText.mockRejectedValueOnce(new Error("Blocked"));
+  fireEvent.click(screen.getByRole("button", { name: "Copy email" }));
+  await waitFor(() =>
+    expect(
+      within(screen.getByRole("region", { name: "Contact" })).getByRole(
+        "status",
+      ),
+    ).toHaveTextContent("Copy email: arawat3@stevens.edu"),
+  );
 });
 
-test("presents the engineering stack as categorized technology cards", () => {
+test("discipline previews and committed selections work without WebGL", () => {
   render(<App />);
+  const controls = screen.getByRole("group", {
+    name: "Explore engineering disciplines",
+  });
+  const backend = within(controls).getByRole("button", { name: /Backend/ });
+  const ai = within(controls).getByRole("button", { name: /AI Systems/ });
+  fireEvent.pointerEnter(backend);
+  expect(
+    screen.getByText("Structure behind the experience."),
+  ).toBeInTheDocument();
+  expect(ai).toHaveAttribute("aria-pressed", "true");
+  expect(backend).toHaveAttribute("aria-pressed", "false");
+  fireEvent.pointerLeave(backend);
+  expect(
+    screen.getByText("Intelligence, grounded in engineering."),
+  ).toBeInTheDocument();
 
-  expect(screen.getByRole("heading", { name: "Stack" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "Frontend Engineering" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "Backend Engineering" })).toBeInTheDocument();
-  expect(screen.getByRole("heading", { name: "AI / Machine Learning" })).toBeInTheDocument();
-  expect(screen.getByText("Human-Centered AI")).toBeInTheDocument();
-  expect(screen.getAllByText("Amazon Aurora PostgreSQL").length).toBeGreaterThan(0);
-  expect(screen.getAllByText("Azure AI Search").length).toBeGreaterThan(0);
+  disciplines.forEach((discipline) => {
+    const button = within(controls).getByRole("button", {
+      name: new RegExp(discipline.label),
+    });
+    fireEvent.click(button);
+    expect(button).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByText(discipline.title)).toBeInTheDocument();
+    expect(
+      within(document.getElementById("orbit-detail")).getByRole("link", {
+        name: discipline.evidence,
+      }),
+    ).toHaveAttribute("href", discipline.href);
+    expect(
+      within(document.querySelector(".hero-observatory")).getByRole("status"),
+    ).toHaveTextContent(`${discipline.label} selected.`);
+  });
+  expect(document.querySelector("canvas")).not.toBeInTheDocument();
+});
 
-  const expectedCategories = [
-    ["01", "Languages"],
-    ["02", "Frontend Engineering"],
-    ["03", "Backend Engineering"],
-    ["04", "Databases & Data"],
-    ["05", "AI / Machine Learning"],
-    ["06", "Cloud / DevOps / Infrastructure"],
+test("configured resume downloads use the Pages base path exactly once", () => {
+  expect(resumeHref("resume.pdf", "/Portfolio")).toBe("/Portfolio/resume.pdf");
+  expect(resumeHref("/resume.pdf", "/Portfolio/")).toBe(
+    "/Portfolio/resume.pdf",
+  );
+  expect(resumeHref("/Portfolio/resume.pdf", "/Portfolio")).toBe(
+    "/Portfolio/resume.pdf",
+  );
+  expect(resumeHref(null, "/Portfolio")).toBeNull();
+  render(<ResumeAction path="resume.pdf" />);
+  const download = screen.getByRole("link", { name: "Download Resume" });
+  expect(download).toHaveAttribute(
+    "href",
+    `${process.env.PUBLIC_URL || ""}/resume.pdf`,
+  );
+  expect(download).toHaveAttribute("download", "Aryan-Rawat-Resume.pdf");
+});
+
+test("hero observers and visibility subscriptions are cleaned up", () => {
+  const remove = jest.spyOn(document, "removeEventListener");
+  const { unmount } = render(<App />);
+  const observers = window.IntersectionObserver.mock.results.map(
+    (result) => result.value,
+  );
+  unmount();
+  observers.forEach((observer) =>
+    expect(observer.disconnect).toHaveBeenCalled(),
+  );
+  expect(remove).toHaveBeenCalledWith("visibilitychange", expect.any(Function));
+  remove.mockRestore();
+});
+
+test("theme and animation controls retain useful functionality", () => {
+  render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Switch to light mode" }));
+  expect(document.documentElement.dataset.theme).toBe("light");
+  expect(localStorage.getItem("theme")).toBe("light");
+  fireEvent.click(screen.getByRole("button", { name: "Pause animations" }));
+  expect(
+    screen.getByRole("button", { name: "Enable animations" }),
+  ).toHaveAttribute("aria-pressed", "true");
+  expect(
+    screen.getByRole("heading", { name: "Research Assistant" }),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByRole("link", { name: /View Research Repo/ }),
+  ).toHaveAttribute(
+    "href",
+    "https://github.com/jumbomuffin101/AI-Research-ConceptMapAnalysis",
+  );
+});
+
+test("experience reflects the resume's current roles, dates, and impact metrics", () => {
+  render(<App />);
+  const course = screen
+    .getByRole("heading", { name: "Course Assistant" })
+    .closest("article");
+  expect(course).toHaveTextContent("Sep 2026 - Present");
+  expect(course).toHaveTextContent("30+ students");
+  expect(
+    screen.queryByText("Incoming Course Assistant"),
+  ).not.toBeInTheDocument();
+  const research = screen
+    .getByRole("heading", { name: "Research Assistant" })
+    .closest("article");
+  expect(research).toHaveTextContent("May 2026 - Aug 2026");
+  expect(research).toHaveTextContent("Streamlit");
+  expect(research).toHaveTextContent("hallucination patterns");
+  expect(within(research).queryByText("Next.js")).not.toBeInTheDocument();
+  const genie = screen.getByText("GENIE AI").closest("article");
+  [
+    "Remote",
+    "10+ microservices",
+    "3 cross-functional teams",
+    "15% of nightly batch failures",
+    "15 to 2 minutes",
+    "4x",
+  ].forEach((fact) => expect(genie).toHaveTextContent(fact));
+  const truclaim = screen.getByText("TruClaim").closest("article");
+  [
+    "May 2025 - Aug 2025",
+    "200+ insurance claims weekly",
+    "15 hours/week",
+    "22%",
+    "85%",
+  ].forEach((fact) => expect(truclaim).toHaveTextContent(fact));
+});
+
+test("featured project dates and engineering details match the supplied resume", () => {
+  render(<App />);
+  const expected = [
+    ["Next Chapter", "Oct 2026", "4-person team", "Supabase PostgreSQL"],
+    [
+      "IBM Docling",
+      "Jun 2026 - Aug 2026",
+      "merged upstream contribution",
+      "file handle leaks",
+    ],
+    [
+      "OfferOS",
+      "Jun 2026 - Aug 2026",
+      "authenticated users",
+      "ownership-based access",
+    ],
+    [
+      "OpsPilot",
+      "Jun 2026 - Jul 2026",
+      "Block Kit workflows",
+      "deployment history",
+    ],
   ];
-
-  document.querySelectorAll(".skill-card").forEach((card, index) => {
-    expect(card.querySelector(".skill-index")).toHaveTextContent(expectedCategories[index][0]);
-    expect(card.querySelector("h3")).toHaveTextContent(expectedCategories[index][1]);
+  expected.forEach(([title, period, summary, detail]) => {
+    const article = screen
+      .getByRole("heading", { name: title })
+      .closest("article");
+    expect(within(article).getByText(period)).toBeVisible();
+    expect(article).toHaveTextContent(summary);
+    fireEvent.click(article.querySelector("summary"));
+    expect(within(article).getByText(new RegExp(detail))).toBeVisible();
   });
 });
 
-test("shows the resume-based toolset in the hero panel", () => {
+test("education, skills, certifications, and contact details use the resume", () => {
   render(<App />);
+  const education = screen.getByRole("region", { name: "Education" });
+  expect(education).toHaveTextContent("3.7/4.0");
+  expect(education).toHaveTextContent("Aug 2024 - Dec 2027");
+  expect(education).toHaveTextContent("Upsilon Pi Epsilon (UPE)");
+  fireEvent.click(within(education).getByText(/Relevant Coursework/));
+  [
+    "Database Management Systems",
+    "Theory of Computation",
+    "Web Programming",
+  ].forEach((course) =>
+    expect(within(education).getByText(course)).toBeVisible(),
+  );
+  fireEvent.click(within(education).getByText(/Certifications/));
+  expect(
+    within(education).getByText("AWS Cloud Practitioner").closest("p"),
+  ).toHaveTextContent("2025");
+  expect(
+    within(education).getByText("AWS AI Practitioner").closest("p"),
+  ).toHaveTextContent("2026");
+  fireEvent.click(screen.getByText(/Explore the full toolset/));
+  const tools = document.querySelector(".skills-grid");
+  ["C++", "Streamlit", "OpenAI", "GitHub Actions", "Prisma"].forEach((tool) =>
+    expect(within(tools).getByText(tool)).toBeVisible(),
+  );
+  expect(
+    screen.getByRole("link", { name: "arawat3@stevens.edu" }),
+  ).toHaveAttribute("href", "mailto:arawat3@stevens.edu");
+  expect(
+    screen.getByRole("link", { name: "+1 (917) 306-4440" }),
+  ).toHaveAttribute("href", "tel:+19173064440");
+});
 
-  const heroTools = document.querySelector(".hero .floating-stack");
-  expect(Array.from(heroTools.children).map((chip) => chip.textContent)).toEqual([
-    "Python",
-    "Java",
-    "SQL",
-    "TypeScript",
-    "JavaScript",
-    "FastAPI",
-    "NestJS",
-    "Node.js",
-    "React",
-    "Next.js",
-    "PostgreSQL",
-    "SQLAlchemy",
-    "Prisma",
-    "Docker",
-    "AWS",
-    "Git",
-    "GitHub Actions",
-    "Jenkins",
-    "CI/CD",
-    "REST APIs",
-    "LLMs",
+test("the LLM explorer includes OpenAI-backed projects after the stack update", () => {
+  render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "LLMs" }));
+  const inspector = document.querySelector(".ecosystem-inspector");
+  expect(within(inspector).getByText("OpsPilot")).toBeInTheDocument();
+  expect(
+    within(inspector).getByText("AI Clinical Ops Agent"),
+  ).toBeInTheDocument();
+  expect(within(inspector).queryByText("IBM Docling")).not.toBeInTheDocument();
+});
+
+test("the configured public resume asset contains an actual PDF", () => {
+  const pdf = readFileSync(path.join(__dirname, "../public/resume.pdf"));
+  expect(pdf.subarray(0, 5).toString()).toBe("%PDF-");
+  expect(pdf.length).toBeGreaterThan(1000);
+});
+
+test("shared section URLs restore their destination after the React content mounts", async () => {
+  const original = Element.prototype.scrollIntoView;
+  Element.prototype.scrollIntoView = jest.fn();
+  window.history.replaceState(null, "", "#education");
+  const { unmount } = render(<App />);
+  await waitFor(() => expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith({ behavior: "auto", block: "start" }));
+  expect(document.getElementById("education")).toHaveFocus();
+  unmount();
+  window.history.replaceState(null, "", window.location.pathname);
+  Element.prototype.scrollIntoView = original;
+});
+
+test("project engineering maps expose selectable implementation stages", () => {
+  render(<App />);
+  const article = document.getElementById("ibm-docling");
+  const cleanup = within(article).getByRole("button", { name: /Targeted cleanup/ });
+  fireEvent.click(cleanup);
+  expect(cleanup).toHaveAttribute("aria-pressed", "true");
+  expect(within(article).getByRole("button", { name: /Initialization fails/ })).toHaveAttribute("aria-pressed", "false");
+  expect(document.getElementById("ibm-docling-flow-detail")).toHaveTextContent("File handle release");
+  const navigation = screen.getByRole("navigation", { name: "Project chapters" });
+  expect(within(navigation).getAllByRole("link").map((link) => link.getAttribute("href"))).toEqual([
+    "#next-chapter", "#ibm-docling", "#offeros", "#opspilot",
   ]);
 });
 
-test("omits the Lab section and its navigation target", () => {
-  render(<App />);
+test("chapter navigation follows the visible project and disconnects its observer", () => {
+  const observations = [];
+  window.IntersectionObserver.mockImplementation((callback) => {
+    const observer = { observe: jest.fn(), disconnect: jest.fn(), callback };
+    observations.push(observer);
+    return observer;
+  });
+  const { unmount } = render(<App />);
+  const observer = observations.find((entry) => entry.observe.mock.calls.some(([target]) => target.id === "ibm-docling"));
+  act(() => observer.callback([{ target: document.getElementById("ibm-docling"), isIntersecting: true }]));
+  const navigation = screen.getByRole("navigation", { name: "Project chapters" });
+  expect(within(navigation).getByRole("link", { name: "02 IBM Docling" })).toHaveAttribute("aria-current", "step");
+  expect(within(navigation).getByRole("link", { name: "01 Next Chapter" })).not.toHaveAttribute("aria-current");
+  unmount();
+  expect(observer.disconnect).toHaveBeenCalledTimes(1);
+});
 
-  expect(screen.queryByRole("heading", { name: "Lab" })).not.toBeInTheDocument();
-  expect(document.querySelector('a[href="#lab"]')).not.toBeInTheDocument();
+test("each real project screenshot can open and close with focus restored", () => {
+  HTMLDialogElement.prototype.showModal = jest.fn(function () { this.setAttribute("open", ""); });
+  render(<App />);
+  projects.slice(0, 4).forEach((project) => {
+    const trigger = screen.getByRole("button", { name: `Enlarge ${project.title} screenshot` });
+    trigger.focus();
+    fireEvent.click(trigger);
+    const dialog = screen.getByRole("dialog", { name: project.title });
+    expect(dialog).toHaveAttribute("data-lenis-prevent");
+    expect(within(dialog).getByRole("img")).toHaveAttribute("src", project.image);
+    fireEvent.click(within(dialog).getByRole("button", { name: "Close project preview" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
+    expect(document.body.style.overflow).toBe("");
+  });
+});
+
+test("Docling preview is a real PNG with matching native dimensions and a base-prefixed URL", () => {
+  const png = readFileSync(path.join(__dirname, "../public/projects/ibm-docling.png"));
+  expect(png.subarray(0, 8).toString("hex")).toBe("89504e470d0a1a0a");
+  render(<App />);
+  const image = within(document.getElementById("ibm-docling")).getByRole("img");
+  expect(image.getAttribute("src")).toBe(`${process.env.PUBLIC_URL || ""}/projects/ibm-docling.png`);
+  expect(Number(image.getAttribute("width"))).toBe(png.readUInt32BE(16));
+  expect(Number(image.getAttribute("height"))).toBe(png.readUInt32BE(20));
 });

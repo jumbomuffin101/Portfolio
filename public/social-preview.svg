@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+ <rect width="1200" height="630" fill="#07090e"/>
+ <g fill="none" stroke="#6985ff" stroke-width="1">
+  <ellipse cx="1000" cy="330" rx="245" ry="130" transform="rotate(-32 1000 330)" opacity=".65"/>
+  <ellipse cx="1000" cy="330" rx="255" ry="110" transform="rotate(38 1000 330)" opacity=".35"/>
+  <ellipse cx="1000" cy="330" rx="235" ry="135" transform="rotate(-76 1000 330)" opacity=".3"/>
+  <circle cx="1000" cy="330" r="93" fill="#111a31" stroke="#9aafff"/>
+  <ellipse cx="1000" cy="330" rx="94" ry="30" transform="rotate(-28 1000 330)" stroke="#86d5ee"/>
+ </g>
+ <circle cx="792" cy="454" r="7" fill="#86d5ee"/>
+ <circle cx="1145" cy="180" r="6" fill="#b19cff"/>
+ <g font-family="Arial,Helvetica,sans-serif">
+  <text x="70" y="85" font-size="28" font-weight="700" letter-spacing="-3" fill="#f1f0f5">a<tspan fill="#8197ff">r</tspan><tspan dx="16" font-size="17" letter-spacing="0" fill="#b2bacb">ARYAN RAWAT / SOFTWARE ENGINEER</tspan></text>
+  <text x="65" y="275" font-size="103" letter-spacing="-7" fill="#f1f0f5">Aryan Rawat<tspan fill="#8197ff">.</tspan></text>
+  <text x="70" y="350" font-size="36" letter-spacing="-1" fill="#d6dced">Building intelligent systems.</text>
+  <text x="70" y="400" font-size="23" fill="#abb6cd">Backend engineering · AI systems · Full-stack products</text>
+  <path d="M70 506H1130" stroke="#293143"/>
+  <text x="70" y="555" font-size="20" fill="#bbc7e0">CS @ Stevens · Hoboken, New Jersey</text>
+  <text x="1130" y="555" text-anchor="end" font-size="20" fill="#91a8ff">jumbomuffin101.github.io/Portfolio</text>
+ </g>
+</svg>

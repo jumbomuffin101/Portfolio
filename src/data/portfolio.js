@@ -3,71 +3,114 @@ export const profile = {
   location: "Hoboken, New Jersey",
   github: "https://github.com/jumbomuffin101",
   linkedin: "https://www.linkedin.com/in/aryan-rawat-bbb0a6276/",
+  email: "arawat3@stevens.edu",
+  phone: "+1 (917) 306-4440",
+  phoneHref: "tel:+19173064440",
+  resumeUrl: "resume.pdf",
   photoUrl: `${process.env.PUBLIC_URL}/headshot.jpg`,
   greeting: "Hey, I’m",
-  focusLine: "Software Engineer building AI systems, backend platforms, and full-stack products.",
-  positioning: "CS @ Stevens focused on production-grade APIs, LLM workflows, and data systems.",
+  focusLine:
+    "Software Engineer building AI systems, backend platforms, and full-stack products.",
+  positioning:
+    "CS @ Stevens focused on production-grade APIs, LLM workflows, and data systems.",
 };
 
 export const experience = [
   {
     company: "Department of Computer Science, Stevens Institute of Technology",
-    role: "Incoming Course Assistant",
-    scope: "Introduction to Computer Science & Discrete Structures",
+    role: "Course Assistant",
+    scope: "Introduction to Computer Science",
     location: "Hoboken, NJ",
-    period: "Aug 2026 - Dec 2026",
+    period: "Sep 2026 - Present",
     tech: ["Python"],
     bullets: [
-      "Selected as Course Assistant for Introduction to Computer Science and Discrete Structures based on outstanding academic performance.",
+      "Lead recitations, hold office hours, and grade for 30+ students while providing hands-on, one-on-one debugging and conceptual mentorship.",
     ],
   },
   {
     company: "Stevens Institute for Artificial Intelligence (SIAI)",
     role: "Research Assistant",
-    scope: "Clinical concept map assessment with Hackensack Meridian School of Medicine",
+    scope:
+      "Clinical concept map assessment with Hackensack Meridian School of Medicine",
     location: "Hoboken, NJ",
-    period: "May 2026 - Present",
+    period: "May 2026 - Aug 2026",
     repo: "https://github.com/jumbomuffin101/AI-Research-ConceptMapAnalysis",
-    tech: ["Python", "FastAPI", "Next.js", "Multimodal AI", "Vision-Language Models"],
+    tech: ["Python", "Streamlit", "Multimodal AI", "Vision-Language Models"],
     bullets: [
-      "Built a full-stack platform for AI-powered clinical concept map assessment.",
-      "Integrated multimodal LLMs, rubric-based grading, evidence extraction, dashboards, and configurable model selection.",
+      "Built an AI-powered clinical concept map assessment platform in collaboration with Hackensack Meridian School of Medicine, integrating multimodal LLMs, rubric-based grading, evidence extraction, interactive dashboards, and configurable model selection.",
+      "Benchmarked multimodal vision-language models against human rubric-based evaluations, analyzing scoring accuracy, consistency, hallucination patterns, explainability, and grader agreement across clinical concept maps to improve automated grading reliability.",
     ],
   },
   {
     company: "GENIE AI",
     role: "Software Engineering Intern",
-    location: "New York, NY",
+    location: "Remote",
     period: "Oct 2025 - May 2026",
-    tech: ["NestJS", "Node.js", "PostgreSQL", "Next.js", "Docker", "Jenkins", "CI/CD"],
+    tech: [
+      "NestJS",
+      "Node.js",
+      "PostgreSQL",
+      "Next.js",
+      "Docker",
+      "Jenkins",
+      "CI/CD",
+    ],
     bullets: [
-      "Built REST APIs and normalized PostgreSQL schemas for tenant workflows and usage metrics.",
-      "Resolved production data inconsistencies caused by schema mismatches across distributed request flows.",
-      "Added Docker layer caching in Jenkins, cutting deployment time from 15 to 2 minutes and enabling 4x more frequent production deployments.",
+      "Architected and shipped RESTful APIs for a property analytics platform, designing normalized PostgreSQL schemas supporting tenant workflows, property analytics, and usage metrics across 10+ microservices used by 3 cross-functional teams and internal stakeholders.",
+      "Diagnosed and resolved production data inconsistencies by tracing request flows across distributed systems, eliminating schema mismatches responsible for 15% of nightly batch failures while preventing recurring data loss across critical production services.",
+      "Optimized Jenkins CI/CD pipelines by parallelizing test execution and introducing Docker layer caching, reducing deployment time from 15 to 2 minutes while enabling 4x more frequent production deployments and supporting faster, more reliable software releases.",
     ],
   },
   {
     company: "TruClaim",
     role: "Software Engineering Intern",
     location: "Remote",
-    period: "Jan 2025 - Aug 2025",
+    period: "May 2025 - Aug 2025",
     tech: ["Flask", "Python", "PostgreSQL", "REST APIs", "CI/CD"],
     bullets: [
-      "Built Flask and PostgreSQL services for production claims screening that processed 200+ claims weekly.",
-      "Replaced manual review steps, saving 15 hours per week and reducing validation errors by 22%.",
-      "Raised core validation workflow coverage to 85% with unit and integration tests.",
+      "Built and deployed backend services for a production claims screening platform using Flask and PostgreSQL, implementing rule-based validation workflows that reliably processed 200+ insurance claims weekly across multiple provider submissions and clinical specialties.",
+      "Automated claims validation using Python and SQL triggers, eliminating 15 hours/week of operational overhead, reducing validation errors by 22%, and increasing test coverage to 85% through comprehensive unit and integration testing across core validation workflows.",
     ],
   },
 ];
 
 export const projects = [
   {
-    title: "IBM Docling",
-    eyebrow: "OPEN SOURCE / DOCUMENT AI",
-    image: `${process.env.PUBLIC_URL}/projects/ibm-docling.png`,
-    stack: ["Python", "Open Source", "Document AI", "LLMs"],
+    title: "Next Chapter",
+    repositoryVisibility: "private",
+    period: "Oct 2026",
+    image: `${process.env.PUBLIC_URL}/projects/next-chapter.png`,
+    eyebrow: "CODE FOR GOOD 2026 / JPMORGAN CHASE",
+    stack: [
+      "Python",
+      "FastAPI",
+      "PostgreSQL",
+      "SQLAlchemy",
+      "React",
+      "REST APIs",
+    ],
     built:
-      "Contributed to IBM's open-source document intelligence toolkit, which parses PDFs and other complex document formats into structured, AI-ready representations for downstream retrieval and generative AI workflows.",
+      "Led backend and database development for a 4-person team at JPMorgan Chase Code for Good 2026, building alumni career profiles, career personalization, and longitudinal analytics.",
+    highlights: [
+      "Architected FastAPI REST endpoints and SQLAlchemy models on Supabase PostgreSQL to manage alumni profiles, employment histories, technical skills, and longitudinal career analytics.",
+      "Built end-to-end resume ingestion and career personalization workflows, integrating rule-based PDF parsing, skill-aware Greenhouse job matching, and tailored monthly newsletters to drive sustained alumni engagement and long-term career outcome tracking.",
+    ],
+    links: {
+      github: "https://github.com/bkhackathon26/Team-22",
+    },
+  },
+  {
+    title: "IBM Docling",
+    period: "Jun 2026 - Aug 2026",
+    image: `${process.env.PUBLIC_URL}/projects/ibm-docling.png`,
+    eyebrow: "OPEN SOURCE / DOCUMENT AI",
+    stack: ["Python", "Git", "GitHub Actions", "Pytest", "Open Source"],
+    built:
+      "Delivered a merged upstream contribution to IBM Docling, resolving a Windows resource leak in the document conversion pipeline and strengthening cleanup reliability.",
+    highlights: [
+      "Identified incorrect backend ownership during pipeline initialization failures, implemented targeted cleanup logic, and prevented file handle leaks while preserving error propagation.",
+      "Added regression tests for initialization and invalid-input cleanup paths, collaborating with maintainers and external contributors through code review, CI validation, and DCO compliance.",
+    ],
     links: {
       github: "https://github.com/docling-project/docling",
       live: "https://docling-project.github.io/docling/",
@@ -75,23 +118,50 @@ export const projects = [
   },
   {
     title: "OfferOS",
-    eyebrow: "FULL-STACK AI / CAREER TECHNOLOGY",
+    period: "Jun 2026 - Aug 2026",
     image: `${process.env.PUBLIC_URL}/projects/offeros.png`,
-    stack: ["Next.js", "TypeScript", "FastAPI", "PostgreSQL", "Clerk"],
+    eyebrow: "FULL-STACK AI / CAREER TECHNOLOGY",
+    stack: [
+      "Next.js",
+      "FastAPI",
+      "PostgreSQL",
+      "SQLAlchemy",
+      "TypeScript",
+      "Clerk",
+      "Docker",
+    ],
     built:
-      "A full-stack job-search operating system that centralizes applications, targeted resumes, interview preparation, analytics, and AI-powered resume intelligence in one workspace.",
+      "Designed and built a comprehensive career management platform where authenticated users manage job applications, resumes, interview preparation, recruiting workflows, and career analytics in one Next.js and FastAPI workspace.",
+    highlights: [
+      "Architected a backend for multiple tenants using SQLAlchemy, Alembic migrations, and a repository pattern to enforce ownership-based access across all REST endpoints.",
+      "Integrated Clerk authentication and Docker for consistent deployment across environments.",
+    ],
     links: {
       github: "https://github.com/jumbomuffin101/offeros",
-      live: "https://offeros-web-two.vercel.app/",
+      live: "https://offeros-web-two.vercel.app/sign-in?redirect_url=https%3A%2F%2Fofferos-web-two.vercel.app%2F",
     },
   },
   {
     title: "OpsPilot",
-    eyebrow: "AI AGENT / DEVELOPER PRODUCTIVITY",
+    period: "Jun 2026 - Jul 2026",
     image: `${process.env.PUBLIC_URL}/projects/opspilot.png`,
-    stack: ["Next.js", "TypeScript", "Slack API", "GitHub API", "PostgreSQL"],
+    eyebrow: "AI AGENT / DEVELOPER PRODUCTIVITY",
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Slack APIs",
+      "GitHub APIs",
+      "OpenAI",
+      "PostgreSQL",
+      "Neon",
+      "Vercel",
+    ],
     built:
-      "A Slack-native engineering agent that interprets operational requests, audits GitHub repositories, and returns actionable project insights through secure, event-driven workflows.",
+      "Built and deployed a Slack AI engineering agent supporting multiple tenants, with workspace-specific Slack and GitHub OAuth, natural-language conversations, repository audits, incident investigations, and interactive Block Kit workflows.",
+    highlights: [
+      "Architected a reasoning pipeline built around specialized tools that correlates GitHub commits, deployment history, Slack context, and incident data.",
+      "Generated grounded risk assessments, test plans, release notes, and postmortems with persistent PostgreSQL context.",
+    ],
     links: {
       github: "https://github.com/jumbomuffin101/opspilot",
       live: "https://opspilot-puce.vercel.app/",
@@ -103,7 +173,14 @@ export const projects = [
     image: `${process.env.PUBLIC_URL}/projects/recruitiq.png`,
     period: "Amazon AWS Hackathon",
     category: "AI-powered applicant tracking system",
-    stack: ["Next.js", "React", "TypeScript", "Amazon Aurora PostgreSQL", "Prisma", "Vercel"],
+    stack: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Amazon Aurora PostgreSQL",
+      "Prisma",
+      "Vercel",
+    ],
     problem:
       "Recruiting teams need cleaner ways to parse resumes, compare candidates, and manage hiring pipelines without losing context.",
     built:
@@ -183,7 +260,15 @@ export const projects = [
     image: `${process.env.PUBLIC_URL}/projects/gym-risk.png`,
     period: "Oct 2025 - Mar 2026",
     category: "Training load analytics platform",
-    stack: ["Next.js", "React", "TypeScript", "PostgreSQL", "Prisma", "NextAuth", "Tailwind"],
+    stack: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "PostgreSQL",
+      "Prisma",
+      "NextAuth",
+      "Tailwind",
+    ],
     problem:
       "Workout history alone does not clearly show workload spikes, sustained high effort, or the areas absorbing repeated training stress.",
     built:
@@ -206,7 +291,14 @@ export const projects = [
     image: `${process.env.PUBLIC_URL}/projects/trading-analytics-dashboard.png`,
     period: "Featured project",
     category: "Serverless equity backtesting dashboard",
-    stack: ["React", "TypeScript", "Vite", "Netlify Functions", "Recharts", "Market Data"],
+    stack: [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Netlify Functions",
+      "Recharts",
+      "Market Data",
+    ],
     problem:
       "Exploring strategy outcomes becomes difficult when historical market requests are repeated across disconnected workflows and dense outputs.",
     built:
@@ -236,13 +328,16 @@ export const education = {
     "Data Structures",
     "Computer Architecture & Organization",
     "Principles of Programming Languages",
+    "Database Management Systems",
+    "Theory of Computation",
+    "Web Programming",
     "Mathematical Foundations of Machine Learning",
     "Discrete Structures",
     "Linear Algebra",
     "Intermediate Statistics",
   ],
   honors: [
-    "Upsilon Pi Epsilon (UPE), International Computer Science Honor Society",
+    "Upsilon Pi Epsilon (UPE)",
     "Dean's List (All Semesters)",
     "Presidential Scholarship",
     "Edwin A. Stevens Scholarship",
@@ -250,30 +345,51 @@ export const education = {
 };
 
 export const skills = {
-  Languages: ["Python", "Java", "SQL", "TypeScript", "JavaScript", "HTML/CSS"],
-  "Frontend Engineering": ["React", "Next.js", "Tailwind", "TypeScript"],
-  "Backend Engineering": ["FastAPI", "Flask", "NestJS", "Node.js", "REST APIs"],
-  "Databases & Data": ["PostgreSQL", "Amazon Aurora PostgreSQL", "Azure AI Search", "SQLAlchemy", "Prisma"],
+  Languages: [
+    "Python",
+    "TypeScript",
+    "Java",
+    "JavaScript",
+    "HTML/CSS",
+    "C++",
+    "SQL",
+  ],
+  "Frontend Engineering": ["React", "Next.js", "HTML/CSS"],
+  "Backend Engineering": ["FastAPI", "Node.js", "NestJS", "Flask", "REST APIs"],
+  "Databases & Data": [
+    "PostgreSQL",
+    "SQLAlchemy",
+    "Prisma",
+    "Supabase PostgreSQL",
+    "Alembic",
+    "Neon",
+  ],
   "AI / Machine Learning": [
-    "LLMs",
-    "NLP",
-    "Human-Centered AI",
     "Multimodal AI",
     "Vision-Language Models",
-    "API Integration",
+    "LLMs",
+    "OpenAI",
+    "Streamlit",
   ],
-  "Cloud / DevOps / Infrastructure": [
+  "Cloud / DevOps / Testing": [
     "Docker",
     "AWS",
-    "Vercel",
-    "Git",
+    "CI/CD",
     "GitHub Actions",
     "Jenkins",
-    "CI/CD",
+    "Git",
+    "Vercel",
+    "Pytest",
   ],
 };
 
 export const certifications = [
-  { name: "AWS Cloud Practitioner", date: "2025" },
-  { name: "AWS AI Practitioner", date: "2026" },
+  {
+    name: "AWS Cloud Practitioner",
+    date: "2025",
+  },
+  {
+    name: "AWS AI Practitioner",
+    date: "2026",
+  },
 ];

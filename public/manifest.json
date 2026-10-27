@@ -2,10 +2,11 @@
   "short_name": "Aryan",
   "name": "Aryan Rawat - Software Engineer",
   "icons": [
-    { "src": "logo.jpg", "type": "image/jpeg", "sizes": "360x360" }
+    { "src": "favicon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" },
+    { "src": "apple-touch-icon.png", "type": "image/png", "sizes": "180x180" }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#f7f8fc",
-  "background_color": "#f7f8fc"
+  "theme_color": "#07090e",
+  "background_color": "#07090e"
 }
