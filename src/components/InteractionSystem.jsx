@@ -7,7 +7,6 @@ import { useMotion } from "../hooks/useMotion";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function InteractionSystem() {
-  const cursor = useRef(null);
   const introduced = useRef(false);
   const driver = useRef(null);
   const { reduced, paused, pageVisible = true } = useMotion();
@@ -57,59 +56,22 @@ export default function InteractionSystem() {
     };
     document.addEventListener("click", navigate);
     const context = gsap.context(() => {
-      if (!introduced.current) {
-        const entrance = gsap.timeline({
-          defaults: { duration: 1.05, ease: "power3.out" },
-          onComplete: () => {
-            introduced.current = true;
-          },
+      if (!introduced.current && document.querySelector(".hero-copy")) {
+        gsap.from(".hero .entrance", {
+          y: 12, opacity: 0.65, duration: 0.72, stagger: 0.06, ease: "power2.out",
+          onComplete: () => { introduced.current = true; },
         });
-        entrance
-          .from(".hero-topline", { y: 10, opacity: 0 }, 0.08)
-          .from(
-            ".hero-name",
-            { yPercent: 30, opacity: 0, clipPath: "inset(0 0 100% 0)" },
-            0.16,
-          )
-          .from(
-            ".hero-copy .entrance",
-            { y: 20, opacity: 0, stagger: 0.065 },
-            0.34,
-          )
-          .from(".hero-observatory", { y: 24, opacity: 0, scale: 0.98 }, 0.34)
-          .from(".hero-footline", { opacity: 0 }, 0.6);
       }
-      gsap.to(".hero-name-wrap", {
-        y: -24,
-        opacity: 0.45,
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".hero",
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-      gsap.utils.toArray(".section-heading").forEach((heading) => {
+      gsap.utils.toArray("[data-reveal]").forEach((heading) => {
         gsap.from(heading, {
-          clipPath: "inset(0 0 100% 0)",
-          y: 45,
-          duration: 1.1,
-          ease: "power4.out",
-          scrollTrigger: { trigger: heading, start: "top 90%" },
+          y: 9, duration: 0.55, ease: "power2.out",
+          scrollTrigger: { trigger: heading, start: "top 90%", once: true },
         });
       });
-      gsap.utils.toArray(".timeline-item").forEach((item) => {
-        gsap.from(item.querySelector(".timeline-line"), {
-          scaleY: 0,
-          transformOrigin: "top",
-          ease: "none",
-          scrollTrigger: {
-            trigger: item,
-            start: "top 80%",
-            end: "bottom 65%",
-            scrub: true,
-          },
+      gsap.utils.toArray(".project-image").forEach((preview) => {
+        gsap.fromTo(preview, { y: 10, opacity: 0.96 }, {
+          y: 0, opacity: 1, ease: "none",
+          scrollTrigger: { trigger: preview, start: "top bottom", end: "top 65%", scrub: 0.3 },
         });
       });
     });
@@ -152,77 +114,5 @@ export default function InteractionSystem() {
     return () => gsap.ticker.remove(current.tick);
   }, [pageVisible, reduced, paused]);
 
-  useEffect(() => {
-    if (reduced || paused || !pageVisible || !window.matchMedia?.("(pointer: fine)").matches)
-      return undefined;
-    const dot = cursor.current;
-    const xTo = gsap.quickTo(dot, "x", { duration: 0.35, ease: "power3.out" });
-    const yTo = gsap.quickTo(dot, "y", { duration: 0.35, ease: "power3.out" });
-    const move = (event) => {
-      xTo(event.clientX);
-      yTo(event.clientY);
-      dot.classList.add("is-visible");
-      dot.classList.toggle(
-        "is-link",
-        Boolean(event.target.closest("a, button, summary")),
-      );
-    };
-    const leave = () => dot.classList.remove("is-visible");
-    window.addEventListener("pointermove", move, { passive: true });
-    document.addEventListener("pointerleave", leave);
-    return () => {
-      window.removeEventListener("pointermove", move);
-      document.removeEventListener("pointerleave", leave);
-      xTo.tween.kill();
-      yTo.tween.kill();
-      leave();
-    };
-  }, [reduced, paused, pageVisible]);
-  return <div ref={cursor} className="cursor-aura" aria-hidden="true" />;
-}
-
-export function Magnetic({ children, className = "", ...props }) {
-  const ref = useRef(null);
-  const { reduced, paused } = useMotion();
-  const move = (event) => {
-    if (reduced || paused || event.pointerType !== "mouse") return;
-    const rect = ref.current.getBoundingClientRect();
-    gsap.to(ref.current, {
-      x: (event.clientX - rect.left - rect.width / 2) * 0.18,
-      y: (event.clientY - rect.top - rect.height / 2) * 0.25,
-      duration: 0.55,
-      ease: "power3.out",
-      overwrite: true,
-    });
-  };
-  useEffect(() => {
-    const element = ref.current;
-    return () => gsap.killTweensOf(element);
-  }, []);
-  useEffect(() => {
-    if (reduced || paused) {
-      gsap.killTweensOf(ref.current);
-      gsap.set(ref.current, { x: 0, y: 0 });
-    }
-  }, [reduced, paused]);
-  return (
-    <a
-      ref={ref}
-      className={`magnetic ${className}`}
-      onPointerMove={move}
-      onPointerLeave={() => {
-        if (reduced || paused) return;
-        gsap.to(ref.current, {
-          x: 0,
-          y: 0,
-          duration: 0.6,
-          ease: "power3.out",
-          overwrite: true,
-        });
-      }}
-      {...props}
-    >
-      {children}
-    </a>
-  );
+  return null;
 }

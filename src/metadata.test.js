@@ -1,4 +1,4 @@
-import { readFileSync, existsSync } from "fs";
+import { readFileSync, existsSync, readdirSync } from "fs";
 import path from "path";
 
 test("static crawlers receive complete social metadata and real preview assets", () => {
@@ -19,6 +19,7 @@ test("static crawlers receive complete social metadata and real preview assets",
   expect(robots).not.toMatch(/import |createRoot|reportWebVitals/);
   expect(robots).toContain("Sitemap: https://jumbomuffin101.github.io/Portfolio/sitemap.xml");
   const fallback = html.querySelector("noscript");
-  expect(fallback.textContent).toContain("Download Resume");
+  expect(html.querySelector('a[download], a[href$=".pdf" i]')).toBeNull();
+  expect(readdirSync(root, { recursive: true }).filter((entry) => /\.pdf$/i.test(entry))).toEqual([]);
   expect(fallback.querySelector('a[href^="mailto:"]').getAttribute("href")).toBe("mailto:arawat3@stevens.edu");
 });
