@@ -8,30 +8,35 @@ export const profile = {
 export const experience = [
   {
     company: "JPMorgan Chase & Co.",
+    logo: "jpmorgan-chase.png",
     role: "Incoming Software Engineer Intern",
     period: "Jun–Aug 2027",
     upcoming: true,
   },
   {
     company: "Stevens Institute of Technology",
+    logo: "stevens-institute-of-technology.png",
     role: "Course Assistant",
     period: "Sep 2026–Present",
     accomplishment: "Lead introductory computer science recitations and mentor and grade 40+ students.",
   },
   {
     company: "Stevens Institute for Artificial Intelligence (SIAI)",
+    logo: "stevens-institute-of-technology.png",
     role: "Research Assistant",
     period: "Jun–Aug 2026",
     accomplishment: "Built and evaluated an AI tool for grading clinical concept maps with Hackensack Meridian School of Medicine.",
   },
   {
     company: "GENIE AI",
+    logo: "genie-ai.png",
     role: "Software Engineer Intern",
     period: "Jun–Aug 2026",
     accomplishment: "Cut deployment time from 15 to 2 minutes by running tests in parallel and caching Docker layers.",
   },
   {
     company: "TruClaim",
+    logo: "truclaim.png",
     role: "Software Engineer Intern",
     period: "Jun–Aug 2025",
     accomplishment: "Automated claims validation, saving 15 hours per week and reducing validation errors by 22%.",

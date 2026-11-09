@@ -101,7 +101,9 @@
 .preview-image { overflow: auto; overscroll-behavior: contain; max-height: calc(91dvh - 62px); }
 .preview-image img { width: 100%; height: auto; }
 
-.experience-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 8px 28px; padding-block: 18px; border-top: 1px solid var(--border); }
+.experience-row { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; align-items: baseline; gap: 8px 16px; padding-block: 18px; border-top: 1px solid var(--border); }
+.experience-logo { display: grid; place-items: center; align-self: start; width: 48px; height: 48px; padding: 3px; border-radius: 6px; background: #22212b; }
+.experience-logo img { width: 100%; height: 100%; min-height: 0; object-fit: contain; }
 .experience-row h3, .education-summary h3 { font-size: clamp(19px, 2.3vw, 24px); font-weight: 630; letter-spacing: -.024em; line-height: 1.3; }
 .role { margin-top: 3px; font-size: 15px; font-weight: 500; }
 .accomplishment, .period { color: var(--muted); font-size: 14px; line-height: 1.55; }
@@ -149,7 +151,9 @@
   .hero-actions { margin-top: 21px; }
   .hero-portrait { width: clamp(152px, 44vw, 206px); }
   .project-grid { grid-template-columns: 1fr; }
-  .experience-row { grid-template-columns: 1fr; gap: 5px; padding-block: 17px; }
+  .experience-row { grid-template-columns: 48px minmax(0, 1fr); gap: 5px 12px; padding-block: 17px; }
+  .experience-logo { grid-row: 1 / span 2; }
+  .experience-row .period { grid-column: 2; }
   .chapter-split { grid-template-columns: 1fr; gap: 24px; }
   .skills-list, .education-summary { padding-top: 0; }
 }

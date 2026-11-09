@@ -77,8 +77,11 @@ function Experience() {
       <div className="section shell">
         <h2 className="section-title" id="experience-title" data-reveal>Experience</h2>
         <ol className="experience-list">
-          {experience.map(({ company, role, period, upcoming, accomplishment }) => (
+          {experience.map(({ company, logo, role, period, upcoming, accomplishment }) => (
             <li className="experience-row" key={company}>
+              <div className="experience-logo">
+                <img src={`${process.env.PUBLIC_URL || ""}/logos/${logo}`} alt="" width={48} height={48} loading="lazy" decoding="async" />
+              </div>
               <div>
                 <h3>{company}</h3>
                 <p className="role">{role}</p>
